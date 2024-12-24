@@ -64,7 +64,7 @@ function handleChargeSucceeded(charge) {
 
 // Middleware
 app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
+    origin: ["https://admin-topaz-three.vercel.app", "https://dotra-home.vercel.app"],
     credentials: true,
 }));
 app.use(bodyParser.json());

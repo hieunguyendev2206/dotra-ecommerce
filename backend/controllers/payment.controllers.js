@@ -401,8 +401,8 @@ class paymentController {
                 });
                 const accountLink = await stripe.accountLinks.create({
                     account: account.id,
-                    refresh_url: "http://localhost:3000/refresh",
-                    return_url: `http://localhost:3000/success?activeCode=${uuid}`,
+                    refresh_url: "https://admin-topaz-three.vercel.app/refresh",
+                    return_url: `https://admin-topaz-three.vercel.app/success?activeCode=${uuid}`,
                     type: "account_onboarding",
                 });
                 await paymentModel.create({
@@ -415,8 +415,8 @@ class paymentController {
                 });
                 const accountLink = await stripe.accountLinks.create({
                     account: account.id,
-                    refresh_url: "http://localhost:3000/refresh",
-                    return_url: `http://localhost:3000/success?activeCode=${uuid}`,
+                    refresh_url: "https://admin-topaz-three.vercel.app/refresh",
+                    return_url: `https://admin-topaz-three.vercel.app/success?activeCode=${uuid}`,
                     type: "account_onboarding",
                 });
                 await paymentModel.create({
@@ -476,8 +476,8 @@ class paymentController {
                 payment_method_types: ["card"],
                 line_items,
                 mode: "payment",
-                success_url: `http://localhost:3001/payment/payment-success`,
-                cancel_url: "http://localhost:3001/payment/payment-error",
+                success_url: `https://dotra-home.vercel.app/payment/payment-success`,
+                cancel_url: "https://dotra-home.vercel.app/payment/payment-error",
             });
             res.send({sessionId: session.id});
         } catch (error) {

@@ -961,7 +961,7 @@ class authController {
                                                                                     bgcolor="#0d6efd"
                                                                             >
                                                                                 <a
-                                                                                        href="http://localhost:3000/reset-password/${email_token}"
+                                                                                        href="https://admin-topaz-three.vercel.app/reset-password/${email_token}"
                                                                                         style="
                                                                             color: #ffffff;
                                                                             font-size: 16px;
