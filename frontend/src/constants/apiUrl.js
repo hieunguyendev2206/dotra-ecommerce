@@ -1,5 +1,5 @@
 const apiUrl = {
-    baseURL: "http://localhost:5000/api",
+    baseURL: "https://dotra-ecommerce.onrender.com/api",
 };
 
 export default apiUrl;

@@ -15,7 +15,7 @@ const PaymentSuccess = () => {
     const updatePayment = async () => {
         try {
             await axios.put(
-                `http://localhost:5000/api/payment/update-payment/${orderId}`,
+                `https://dotra-ecommerce.onrender.com/api/payment/update-payment/${orderId}`,
                 {},
                 {withCredentials: true}
             );

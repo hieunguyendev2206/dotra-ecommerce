@@ -34,7 +34,7 @@ const Payment = () => {
             }
 
             // Gửi trực tiếp `orderId` mà không cần xử lý thêm
-            const response = await axios.post("http://localhost:5000/api/payment/create-vnpay-payment", {
+            const response = await axios.post("https://dotra-ecommerce.onrender.com/api/payment/create-vnpay-payment", {
                 amount: price,
                 orderInfo: orderId, // Sử dụng trực tiếp orderId làm orderInfo
             });
@@ -56,7 +56,7 @@ const Payment = () => {
     const handleMoMoPayment = async () => {
         try {
             setLoading(true); // Bắt đầu loading
-            const response = await axios.post("http://localhost:5000/api/payment/create-momo-payment", {
+            const response = await axios.post("https://dotra-ecommerce.onrender.com/api/payment/create-momo-payment", {
                 amount: price,
                 orderId: orderId,
             });
@@ -81,7 +81,7 @@ const Payment = () => {
     const handleZaloPayPayment = async () => {
         try {
             setLoading(true); // Bắt đầu loading
-            const response = await axios.post("http://localhost:5000/api/payment/create-zalopay-payment", {
+            const response = await axios.post("https://dotra-ecommerce.onrender.com/api/payment/create-zalopay-payment", {
                 amount: price,
                 orderId: orderId,
             });
@@ -193,7 +193,7 @@ const Payment = () => {
                                                 style={{ layout: "vertical" }}
                                                 createOrder={(data, actions) => {
                                                     return axios
-                                                        .post("http://localhost:5000/api/payment/create-paypal-order", {
+                                                        .post("https://dotra-ecommerce.onrender.com/api/payment/create-paypal-order", {
                                                             amount: (price / 24000).toFixed(2),
                                                             currency: "USD",
                                                             orderId,
@@ -202,7 +202,7 @@ const Payment = () => {
                                                 }}
                                                 onApprove={(data, actions) => {
                                                     return axios
-                                                        .post("http://localhost:5000/api/payment/capture-paypal-order", {
+                                                        .post("https://dotra-ecommerce.onrender.com/api/payment/capture-paypal-order", {
                                                             orderID: data.orderID,
                                                         })
                                                         .then(() => {

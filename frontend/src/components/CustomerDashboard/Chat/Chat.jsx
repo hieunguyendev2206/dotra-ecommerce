@@ -13,7 +13,7 @@ import useSound from "use-sound";
 import sendingSound from "../../../audio/sending.mp3";
 import notificationSound from "../../../audio/notification.mp3";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://dotra-ecommerce.onrender.com");
 
 const Chat = () => {
     const {BsEmojiSmile, AiOutlinePlus, IoSend, IoMdClose} = icons;

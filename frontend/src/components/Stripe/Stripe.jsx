@@ -8,7 +8,7 @@ const Stripe = ({orderId}) => {
         localStorage.setItem("orderId", orderId);
         try {
             const response = await axios.post(
-                "http://localhost:5000/api/payment/create-checkout-session",
+                "https://dotra-ecommerce.onrender.com/api/payment/create-checkout-session",
                 {
                     orderId,
                 },
