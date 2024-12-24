@@ -25,7 +25,10 @@ class authController {
                         id: admin.id, role: admin.role,
                     });
                     res.cookie("access_token", access_token, {
-                        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                        httpOnly: true,
+                        secure: true, // Chỉ cho phép trên HTTPS
+                        sameSite: "none", // Cho phép sử dụng trên các domain khác nhau
                     });
                     response(res, httpStatusCode.Ok, {
                         message: successMessage.LOGIN_SUCCESS, data: {
@@ -281,7 +284,7 @@ class authController {
                                                                         <tr>
                                                                             <td style="\n                                              line-height: 24px;\n                                              font-size: 16px;\n                                              border-radius: 6px;\n                                              font-weight: 700 !important;\n                                              margin: 0;\n                                            "
                                                                                 align="center" bgcolor="#0d6efd"><a
-                                                                                    href="http://localhost:3000/verify-email/${email_token}"
+                                                                                    href="https://admin-topaz-three.vercel.app/verify-email/${email_token}"
                                                                                     style="\n                                                color: #ffffff;\n                                                font-size: 16px;\n                                                font-family: Helvetica, Arial, sans-serif;\n                                                text-decoration: none;\n                                                border-radius: 6px;\n                                                line-height: 20px;\n                                                display: block;\n                                                font-weight: 700 !important;\n                                                white-space: nowrap;\n                                                background-color: #0d6efd;\n                                                padding: 12px;\n                                                border: 1px solid #0d6efd;\n                                              ">Xác
                                                                                 thực tài khoản</a></td>
                                                                         </tr>
@@ -393,6 +396,9 @@ class authController {
                     });
                     res.cookie("access_token", access_token, {
                         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                        httpOnly: true,
+                        secure: true, // Chỉ cho phép trên HTTPS
+                        sameSite: "none", // Cho phép sử dụng trên các domain khác nhau
                     });
                     response(res, httpStatusCode.Ok, {
                         message: successMessage.LOGIN_SUCCESS, data: {
@@ -430,6 +436,7 @@ class authController {
                 const seller = await  sellerModel.findById(id);
                 response(res, httpStatusCode.Ok, {
                   data: seller,
+
                 });
             }
         } catch (error) {

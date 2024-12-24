@@ -396,6 +396,9 @@ class customerController {
                     });
                     res.cookie("customer_access_token", customer_access_token, {
                         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                        httpOnly: true,
+                        secure: true, // Chỉ cho phép trên HTTPS
+                        sameSite: "none", // Cho phép sử dụng trên các domain khác nhau
                     });
                     response(res, httpStatusCode.Ok, {
                         message: successMessage.LOGIN_SUCCESS, data: customer_access_token,
@@ -430,6 +433,9 @@ class customerController {
                     });
                     res.cookie("customer_access_token", customer_access_token, {
                         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                        httpOnly: true,
+                        secure: true, // Chỉ cho phép trên HTTPS
+                        sameSite: "none", // Cho phép sử dụng trên các domain khác nhau
                     });
                     const urlRedirect = `${env.CLIENT_REDIRECT_CALLBACK}?customer_access_token=${customer_access_token}`;
                     return res.redirect(urlRedirect);
@@ -454,6 +460,9 @@ class customerController {
                     });
                     res.cookie("customer_access_token", customer_access_token, {
                         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                        httpOnly: true,
+                        secure: true, // Chỉ cho phép trên HTTPS
+                        sameSite: "none", // Cho phép sử dụng trên các domain khác nhau
                     });
                     const urlRedirect = `${env.CLIENT_REDIRECT_CALLBACK}?customer_access_token=${customer_access_token}`;
                     return res.redirect(urlRedirect);
