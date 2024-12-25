@@ -439,7 +439,7 @@ const Cart = () => {
                     ) : (
                         <div className="flex flex-col justify-center items-center h-[400px]">
                             <img width="500px" height="500px" src={CartNone} alt="No-Item" className="mb-4"/>
-                            <h2 className="text-xl font-medium mb-4 font-mono">
+                            <h2 className="text-xl text-center font-medium mb-4 font-mono">
                                 Chưa có sản phẩm nào trong giỏ hàng!
                             </h2>
                             <Link to={path.shop} className="px-4 py-2 bg-red-500 text-white rounded-md ">
