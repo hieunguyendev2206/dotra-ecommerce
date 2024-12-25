@@ -120,11 +120,11 @@ app.use("/api/payment", require("./routes/payment.routes"));
 
 // Stripe Webhook Endpoint
 app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
-    const sig = req.headers["stripe-signature"]; // Lấy chữ ký từ header Stripe
+    const sig = req.headers["stripe-signature"];
     let event;
 
     try {
-        // Xác minh chữ ký của webhook payload
+        // Xác minh chữ ký với raw payload
         event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     } catch (err) {
         console.error(`Webhook signature verification failed: ${err.message}`);
@@ -133,31 +133,20 @@ app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
 
     // Xử lý các sự kiện Stripe
     switch (event.type) {
-        case "checkout.session.completed":
-            const session = event.data.object;
-            console.log(`Checkout session completed: ${session.id}`);
-            // Logic xử lý thanh toán thành công
-            break;
-
-        case "charge.succeeded":
-            const charge = event.data.object;
-            console.log(`Charge succeeded: ${charge.id}`);
-            // Logic xử lý khi charge thành công
-            break;
-
         case "transfer.created":
             const transfer = event.data.object;
             console.log(`Transfer created: ${transfer.id}`);
-            // Logic xử lý khi chuyển khoản được tạo
+            // Logic xử lý cho transfer.created
             break;
 
         default:
             console.log(`Unhandled event type: ${event.type}`);
     }
 
-    // Trả về phản hồi thành công cho Stripe
+    // Trả về 200 OK cho Stripe
     res.status(200).send("Webhook received");
 });
+
 
 
 // WebSocket xử lý các kết nối thời gian thực
