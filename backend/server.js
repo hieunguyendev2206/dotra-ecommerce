@@ -91,32 +91,74 @@ app.use("/api/chat", require("./routes/chat.routes"));
 app.use("/api/payment", require("./routes/payment.routes"));
 
 // Stripe Webhook
-app.post("/webhook", express.raw({ type: "application/json" }), (request, response) => {
-    const sig = request.headers["stripe-signature"];
+// app.post("/webhook", express.raw({ type: "application/json" }), (request, response) => {
+//     const sig = request.headers["stripe-signature"];
+//     let event;
+//
+//     try {
+//         event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+//     } catch (err) {
+//         console.error(`Failed to construct event: ${err.message}`);
+//         response.status(400).send(`Webhook Error: ${err.message}`);
+//         return;
+//     }
+//
+//     // Handle Stripe Events
+//     switch (event.type) {
+//         case "checkout.session.completed":
+//             handleCheckoutSessionCompleted(event.data.object);
+//             break;
+//         case "charge.succeeded":
+//             handleChargeSucceeded(event.data.object);
+//             break;
+//         default:
+//             console.log(`Unhandled event type: ${event.type}`);
+//     }
+//
+//     response.send();
+// });
+
+// Stripe Webhook Endpoint
+app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
+    const sig = req.headers["stripe-signature"]; // Lấy chữ ký từ header Stripe
     let event;
 
     try {
-        event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+        // Xác minh chữ ký của webhook payload
+        event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     } catch (err) {
-        console.error(`Failed to construct event: ${err.message}`);
-        response.status(400).send(`Webhook Error: ${err.message}`);
-        return;
+        console.error(`Webhook signature verification failed: ${err.message}`);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    // Handle Stripe Events
+    // Xử lý các sự kiện Stripe
     switch (event.type) {
         case "checkout.session.completed":
-            handleCheckoutSessionCompleted(event.data.object);
+            const session = event.data.object;
+            console.log(`Checkout session completed: ${session.id}`);
+            // Logic xử lý thanh toán thành công
             break;
+
         case "charge.succeeded":
-            handleChargeSucceeded(event.data.object);
+            const charge = event.data.object;
+            console.log(`Charge succeeded: ${charge.id}`);
+            // Logic xử lý khi charge thành công
             break;
+
+        case "transfer.created":
+            const transfer = event.data.object;
+            console.log(`Transfer created: ${transfer.id}`);
+            // Logic xử lý khi chuyển khoản được tạo
+            break;
+
         default:
             console.log(`Unhandled event type: ${event.type}`);
     }
 
-    response.send();
+    // Trả về phản hồi thành công cho Stripe
+    res.status(200).send("Webhook received");
 });
+
 
 // WebSocket xử lý các kết nối thời gian thực
 io.on("connection", (socket) => {
