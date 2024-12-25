@@ -323,7 +323,7 @@ const Header = () => {
                                     </div>
                                 ) : (
                                     <>
-                                        <div className="cursor-pointer text-sm">
+                                        <div className="cursor-pointer text-sm z-50">
                                             <div
                                                 onClick={() => setOpenModalLogin(true)}
                                                 className="flex justify-center items-center gap-2"
@@ -485,7 +485,7 @@ const Header = () => {
                                             </Modal>
                                         </div>
 
-                                        <div className="cursor-pointer gap-2 text-sm">
+                                        <div className="cursor-pointer gap-2 text-sm z-50">
                                             <div
                                                 onClick={() => setOpenModalRegister(true)}
                                                 className="flex justify-center items-center gap-2"
