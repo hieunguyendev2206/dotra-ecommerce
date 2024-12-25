@@ -734,7 +734,7 @@ const Header = () => {
                                                     ? "text-[#33cc33]"
                                                     : "text-slate-600"
                                             }`}
-                                         to="/blog">
+                                            to="/blog">
                                             Blog
                                         </Link>
                                     </li>
@@ -750,6 +750,32 @@ const Header = () => {
                                         </Link>
                                     </li>
                                 </ul>
+
+                                <div className="flex flex-col gap-6">
+                                    <div
+                                        onClick={redirectWishlistPage}
+                                        className="flex items-center gap-3 cursor-pointer p-4 bg-gray-100 rounded-lg hover:bg-gray-200"
+                                    >
+                                        <AiFillHeart size={20} className="text-red-500"/>
+                                        <span className="text-md font-medium">Yêu thích sản phẩm</span>
+                                        <span
+                                            className="ml-auto bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                                            {total_wishlist}
+                                        </span>
+                                    </div>
+                                    <div
+                                        onClick={redirectCartPage}
+                                        className="flex items-center gap-3 cursor-pointer p-4 bg-gray-100 rounded-lg hover:bg-gray-200"
+                                    >
+                                        <FaCartShopping size={20} className="text-red-500"/>
+                                        <span className="text-md font-medium">Giỏ hàng</span>
+                                        <span
+                                            className="ml-auto bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                                            {cart_product_count !== 0 ? cart_product_count : 0}
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <div className="flex md-lg:hidden justify-center items-center gap-5">
                                     <div className="flex justify-center gap-5">
                                         <div
