@@ -867,8 +867,8 @@ const Header = () => {
                                     className={`py-2 block ${
                                         pathname === "/" ? "text-red-500" : "text-slate-600"
                                     }`}
-                                 to="/">
-                                Trang chủ
+                                    to="/">
+                                    Trang chủ
                                 </Link>
                             </li>
                             <li>
@@ -901,6 +901,29 @@ const Header = () => {
                                 </Link>
                             </li>
                         </ul>
+                        <div className="flex justify-start items-center gap-4">
+                            <div
+                                onClick={redirectWishlistPage}
+                                className="relative flex justify-center items-center cursor-pointer w-[40px] h-[40px] rounded-full bg-gray-300"
+                            >
+                                <AiFillHeart size={20} className="text-red-500"/>
+                                <div
+                                    className="w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
+                                    {total_wishlist || 0}
+                                </div>
+                            </div>
+                            <div
+                                onClick={redirectCartPage}
+                                className="relative flex justify-center items-center cursor-pointer w-[40px] h-[40px] rounded-full bg-gray-300"
+                            >
+                                <FaCartShopping size={20} className="text-red-500"/>
+                                <div
+                                    className="w-[20px] h-[20px] absolute bg-green-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
+                                    {cart_product_count || 0}
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="flex justify-start items-center gap-4">
                             <a href="https://www.facebook.com/hieunguyen2003t/">
                                 <FaFacebook/>
