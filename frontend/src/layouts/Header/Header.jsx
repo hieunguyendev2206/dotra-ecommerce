@@ -18,6 +18,7 @@ import icons from "../../assets/icons";
 import path from "../../constants/path";
 import {get_wishlist} from "../../store/reducers/wishlist.reducers";
 import {FaSearch} from "react-icons/fa";
+import Logo from "../../assets/logo/logo.png"
 
 
 const getOauthGoogleUrl = () => {
@@ -344,7 +345,7 @@ const Header = () => {
                                                         <div className="flex justify-center">
                                                             <img
                                                                 className=" w-[180px] h-[50px]"
-                                                                src="/src/assets/logo/logo.png"
+                                                                src={Logo}
                                                                 alt=""
                                                             />
                                                         </div>
@@ -506,7 +507,7 @@ const Header = () => {
                                                         <div className="flex justify-center">
                                                             <img
                                                                 className=" w-[180px] h-[50px]"
-                                                                src="/src/assets/logo/logo.png"
+                                                                src={Logo}
                                                                 alt=""
                                                             />
                                                         </div>
@@ -686,7 +687,7 @@ const Header = () => {
                             <div className="flex justify-between items-center">
                                 <Link to="/" className="w-[180px] h-[50px]">
                                     <img
-                                        src="/src/assets/logo/logo.png"
+                                        src={Logo}
                                         alt="logo"
                                         className="w-full h-full"
                                     />

@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom";
 import icons from "../../assets/icons";
+import Logo from "../../assets/logo/logo.png"
 
 const Footer = () => {
     const {FaFacebook, GrInstagram, BsTwitter, BsGithub} = icons;
@@ -10,7 +11,7 @@ const Footer = () => {
                     <div className="flex flex-col gap-3">
                         <Link to="/" className="w-[180px] h-[50px]">
                             <img
-                                src="/src/assets/logo/logo.png"
+                                src={Logo}
                                 alt="logo"
                                 className="w-full h-full"
                             />
