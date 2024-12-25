@@ -1,4 +1,5 @@
 import {useNavigate} from "react-router-dom";
+import PaymentErrorImage from "../../assets/img/payment_error.jpg"
 
 const PaymentError = () => {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ const PaymentError = () => {
             <div className="bg-white p-6 md:mx-auto">
                 <div className="flex justify-center items-center">
                     <img
-                        src="/src/assets/img/payment_error.jpg"
+                        src={PaymentErrorImage}
                         alt=""
                         className="w-[340px] h-[280px]"
                     />

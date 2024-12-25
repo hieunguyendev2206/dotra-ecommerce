@@ -6,6 +6,7 @@ import confetti from "canvas-confetti";
 import congratulationSound from "../../audio/congratulation.mp3";
 import ReactH5AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import PaymentSuccessImage from "../../assets/img/payment_success.png"
 
 const PaymentSuccess = () => {
     const navigate = useNavigate();
@@ -92,7 +93,7 @@ const PaymentSuccess = () => {
             <div className="bg-white p-6 md:mx-auto">
                 <div className="flex justify-center items-center">
                     <img
-                        src="/src/assets/img/payment_success.png"
+                        src={PaymentSuccessImage}
                         alt=""
                         className="w-[340px] h-[280px]"
                     />
