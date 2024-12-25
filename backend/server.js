@@ -9,7 +9,8 @@ const socket = require("socket.io");
 const { databaseConnect } = require("./database/database");
 const server = http.createServer(app);
 const stripe = require("stripe")("sk_test_51PGcpoAJsOUKToQLJFP71JX7fI1YP7Wv1xu1dQteGu1yfwTwO6dlfIdZVGCS8SQPwxggVl3BVHa55tmgjzrpZ5ni00XgCx7Tff");
-const endpointSecret = "whsec_8acc169e541ff3c316ca885ecb3b1a30e216f6ba50e80902d9dee1d9ed6a0f40";
+// const endpointSecret = "whsec_8acc169e541ff3c316ca885ecb3b1a30e216f6ba50e80902d9dee1d9ed6a0f40";
+const endpointSecret = "whsec_cVgpeO01cwJgC9qOWJ2pheoZTAisM8pX";
 const io = socket(server, {
     cors: {
         origin: "*",
