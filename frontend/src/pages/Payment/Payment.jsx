@@ -9,6 +9,11 @@ import { formateCurrency } from "../../utils/formate";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import StripeImage from "../../assets/img/stripe.png"
+import VNPAYImage from "../../assets/img/vnpay.png"
+import MoMoImage from "../../assets/img/momo.png"
+import PaypalImage from "../../assets/logo/logopaypal.png"
+import ZaloPayImage from "../../assets/logo/logozalo.png"
 
 const Payment = () => {
     const [paymentMethod, setPaymentMethod] = useState("PayPal", "MoMo");
@@ -114,7 +119,7 @@ const Payment = () => {
                                         className={`w-[20%] border-r cursor-pointer py-8 px-12 ${paymentMethod === "stripe" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src="/src/assets/img/stripe.png" alt="stripe" />
+                                            <img src={StripeImage} alt="stripe" />
                                             <span className="text-slate-600">Stripe</span>
                                         </div>
                                     </div>
@@ -123,7 +128,7 @@ const Payment = () => {
                                         className={`w-[20%] border-r cursor-pointer py-8 px-12 ${paymentMethod === "VnPay" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src="/src/assets/img/vnpay.png" alt="VnPay" />
+                                            <img src={VNPAYImage} alt="VnPay" />
                                             <span className="text-slate-600">VNPay</span>
                                         </div>
                                     </div>
@@ -132,7 +137,7 @@ const Payment = () => {
                                         className={`w-[20%] border-r cursor-pointer py-8 px-12 ${paymentMethod === "MoMo" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src="/src/assets/img/momo.png" alt="MoMo" />
+                                            <img src={MoMoImage} alt="MoMo" />
                                             <span className="text-slate-600">MoMo</span>
                                         </div>
                                     </div>
@@ -141,7 +146,7 @@ const Payment = () => {
                                         className={`w-[20%] border-r cursor-pointer py-8 px-12 ${paymentMethod === "PayPal" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src="/src/assets/logo/logopaypal.png" alt="PayPal" />
+                                            <img src={PaypalImage} alt="PayPal" />
                                             <span className="text-slate-600">PayPal</span>
                                         </div>
                                     </div>
@@ -150,7 +155,7 @@ const Payment = () => {
                                         className={`w-[20%] border-r cursor-pointer py-8 px-12 ${paymentMethod === "ZaloPay" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src="/src/assets/logo/logozalo.png" alt="ZaloPay" />
+                                            <img src={ZaloPayImage} alt="ZaloPay" />
                                             <span className="text-slate-600">ZaloPay</span>
                                         </div>
                                     </div>
