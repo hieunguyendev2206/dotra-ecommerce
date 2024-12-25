@@ -7,6 +7,7 @@ import path from "../../../constants/path";
 import {message_clear, reset_password,} from "../../../store/reducers/auth.reducers";
 import {Card} from "flowbite-react";
 import icons from "../../../assets/icons";
+import ResetPassPic from "../../../assets/img/reset_password.jpg"
 
 const ResetPassword = () => {
     const {AiOutlineEye, AiOutlineEyeInvisible} = icons;
@@ -48,7 +49,7 @@ const ResetPassword = () => {
             <div className="bg-white p-6 md:mx-auto grid grid-cols-2">
                 <Card
                     className="max-w-sm"
-                    imgSrc="/src/assets/img/reset_password.jpg"
+                    imgSrc={ResetPassPic}
                 ></Card>
                 <div className="mt-16 w-full">
                     <h3 className="text-2xl font-semibold text-center mb-4">

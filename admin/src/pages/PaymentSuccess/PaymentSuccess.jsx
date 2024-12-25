@@ -4,6 +4,8 @@ import {useNavigate} from "react-router-dom";
 import {activate_stripe_connect_account, message_clear,} from "../../store/reducers/payment.reducers";
 import {useEffect} from "react";
 import {get_user_info} from "../../store/reducers/auth.reducers";
+import PaymentSuccessPic from "../../assets/img/payment_success.png";
+import PaymentErrorPic from "../../assets/img/payment_error.jpg";
 
 const PaymentSuccess = () => {
     const navigate = useNavigate();
@@ -33,8 +35,8 @@ const PaymentSuccess = () => {
                     <>
                         <div className="flex justify-center items-center">
                             <img
-                                src="/src/assets/img/payment_error.jpg"
-                                alt=""
+                                src={PaymentErrorPic}
+                                alt="payment_error"
                                 className="w-[340px] h-[280px]"
                             />
                         </div>
@@ -78,8 +80,8 @@ const PaymentSuccess = () => {
                         <>
                             <div className="flex justify-center items-center">
                                 <img
-                                    src="/src/assets/img/payment_success.png"
-                                    alt=""
+                                    src={PaymentSuccessPic}
+                                    alt="payment_success"
                                     className="w-[340px] h-[280px]"
                                 />
                             </div>

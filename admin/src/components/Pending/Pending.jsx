@@ -1,9 +1,11 @@
+import AccountPeding from "../../assets/img/account_pending.jpg"
+
 const Pending = () => {
     return (<div className="w-full flex justify-center items-center font-medium mt-10">
         <div className="bg-white p-10 md:mx-auto">
             <div className="flex justify-center items-center">
                 <img
-                    src="/src/assets/img/account_pending.jpg"
+                    src={AccountPeding}
                     alt=""
                     className="w-[340px] h-[280px]"
                 />

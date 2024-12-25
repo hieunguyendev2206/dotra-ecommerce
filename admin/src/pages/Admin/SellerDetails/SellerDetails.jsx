@@ -6,6 +6,7 @@ import {useParams} from "react-router-dom";
 import {get_seller_details, message_clear, seller_update_status,} from "../../../store/reducers/seller.reducer";
 import {toast} from "react-toastify";
 import {formatDate} from "../../../utils/formate";
+import UserPic from "../../../assets/img/user.jpg"
 
 const SellerDetails = () => {
     const {sellerId} = useParams();
@@ -58,9 +59,9 @@ const SellerDetails = () => {
                     className="w-full h-[100px] rounded-full"
                     alt=""
                 />) : (<img
-                    src="/src/assets/img/user.jpg"
+                    src={UserPic}
                     className="w-full h-[100px] rounded-full"
-                    alt=""
+                    alt="User"
                 />)}
             </div>
         </div>

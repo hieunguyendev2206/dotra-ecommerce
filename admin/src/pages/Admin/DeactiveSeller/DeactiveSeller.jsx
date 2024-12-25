@@ -6,6 +6,7 @@ import icons from "../../../assets/icons";
 import Panigation from "../../../components/Panigation";
 import {useDispatch, useSelector} from "react-redux";
 import {get_seller_deactive} from "../../../store/reducers/seller.reducer";
+import UserPic from "../../../assets/img/user.jpg"
 
 const DeactiveSeller = () => {
     const {FaEdit} = icons;
@@ -46,7 +47,7 @@ const DeactiveSeller = () => {
                                     <div className="avatar">
                                         <div className="w-16 rounded">
                                             {s.image ? (<img src={s.image} alt=""/>) : (
-                                                <img src="/src/assets/img/user.jpg" alt=""/>)}
+                                                <img src={UserPic} alt="User"/>)}
                                         </div>
                                     </div>
                                 </div>

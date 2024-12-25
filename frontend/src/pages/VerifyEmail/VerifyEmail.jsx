@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Link, useParams} from "react-router-dom";
 import {message_clear, verify_email_customer,} from "../../store/reducers/customer.reducers";
 import {toast} from "react-toastify";
+import VerySuccesspic from "../../assets/img/success.png"
 
 const VerifyEmail = () => {
     const {email_token} = useParams();
@@ -32,7 +33,7 @@ const VerifyEmail = () => {
                 <img
                     alt="Bonnie image"
                     height="96"
-                    src="/src/assets/img/success.png"
+                    src={VerySuccesspic}
                     width="96"
                     className="mb-3 rounded-full shadow-lg"
                 />

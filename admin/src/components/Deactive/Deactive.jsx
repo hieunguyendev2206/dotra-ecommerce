@@ -1,9 +1,11 @@
+import AccountDeactive from "../../assets/img/account_deactive.jpg"
+
 const Deactive = () => {
     return (<div className="w-full flex justify-center items-center font-medium mt-10">
         <div className="bg-white p-10 md:mx-auto">
             <div className="flex justify-center items-center">
                 <img
-                    src="/src/assets/img/account_deactive.jpg"
+                    src={AccountDeactive}
                     alt=""
                     className="w-[340px] h-[280px]"
                 />

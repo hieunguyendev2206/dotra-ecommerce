@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {message_clear, verify_email,} from "../../../store/reducers/auth.reducers";
 import {toast} from "react-toastify";
 import path from "../../../constants/path";
+import VerifySuccessPic from "../../../assets/img/verify_email_success.jpg"
 
 const EmailVerify = () => {
     const {emailToken} = useParams();
@@ -36,7 +37,7 @@ const EmailVerify = () => {
             <div className="bg-white p-6 md:mx-auto">
                 <div className="flex justify-center items-center">
                     <img
-                        src="/src/assets/img/verify_email_success.jpg"
+                        src={VerifySuccessPic}
                         alt=""
                         className="w-[340px] h-[280px]"
                     />

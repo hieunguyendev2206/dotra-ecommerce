@@ -8,6 +8,7 @@ import icons from "../../../assets/icons";
 import Panigation from "../../../components/Panigation";
 import path from "../../../constants/path";
 import Search from "../../../components/Search";
+import UserPic from "../../../assets/img/user.jpg"
 
 const Seller = () => {
     const {AiOutlineEye, FaEdit} = icons;
@@ -64,7 +65,7 @@ const Seller = () => {
                                 <div className="avatar">
                                     <div className="w-16 rounded">
                                         {s.image ? (<img src={s.image} alt=""/>) : (
-                                            <img src="/src/assets/img/user.jpg" alt=""/>)}
+                                            <img src={UserPic} alt="User"/>)}
                                     </div>
                                 </div>
                             </div>
