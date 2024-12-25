@@ -338,7 +338,7 @@ const Header = () => {
                                                 size="xl"
                                                 onClose={onCloseModalLogin}
                                                 popup
-                                                className="z-[9999]"
+                                                className="z-[9999] max-w-[90%] md:max-w-md"
                                             >
                                                 <Modal.Header/>
                                                 <Modal.Body>
@@ -501,7 +501,7 @@ const Header = () => {
                                                 size="xl"
                                                 onClose={onCloseModalRegister}
                                                 popup
-                                                className="z-[9999]"
+                                                className="z-[9999] max-w-[90%] md:max-w-md"
                                             >
                                                 <Modal.Header/>
                                                 <Modal.Body>
