@@ -28,7 +28,7 @@ const FeatureProduct = ({products}) => {
                 })
             );
         } else {
-            alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng");
+            toast.error("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng");
         }
     };
 
@@ -49,7 +49,7 @@ const FeatureProduct = ({products}) => {
                 })
             );
         } else {
-            alert("Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích");
+            toast.error("Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích");
         }
     };
 
