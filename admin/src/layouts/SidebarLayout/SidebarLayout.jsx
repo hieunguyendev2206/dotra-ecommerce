@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../store/reducers/auth.reducers";
 import getNavbars from "../../navigation/index";
 import icons from "../../assets/icons";
+import Logo from "../../assets/logo/logo.png"
 
 const SidebarLayout = ({showSidebar, setShowSidebar}) => {
     const [allNavbar, setAllNavbar] = useState([]);
@@ -30,7 +31,7 @@ const SidebarLayout = ({showSidebar, setShowSidebar}) => {
             <div className="h-[70px] flex justify-center items-center">
                 <Link to="/" className="w-[180px] h-[50px]">
                     <img
-                        src="/src/assets/logo/logo.png"
+                        src={Logo}
                         alt="logo"
                         className="w-full h-full"
                     />
