@@ -803,7 +803,7 @@ const Header = () => {
                     <div className="flex justify-start flex-col gap-6">
                         <Link to="/" className="w-[180px] h-[50px]">
                             <img
-                                src="/src/assets/logo/logo.png"
+                                src={Logo}
                                 alt="logo"
                                 className="w-full h-full"
                             />
