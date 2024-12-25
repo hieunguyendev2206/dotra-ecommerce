@@ -396,6 +396,9 @@ class authController {
                     });
                     res.cookie("access_token", access_token, {
                         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                        httpOnly: true,
+                        secure: true, // Chỉ cho phép trên HTTPS
+                        sameSite: "none", // Cho phép sử dụng trên các domain khác nhau
                     });
                     response(res, httpStatusCode.Ok, {
                         message: successMessage.LOGIN_SUCCESS, data: {
