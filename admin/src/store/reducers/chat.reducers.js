@@ -168,7 +168,7 @@ export const chatSlice = createSlice({
         },
         update_admin_message: (state, action) => {
             if (
-                !state.seller_admin_messages.find(
+                !state.seller_admin_messages.some(
                     (msg) => msg._id === action.payload._id
                 )
             ) {

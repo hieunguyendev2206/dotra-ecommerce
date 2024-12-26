@@ -39,6 +39,14 @@ const AdminChat = () => {
         setMessage((prevMessage) => prevMessage + emoji);
     };
 
+    useEffect(() => {
+        socket.on("receive_seller_message", (msg) => {
+            dispatch(update_admin_message(msg)); // Cập nhật reducer
+            notification(); // Phát âm báo nếu cần
+        });
+    }, [dispatch, notification]);
+
+
     const handleSendMessage = () => {
         if (message || selectedFile) {
             const formData = new FormData();

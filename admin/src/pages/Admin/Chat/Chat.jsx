@@ -83,6 +83,17 @@ const Chat = () => {
     }, [dispatch, seller_admin_messages, success_message]);
 
     useEffect(() => {
+        if (success_message) {
+            socket.emit(
+                "send_message_seller_to_admin",
+                seller_admin_messages[seller_admin_messages.length - 1]
+            );
+            dispatch(message_clear());
+        }
+    }, [dispatch, seller_admin_messages, success_message]);
+
+
+    useEffect(() => {
         socket.on("receive_seller_message", (msg) => {
             setReceiveMessage(msg);
             dispatch(update_seller_message(msg));

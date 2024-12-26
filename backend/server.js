@@ -193,7 +193,7 @@ io.on("connection", (socket) => {
 
     socket.on("send_message_seller_to_admin", (msg) => {
         if (admin.socketId) {
-            socket.to(admin.socketId).emit("receive_seller_message", msg);
+            socket.to(admin.socketId).emit("receive_seller_message", msg); // Đảm bảo emit đúng event
         }
     });
 
