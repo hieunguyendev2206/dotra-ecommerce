@@ -6,6 +6,7 @@ import { get_order_details } from "../../../store/reducers/order.reducers";
 import { formatDate, formateCurrency } from "../../../utils/formate";
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image-more";
+import html2canvas from "html2canvas";
 
 const OrderDetails = () => {
     const dispatch = useDispatch();
@@ -20,12 +21,13 @@ const OrderDetails = () => {
     }, [dispatch, orderId]);
 
     const handleExportPDF = async () => {
-        const element = invoiceRef.current; // Lấy nội dung cần xuất PDF
+        const element = invoiceRef.current;
         try {
-            const dataUrl = await domtoimage.toPng(element, { quality: 1 });
+            const canvas = await html2canvas(element, { useCORS: true, scale: 2 });
+            const dataUrl = canvas.toDataURL("image/png");
             const pdf = new jsPDF("p", "mm", "a4");
             const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (element.offsetHeight * pdfWidth) / element.offsetWidth;
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
             pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
             pdf.save(`HoaDon_${order_details._id}.pdf`);
@@ -148,6 +150,7 @@ const OrderDetails = () => {
                                         className="w-14 h-14"
                                         src={p.images[0]}
                                         alt={p.product_name}
+                                        crossOrigin="anonymous"
                                     />
                                 </td>
                                 <td className="border px-3 py-2">
