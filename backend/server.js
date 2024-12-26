@@ -203,23 +203,7 @@ io.on("connection", (socket) => {
         io.emit("active_customer", allCustomer);
         io.emit("active_seller", allSeller);
     });
-
-    socket.on("typing", (data) => {
-        const { senderId, senderName, receiverId } = data;
-        const receiverSocket = receiverId === "admin" ? admin.socketId : findSeller(receiverId)?.socketId;
-        if (receiverSocket) {
-            socket.to(receiverSocket).emit("typing_status", { senderId, senderName, isTyping: true });
-        }
-    });
-
-    socket.on("stop_typing", (data) => {
-        const { senderId, receiverId } = data;
-        const receiverSocket = receiverId === "admin" ? admin.socketId : findSeller(receiverId)?.socketId;
-        if (receiverSocket) {
-            socket.to(receiverSocket).emit("typing_status", { senderId, isTyping: false });
-        }
-    });
-
+    
 });
 
 // Kết nối Database và khởi động Server

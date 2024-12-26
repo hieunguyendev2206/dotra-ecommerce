@@ -33,40 +33,6 @@ const AdminChat = () => {
     const {seller_admin_messages, success_message} = useSelector(
         (state) => state.chat
     );
-    const [isTyping, setIsTyping] = useState(false);
-
-    const handleTyping = () => {
-        if (!isTyping) {
-            socket.emit("typing", {
-                senderId: user_info._id,
-                senderName: user_info.name,
-                receiverId: "admin" // Receiver là admin
-            });
-            setIsTyping(true);
-        }
-    };
-
-    const handleStopTyping = () => {
-        socket.emit("stop_typing", {
-            senderId: user_info._id,
-            receiverId: "admin" // Receiver là admin
-        });
-        setIsTyping(false);
-    };
-
-
-    // Lắng nghe trạng thái typing từ seller
-    useEffect(() => {
-        socket.on("typing_status", (data) => {
-            if (data.senderId === "admin" && data.isTyping) {
-                setReceiveMessage(`${data.senderName || "Admin"} đang soạn tin...`);
-            } else {
-                setReceiveMessage("");
-            }
-        });
-    }, []);
-
-
 
     const addEmoji = (e) => {
         let emoji = e.native;
@@ -670,7 +636,6 @@ const AdminChat = () => {
                                     }
                                 })}
                             </div>
-                            <div className="text-gray-500 text-sm mt-2">{receiveMessage}</div>
                         </div>
                         {fileName && (
                             <div
@@ -707,8 +672,6 @@ const AdminChat = () => {
                                     type="text"
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
-                                    onInput={handleTyping}
-                                    onBlur={handleStopTyping}
                                     placeholder="Nhập tin nhắn ..."
                                     className="w-full rounded-full h-full outline-none p-3 pl-6"
                                     // Thêm sự kiện onKeyDown để lắng nghe phím Enter

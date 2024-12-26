@@ -36,39 +36,7 @@ const Chat = () => {
     const scrollRef = useRef();
     const {user_info} = useSelector((state) => state.auth);
     const {sellers, current_seller, seller_admin_messages, success_message} = useSelector((state) => state.chat);
-    const [isTyping, setIsTyping] = useState(false);
-
-    const handleTyping = () => {
-        if (!isTyping) {
-            socket.emit("typing", {
-                senderId: "admin",
-                senderName: "Admin",
-                receiverId: sellerId // Receiver là seller
-            });
-            setIsTyping(true);
-        }
-    };
-
-    // Lắng nghe trạng thái typing từ admin
-    useEffect(() => {
-        socket.on("typing_status", (data) => {
-            if (data.senderId !== "admin" && data.isTyping) {
-                setReceiveMessage(`${data.senderName} đang soạn tin...`);
-            } else {
-                setReceiveMessage("");
-            }
-        });
-    }, []);
-
-
-
-    const handleStopTyping = () => {
-        socket.emit("stop_typing", {
-            senderId: "admin",
-            receiverId: sellerId // Receiver là seller
-        });
-        setIsTyping(false);
-    };
+    
 
     useEffect(() => {
         dispatch(get_sellers_chat());
@@ -706,7 +674,6 @@ const Chat = () => {
                                 <span>Chọn seller để trò chuyện</span>
                             </div>)}
                         </div>
-                        <div className="text-gray-500 text-sm mt-2">{receiveMessage}</div>
                     </div>
                     {sellerId && (<div>
                         {fileName && (<div
@@ -742,8 +709,6 @@ const Chat = () => {
                                     type="text"
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
-                                    onInput={handleTyping} // Khi đang nhập
-                                    onBlur={handleStopTyping} // Khi dừng nhập
                                     placeholder="Nhập tin nhắn ..."
                                     className="w-full rounded-full h-full outline-none p-3 pl-6"
                                     onKeyDown={(e) => {
