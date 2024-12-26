@@ -114,7 +114,7 @@ const ProductList = ({styles, products}) => {
                                 <AiFillHeart/>
                             </li>
                             <Link
-                                to={`/home/product-details/${p._id}`}
+                                to={`/home/product-details/${p.slug}`}
                                 className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-red-500 hover:text-white hover:rotate-[720deg] transition-all"
                             >
                                 <FaEye/>
