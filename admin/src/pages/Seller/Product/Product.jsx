@@ -170,6 +170,7 @@ const Product = () => {
     useEffect(() => {
         if (success_message) {
             toast.success(success_message);
+            setProductIdDelete("");
             dispatch(message_clear());
             setStateProduct({
                 product_name: "",
@@ -792,10 +793,11 @@ const Product = () => {
                                             <FaTrash
                                                 onClick={() => {
                                                     setOpenPopup(true);
-                                                    onClickDeleteProduct(p._id);
+                                                    setProductIdDelete(p._id);
                                                 }}
                                                 className="w-5 h-5"
                                             />
+
 
                                         </button>
                                         <Modal
@@ -815,8 +817,8 @@ const Product = () => {
                                                         <Button
                                                             color="failure"
                                                             onClick={() => {
-                                                                setOpenPopup(false),
-                                                                    onClickDeleteProduct(p._id);
+                                                                dispatch(delete_product(productIdDelete)); // Xóa sản phẩm
+                                                                setOpenPopup(false); // Đóng hộp thoại
                                                             }}
                                                         >
                                                             Xác nhận
