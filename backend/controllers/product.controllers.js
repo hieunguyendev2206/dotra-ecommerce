@@ -228,7 +228,8 @@ class productController {
                 });
             } else {
                 response(res, httpStatusCode.Ok, {
-                    message: successMessage.DELETE_PRODUCT_SUCCESS, data: product,
+                    message: successMessage.DELETE_PRODUCT_SUCCESS,
+                    data: product,
                 });
             }
         } catch (error) {
@@ -237,6 +238,7 @@ class productController {
             });
         }
     };
+
 }
 
 module.exports = new productController();

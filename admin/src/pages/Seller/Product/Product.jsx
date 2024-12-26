@@ -286,13 +286,15 @@ const Product = () => {
     };
 
 
+
     useEffect(() => {
         if (productIdDelete) {
-            dispatch(delete_product(productIdDelete)).then(() => {
-                setProductIdDelete(""); // Xóa trạng thái sau khi hoàn tất
-            });
+            dispatch(delete_product(productIdDelete))
+                .then(() => setProductIdDelete(""))
+                .catch(() => toast.error("Xóa sản phẩm không thành công!"));
         }
     }, [productIdDelete, dispatch]);
+
 
     return (
         <div className="px-2 md:px-7 py-5 bg-[#dae1e7]">
@@ -788,9 +790,13 @@ const Product = () => {
                                         </Modal>
                                         <button className="flex items-center justify-center bg-[#f1f1f1] dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg p-2">
                                             <FaTrash
-                                                onClick={() => setOpenPopup(true)}
+                                                onClick={() => {
+                                                    setOpenPopup(true);
+                                                    onClickDeleteProduct(p._id);
+                                                }}
                                                 className="w-5 h-5"
                                             />
+
                                         </button>
                                         <Modal
                                             show={openPopup}
