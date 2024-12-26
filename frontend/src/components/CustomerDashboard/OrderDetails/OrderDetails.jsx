@@ -4,9 +4,9 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { get_order_details } from "../../../store/reducers/order.reducers";
 import { formatDate, formateCurrency } from "../../../utils/formate";
-import jsPDF from "jspdf";
 import domtoimage from "dom-to-image-more";
 import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const OrderDetails = () => {
     const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const OrderDetails = () => {
     const handleExportPDF = async () => {
         const element = invoiceRef.current;
         try {
-            const canvas = await html2canvas(element, { useCORS: true, scale: 2 });
+            const canvas = await html2canvas(element, { useCORS: true });
             const dataUrl = canvas.toDataURL("image/png");
             const pdf = new jsPDF("p", "mm", "a4");
             const pdfWidth = pdf.internal.pageSize.getWidth();
