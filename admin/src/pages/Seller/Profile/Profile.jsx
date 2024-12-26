@@ -34,14 +34,26 @@ const Profile = () => {
         new_password: "",
     });
 
+    const MAX_SIZE_IMAGE = 10 * 1024 * 1024;
+
     const handleUploadImage = (event) => {
         const images = event.target.files[0];
+        const allowedFormats = ["image/png", "image/jpeg", "image/jpg"];
         if (images) {
+            if (!allowedFormats.includes(images.type)) {
+                toast.error("Định dạng ảnh không hợp lệ. Chỉ chấp nhận PNG, JPG, hoặc JPEG.");
+                return;
+            }
+            if (images.size > MAX_SIZE_IMAGE) {
+                toast.error("Kích thước ảnh vượt quá 10 MB. Vui lòng tải lên ảnh nhỏ hơn.");
+                return;
+            }
             const formData = new FormData();
             formData.append("image", images);
             dispatch(upload_profile_image(formData));
         }
     };
+
 
     useEffect(() => {
         if (success_message) {
@@ -75,14 +87,43 @@ const Profile = () => {
         dispatch(create_stripe_connect_account());
     };
 
+    const MAX_PASSWORD_LENGTH = 20;
+
     const onSubmitChangePassword = (event) => {
         event.preventDefault();
+
+        // Kiểm tra mật khẩu cũ
+        if (!changePassword.old_password) {
+            toast.error("Vui lòng nhập mật khẩu cũ.");
+            return;
+        }
+
+        // Kiểm tra mật khẩu mới
+        if (!changePassword.new_password) {
+            toast.error("Vui lòng nhập mật khẩu mới.");
+            return;
+        }
+        if (changePassword.new_password.length < 6) {
+            toast.error("Mật khẩu mới phải có ít nhất 6 ký tự.");
+            return;
+        }
+        if (changePassword.new_password.length > MAX_PASSWORD_LENGTH) {
+            toast.error(`Mật khẩu mới không được vượt quá ${MAX_PASSWORD_LENGTH} ký tự.`);
+            return;
+        }
+
         dispatch(change_password(changePassword));
     };
 
+
     const handleForgotPassword = () => {
-        dispatch(forgot_password({email: user_info.email, name: user_info.name}));
+        if (!user_info?.email) {
+            toast.error("Không tìm thấy email. Vui lòng kiểm tra lại thông tin.");
+            return;
+        }
+        dispatch(forgot_password({ email: user_info.email, name: user_info.name }));
     };
+
 
     return (
         <div className="px-2 md:px-7 py-5 bg-[#dae1e7]">
@@ -364,6 +405,7 @@ const Profile = () => {
                                         placeholder="Nhập mật khẩu mới..."
                                         type={visibleNewPassword ? "text" : "password"}
                                         className="input-md input-bordered w-[75%] border-gray-600 text-black rounded-md relative"
+                                        maxLength={MAX_PASSWORD_LENGTH}
                                     />
                                     {visibleNewPassword ? (
                                         <AiOutlineEye
