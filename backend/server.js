@@ -205,7 +205,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("typing", (data) => {
-        const { senderId, senderName, receiverId } = data; // Thêm senderName
+        const { senderId, senderName, receiverId } = data;
         const receiverSocket = receiverId === "admin" ? admin.socketId : findSeller(receiverId)?.socketId;
         if (receiverSocket) {
             socket.to(receiverSocket).emit("typing_status", { senderId, senderName, isTyping: true });
@@ -219,6 +219,7 @@ io.on("connection", (socket) => {
             socket.to(receiverSocket).emit("typing_status", { senderId, isTyping: false });
         }
     });
+
 });
 
 // Kết nối Database và khởi động Server

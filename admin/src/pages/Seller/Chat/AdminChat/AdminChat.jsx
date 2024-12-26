@@ -37,13 +37,20 @@ const AdminChat = () => {
 
     const handleTyping = () => {
         if (!isTyping) {
-            socket.emit("typing", { senderId: user_info._id, senderName: user_info.name, receiverId: "admin" });
+            socket.emit("typing", {
+                senderId: user_info._id,
+                senderName: user_info.name,
+                receiverId: "admin" // Receiver là admin
+            });
             setIsTyping(true);
         }
     };
 
     const handleStopTyping = () => {
-        socket.emit("stop_typing", { senderId: user_info._id, receiverId: "admin" });
+        socket.emit("stop_typing", {
+            senderId: user_info._id,
+            receiverId: "admin" // Receiver là admin
+        });
         setIsTyping(false);
     };
 
@@ -58,6 +65,7 @@ const AdminChat = () => {
             }
         });
     }, []);
+
 
 
     const addEmoji = (e) => {

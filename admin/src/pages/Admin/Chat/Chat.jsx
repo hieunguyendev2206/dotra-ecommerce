@@ -40,7 +40,11 @@ const Chat = () => {
 
     const handleTyping = () => {
         if (!isTyping) {
-            socket.emit("typing", { senderId: "admin", senderName: "Admin", receiverId: sellerId });
+            socket.emit("typing", {
+                senderId: "admin",
+                senderName: "Admin",
+                receiverId: sellerId // Receiver là seller
+            });
             setIsTyping(true);
         }
     };
@@ -57,8 +61,12 @@ const Chat = () => {
     }, []);
 
 
+
     const handleStopTyping = () => {
-        socket.emit("stop_typing", { senderId: "admin", receiverId: sellerId });
+        socket.emit("stop_typing", {
+            senderId: "admin",
+            receiverId: sellerId // Receiver là seller
+        });
         setIsTyping(false);
     };
 
