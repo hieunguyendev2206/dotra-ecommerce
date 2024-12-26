@@ -170,7 +170,6 @@ const Product = () => {
     useEffect(() => {
         if (success_message) {
             toast.success(success_message);
-            setProductIdDelete("");
             dispatch(message_clear());
             setStateProduct({
                 product_name: "",
@@ -192,6 +191,20 @@ const Product = () => {
             dispatch(message_clear());
         }
     }, [success_message, error_message, dispatch]);
+
+    useEffect(() => {
+        if (success_message) {
+            toast.success(success_message);
+            setProductIdDelete(""); // Làm sạch trạng thái ID sản phẩm
+            dispatch(get_products({ page: currentPageNumber, parPage, searchValue })); // Cập nhật danh sách
+            dispatch(message_clear());
+        }
+        if (error_message) {
+            toast.error(error_message);
+            dispatch(message_clear());
+        }
+    }, [success_message, error_message, dispatch, currentPageNumber, parPage, searchValue]);
+
 
     // useEffect(() => {
     //     const data = {
@@ -792,13 +805,11 @@ const Product = () => {
                                         <button className="flex items-center justify-center bg-[#f1f1f1] dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg p-2">
                                             <FaTrash
                                                 onClick={() => {
-                                                    setOpenPopup(true);
-                                                    setProductIdDelete(p._id);
+                                                    setOpenPopup(true); // Hiển thị hộp thoại xác nhận
+                                                    setProductIdDelete(p._id); // Lưu ID sản phẩm cần xóa
                                                 }}
                                                 className="w-5 h-5"
                                             />
-
-
                                         </button>
                                         <Modal
                                             show={openPopup}
@@ -817,8 +828,9 @@ const Product = () => {
                                                         <Button
                                                             color="failure"
                                                             onClick={() => {
-                                                                dispatch(delete_product(productIdDelete)); // Xóa sản phẩm
+                                                                dispatch(delete_product(productIdDelete)); // Gửi yêu cầu xóa sản phẩm
                                                                 setOpenPopup(false); // Đóng hộp thoại
+                                                                setProductIdDelete(""); // Xóa trạng thái ID sản phẩm
                                                             }}
                                                         >
                                                             Xác nhận
