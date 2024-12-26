@@ -40,7 +40,7 @@ const Chat = () => {
 
     const handleTyping = () => {
         if (!isTyping) {
-            socket.emit("typing", { senderId: userInfo.id, receiverId: sellerId });
+            socket.emit("typing", { senderId: "admin", senderName: "Admin", receiverId: sellerId });
             setIsTyping(true);
         }
     };
@@ -48,16 +48,17 @@ const Chat = () => {
     // Lắng nghe trạng thái typing từ admin
     useEffect(() => {
         socket.on("typing_status", (data) => {
-            if (data.senderId === sellerId && data.isTyping) {
-                setReceiveMessage("Đang soạn tin...");
+            if (data.senderId !== "admin" && data.isTyping) {
+                setReceiveMessage(`${data.senderName} đang soạn tin...`);
             } else {
                 setReceiveMessage("");
             }
         });
-    }, [sellerId]);
+    }, []);
+
 
     const handleStopTyping = () => {
-        socket.emit("stop_typing", { senderId: userInfo.id, receiverId: sellerId });
+        socket.emit("stop_typing", { senderId: "admin", receiverId: sellerId });
         setIsTyping(false);
     };
 
