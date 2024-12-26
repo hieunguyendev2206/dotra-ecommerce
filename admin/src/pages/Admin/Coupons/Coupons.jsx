@@ -90,12 +90,6 @@ const Coupons = () => {
     };
 
     useEffect(() => {
-        if (deleteCouponsId) {
-            dispatch(delete_coupons(deleteCouponsId));
-        }
-    }, [deleteCouponsId, dispatch]);
-
-    useEffect(() => {
         if (success_message) {
             toast.success(success_message);
             dispatch(message_clear());
@@ -421,7 +415,8 @@ const Coupons = () => {
                                     className="flex items-center justify-center bg-[#f1f1f1] dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg p-2">
                                     <FaTrash
                                         onClick={() => {
-                                            setOpenDeleteModal(true);
+                                            setDeleteCouponsId(c._id); // Đặt ID của mã giảm giá cần xóa
+                                            setOpenDeleteModal(true); // Hiển thị hộp thoại xác nhận
                                         }}
                                         className="w-5 h-5"
                                     />
@@ -445,12 +440,16 @@ const Coupons = () => {
                                                 <Button
                                                     color="failure"
                                                     onClick={() => {
-                                                        setDeleteCouponsId(c._id);
-                                                        setOpenDeleteModal(false);
+                                                        if (deleteCouponsId) {
+                                                            dispatch(delete_coupons(deleteCouponsId)); // Gửi yêu cầu xóa mã giảm giá
+                                                            setDeleteCouponsId(""); // Làm sạch trạng thái
+                                                            setOpenDeleteModal(false); // Đóng hộp thoại
+                                                        }
                                                     }}
                                                 >
                                                     Xác nhận
                                                 </Button>
+
                                                 <Button
                                                     color="gray"
                                                     onClick={() => setOpenDeleteModal(false)}
