@@ -310,6 +310,7 @@ const Product = () => {
     }, [productIdDelete, dispatch]);
 
 
+
     return (
         <div className="px-2 md:px-7 py-5 bg-[#dae1e7]">
             <h1 className="text-xl font-bold uppercase my-3">Danh sách sản phẩm</h1>
@@ -828,9 +829,11 @@ const Product = () => {
                                                         <Button
                                                             color="failure"
                                                             onClick={() => {
-                                                                dispatch(delete_product(productIdDelete)); // Gửi yêu cầu xóa
-                                                                setOpenPopup(false); // Đóng hộp thoại
-                                                                setProductIdDelete(""); // Xóa trạng thái ID sản phẩm
+                                                                if (productIdDelete) {
+                                                                    dispatch(delete_product(productIdDelete)); // Gửi yêu cầu xóa
+                                                                    setProductIdDelete(""); // Xóa trạng thái ID sản phẩm
+                                                                    setOpenPopup(false); // Đóng hộp thoại
+                                                                }
                                                             }}
                                                         >
                                                             Xác nhận
