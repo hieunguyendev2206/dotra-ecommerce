@@ -697,6 +697,7 @@ const Chat = () => {
                                 <span>Chọn seller để trò chuyện</span>
                             </div>)}
                         </div>
+                        <div className="text-gray-500 text-sm mt-2">{receiveMessage}</div>
                     </div>
                     {sellerId && (<div>
                         {fileName && (<div

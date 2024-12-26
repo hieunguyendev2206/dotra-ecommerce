@@ -660,6 +660,7 @@ const AdminChat = () => {
                                     }
                                 })}
                             </div>
+                            <div className="text-gray-500 text-sm mt-2">{receiveMessage}</div>
                         </div>
                         {fileName && (
                             <div
