@@ -478,7 +478,12 @@ class customerController {
 
     // Customer đăng xuất
     customer_logout = async (req, res) => {
-        res.clearCookie("customer_access_token");
+        res.clearCookie("customer_access_token", {
+            httpOnly: true,
+            secure: true, // Chỉ hoạt động trên HTTPS
+            sameSite: "None", // Cho phép sử dụng cross-domain
+            path: "/", // Áp dụng cookie cho toàn bộ domain
+        });
         response(res, httpStatusCode.Ok, {
             message: successMessage.LOGOUT_SUCCESS,
         });
