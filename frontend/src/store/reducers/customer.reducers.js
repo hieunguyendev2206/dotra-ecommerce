@@ -102,17 +102,17 @@ export const customer_logout = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             await api.get("/customer-logout", {
-                signal: thunkAPI.signal,
-                withCredentials: true, // Gửi cookie tới backend
+                withCredentials: true,
             });
-            removeCustomerAccessTokenFromLS(); // Xóa token trong localStorage
+            removeCustomerAccessTokenFromLS(); // Đảm bảo token bị xóa khỏi localStorage
             return thunkAPI.fulfillWithValue();
         } catch (error) {
-            const errorMessage = error.response?.data || "Lỗi khi đăng xuất";
-            return thunkAPI.rejectWithValue(errorMessage);
+            return thunkAPI.rejectWithValue("Lỗi khi đăng xuất");
         }
     }
 );
+
+
 
 
 const decode_customer_access_token = (customer_access_token) => {

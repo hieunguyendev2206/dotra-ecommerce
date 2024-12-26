@@ -19,6 +19,8 @@ import path from "../../constants/path";
 import {get_wishlist} from "../../store/reducers/wishlist.reducers";
 import {FaSearch} from "react-icons/fa";
 import Logo from "../../assets/logo/logo.png"
+import { getCustomerAccessTokenFromLS, removeCustomerAccessTokenFromLS } from "../../utils/localStorage";
+
 
 
 const getOauthGoogleUrl = () => {
@@ -234,10 +236,12 @@ const Header = () => {
     }, [success_message, error_message, dispatch]);
 
     const handleLogout = () => {
-        dispatch(customer_logout());
-        navigate("/");
-        window.location.reload();
+        removeCustomerAccessTokenFromLS(); // Xóa token khỏi localStorage
+        dispatch(customer_logout()); // Cập nhật Redux state
+        navigate("/"); // Chuyển hướng về trang chính
     };
+
+
 
     const redirectCartPage = () => {
         if (userInfo) {
@@ -253,6 +257,13 @@ const Header = () => {
             dispatch(get_wishlist(userInfo.id));
         }
     }, [dispatch, userInfo]);
+
+    useEffect(() => {
+        const token = getCustomerAccessTokenFromLS();
+        if (token) {
+            // Xử lý logic nếu người dùng đã có token
+        }
+    }, []);
 
     const redirectWishlistPage = () => {
         if (userInfo) {

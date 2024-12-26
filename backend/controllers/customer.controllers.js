@@ -480,12 +480,14 @@ class customerController {
     };
 
     // Customer đăng xuất
+    // Đã đúng, không cần sửa nhưng cần kiểm tra log nếu có vấn đề
     customer_logout = async (req, res) => {
-        res.clearCookie("customer_access_token");
+        res.clearCookie("customer_access_token"); // Xóa cookie phía server
         response(res, httpStatusCode.Ok, {
             message: successMessage.LOGOUT_SUCCESS,
         });
     };
+
 
     //Customer profile lấy dữ liệu
     get_customer_profile = async (req, res) => {
