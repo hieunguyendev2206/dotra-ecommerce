@@ -143,13 +143,19 @@ const Header = () => {
     //     );
     // };
 
+    const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
     const handleFileInput = (event) => {
-        const file = event.target.files[0]; // Lấy tệp đầu tiên từ danh sách đã chọn
+        const file = event.target.files[0]; // Lấy tệp đầu tiên được chọn
         if (file) {
-            setAvatarFile(file); // Lưu tệp đã chọn vào trạng thái 'avatar'
+            if (file.size > MAX_FILE_SIZE) {
+                toast.error("Kích thước ảnh vượt quá 10 MB. Vui lòng tải lên ảnh nhỏ hơn.");
+                return;
+            }
+            setAvatarFile(file);
             setStateRegister({
                 ...stateRegister,
-                [event.target.name]: event.target.files[0],
+                [event.target.name]: file,
             });
         }
     };
