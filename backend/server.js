@@ -197,13 +197,14 @@ io.on("connection", (socket) => {
         }
     });
 
+
     socket.on("disconnect", () => {
         console.log("User disconnected...");
         removeUser(socket.id);
         io.emit("active_customer", allCustomer);
         io.emit("active_seller", allSeller);
     });
-    
+
 });
 
 // Kết nối Database và khởi động Server
