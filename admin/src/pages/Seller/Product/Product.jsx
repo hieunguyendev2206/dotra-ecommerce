@@ -828,7 +828,7 @@ const Product = () => {
                                                         <Button
                                                             color="failure"
                                                             onClick={() => {
-                                                                dispatch(delete_product(productIdDelete)); // Gửi yêu cầu xóa sản phẩm
+                                                                dispatch(delete_product(productIdDelete)); // Gửi yêu cầu xóa
                                                                 setOpenPopup(false); // Đóng hộp thoại
                                                                 setProductIdDelete(""); // Xóa trạng thái ID sản phẩm
                                                             }}
@@ -845,6 +845,7 @@ const Product = () => {
                                                 </div>
                                             </Modal.Body>
                                         </Modal>
+
                                     </div>
                                 </Table.Cell>
                             </Table.Row>
