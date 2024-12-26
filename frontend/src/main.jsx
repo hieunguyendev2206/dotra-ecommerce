@@ -8,5 +8,5 @@ import store from "./store/store.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(<Provider store={store}>
     <App/>
-    <ToastContainer position="top-center" autoClose={2000}/>
+    <ToastContainer className="z-[9999]" position="top-center" autoClose={2000}/>
 </Provider>);
