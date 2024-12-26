@@ -299,18 +299,6 @@ const Product = () => {
         dispatch(delete_product(productIdDelete));
     };
 
-
-
-    useEffect(() => {
-        if (productIdDelete) {
-            dispatch(delete_product(productIdDelete))
-                .then(() => setProductIdDelete(""))
-                .catch(() => toast.error("Xóa sản phẩm không thành công!"));
-        }
-    }, [productIdDelete, dispatch]);
-
-
-
     return (
         <div className="px-2 md:px-7 py-5 bg-[#dae1e7]">
             <h1 className="text-xl font-bold uppercase my-3">Danh sách sản phẩm</h1>
