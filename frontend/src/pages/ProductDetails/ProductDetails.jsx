@@ -59,6 +59,15 @@ const ProductDetails = () => {
         }
     }, [dispatch, slug]);
 
+    if (loading) {
+        // Hiển thị giao diện loading
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <ClipLoader size={50} color={"#2262ea"} loading={loading} />
+                <p className="ml-4 text-xl font-semibold text-orange-500">Đang tải thông tin sản phẩm...</p>
+            </div>
+        );
+    }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
