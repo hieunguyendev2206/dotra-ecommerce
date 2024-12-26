@@ -203,6 +203,25 @@ io.on("connection", (socket) => {
         io.emit("active_customer", allCustomer);
         io.emit("active_seller", allSeller);
     });
+
+    // Server-side: Phát tín hiệu đang soạn tin
+    socket.on("typing", (data) => {
+        const { senderId, receiverId } = data;
+        const receiverSocket = receiverId === "admin" ? admin.socketId : findSeller(receiverId)?.socketId;
+        if (receiverSocket) {
+            socket.to(receiverSocket).emit("typing_status", { senderId, isTyping: true });
+        }
+    });
+
+    // Server-side: Phát tín hiệu ngừng soạn tin
+    socket.on("stop_typing", (data) => {
+        const { senderId, receiverId } = data;
+        const receiverSocket = receiverId === "admin" ? admin.socketId : findSeller(receiverId)?.socketId;
+        if (receiverSocket) {
+            socket.to(receiverSocket).emit("typing_status", { senderId, isTyping: false });
+        }
+    });
+
 });
 
 // Kết nối Database và khởi động Server

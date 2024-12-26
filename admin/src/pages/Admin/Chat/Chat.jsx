@@ -36,6 +36,30 @@ const Chat = () => {
     const scrollRef = useRef();
     const {user_info} = useSelector((state) => state.auth);
     const {sellers, current_seller, seller_admin_messages, success_message} = useSelector((state) => state.chat);
+    const [isTyping, setIsTyping] = useState(false);
+
+    const handleTyping = () => {
+        if (!isTyping) {
+            socket.emit("typing", { senderId: userInfo.id, receiverId: sellerId });
+            setIsTyping(true);
+        }
+    };
+
+    // Lắng nghe trạng thái typing từ admin
+    useEffect(() => {
+        socket.on("typing_status", (data) => {
+            if (data.senderId === sellerId && data.isTyping) {
+                setReceiveMessage("Đang soạn tin...");
+            } else {
+                setReceiveMessage("");
+            }
+        });
+    }, [sellerId]);
+
+    const handleStopTyping = () => {
+        socket.emit("stop_typing", { senderId: userInfo.id, receiverId: sellerId });
+        setIsTyping(false);
+    };
 
     useEffect(() => {
         dispatch(get_sellers_chat());
@@ -708,6 +732,8 @@ const Chat = () => {
                                     type="text"
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
+                                    onInput={handleTyping} // Khi đang nhập
+                                    onBlur={handleStopTyping} // Khi dừng nhập
                                     placeholder="Nhập tin nhắn ..."
                                     className="w-full rounded-full h-full outline-none p-3 pl-6"
                                     onKeyDown={(e) => {

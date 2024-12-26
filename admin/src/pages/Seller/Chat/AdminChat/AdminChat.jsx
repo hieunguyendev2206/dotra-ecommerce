@@ -33,6 +33,30 @@ const AdminChat = () => {
     const {seller_admin_messages, success_message} = useSelector(
         (state) => state.chat
     );
+    const [isTyping, setIsTyping] = useState(false);
+
+    const handleTyping = () => {
+        if (!isTyping) {
+            socket.emit("typing", { senderId: user_info._id, receiverId: "admin" });
+            setIsTyping(true);
+        }
+    };
+
+    const handleStopTyping = () => {
+        socket.emit("stop_typing", { senderId: user_info._id, receiverId: "admin" });
+        setIsTyping(false);
+    };
+
+    // Lắng nghe trạng thái typing từ seller
+    useEffect(() => {
+        socket.on("typing_status", (data) => {
+            if (data.senderId !== user_info._id && data.isTyping) {
+                setReceiveMessage("Đang soạn tin...");
+            } else {
+                setReceiveMessage("");
+            }
+        });
+    }, [user_info._id]);
 
     const addEmoji = (e) => {
         let emoji = e.native;
@@ -672,6 +696,8 @@ const AdminChat = () => {
                                     type="text"
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
+                                    onInput={handleTyping}
+                                    onBlur={handleStopTyping}
                                     placeholder="Nhập tin nhắn ..."
                                     className="w-full rounded-full h-full outline-none p-3 pl-6"
                                     // Thêm sự kiện onKeyDown để lắng nghe phím Enter
