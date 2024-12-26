@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-// eslint-disable-next-line no-unused-vars
-import Banner from "../../components/Banner/Banner.jsx"
+import Banner from "../../components/Banner/Banner.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Tabs } from "antd";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { BsFillGridFill } from "react-icons/bs";
 import { FaThList } from "react-icons/fa";
 import { get_shop_info, get_shop_products } from "../../store/reducers/shop.reducers";
-import { query_products } from "../../store/reducers/home.reducers"; // Import từ home.reducer
 import ShopProduct from "../../components/SellerStore/ProductList";
 import Pagination from "../../components/Pagination/Pagination";
 import Header from "../../layouts/Header/Header";
@@ -17,10 +15,9 @@ import Footer from "../../layouts/Footer/Footer";
 const ShopProfile = () => {
     const { sellerId } = useParams();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const { shopInfo } = useSelector((state) => state.shop);
-    const { products, totalProducts } = useSelector((state) => state.shop); // Dùng home reducer
+    const { products, totalProducts } = useSelector((state) => state.shop);
 
     const [styles, setStyles] = useState("grid");
     const [priceFrom, setPriceFrom] = useState("");
@@ -39,7 +36,6 @@ const ShopProfile = () => {
     useEffect(() => {
         dispatch(get_shop_info(sellerId));
         dispatch(get_shop_products(sellerId));
-        // dispatch(query_products(queryParams));
     }, [dispatch, queryParams]);
 
     const handlePriceFilter = (e) => {
@@ -74,16 +70,16 @@ const ShopProfile = () => {
         <>
             <Header />
             <div className="bg-gray-50 py-6">
-                <div className="mx-[110px] bg-white rounded-lg shadow-md overflow-hidden">
-                    {/* Header */}
-                    <div className="relative h-[250px] bg-[#00156e] text-white p-6 flex items-center">
+                <div className="container mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+                    {/* Header Seller */}
+                    <div className="relative h-[200px] bg-blue-700 text-white p-6 flex flex-col sm:flex-row items-center">
                         <img
-                            className="w-20 h-20 rounded-full border-4 border-white mr-4"
+                            className="w-24 h-24 rounded-full border-4 border-white sm:mr-6"
                             src={shopInfo?.image || "https://via.placeholder.com/150"}
                             alt="Shop Avatar"
                         />
-                        <div>
-                            <h1 className="text-2xl font-semibold">
+                        <div className="text-center sm:text-left mt-4 sm:mt-0">
+                            <h1 className="text-xl sm:text-2xl font-semibold">
                                 {shopInfo?.shop_info?.shop_name || "Tên cửa hàng"}
                             </h1>
                             <p>⭐ {shopInfo?.rating || "0"} / 5 | Người theo dõi: 1.7k+</p>
@@ -95,23 +91,23 @@ const ShopProfile = () => {
                         <Tabs defaultActiveKey="1" centered>
                             {/* Tổng quan */}
                             <Tabs.TabPane tab="Cửa hàng" key="1">
-                                <h2 className="text-center text-2xl font-bold">Mã giảm giá</h2>
-                                <div className="flex justify-center gap-4 mt-4">
+                                <h2 className="text-center text-lg sm:text-2xl font-bold">Mã giảm giá</h2>
+                                <div className="flex flex-wrap justify-center gap-4 mt-4">
                                     {[5, 10, 20].map((value) => (
-                                        <div key={value} className="p-4 bg-purple-100 rounded-md shadow w-32">
+                                        <div key={value} className="p-4 bg-purple-100 rounded-md shadow w-32 text-center">
                                             <h4 className="text-purple-600 font-bold">{value}K</h4>
                                             <p className="text-xs mt-1">Cho đơn từ {value * 40}K</p>
                                         </div>
                                     ))}
                                 </div>
-                                <Banner/>
+                                <Banner />
                             </Tabs.TabPane>
 
                             {/* Tất cả sản phẩm */}
                             <Tabs.TabPane tab="Tất cả sản phẩm" key="2">
-                                <div className="flex">
+                                <div className="flex flex-col sm:flex-row">
                                     {/* Bộ lọc */}
-                                    <div className="w-3/12 pr-8">
+                                    <div className="sm:w-3/12 w-full sm:pr-8">
                                         <form onSubmit={handlePriceFilter}>
                                             <h3 className="font-bold mb-2">Lọc theo giá</h3>
                                             <input
@@ -160,7 +156,7 @@ const ShopProfile = () => {
                                     </div>
 
                                     {/* Danh sách sản phẩm */}
-                                    <div className="w-9/12">
+                                    <div className="sm:w-9/12 w-full">
                                         <div className="flex justify-between mb-4">
                                             <select
                                                 onChange={handleSortPrice}
