@@ -192,14 +192,19 @@ const Product = () => {
         }
     }, [success_message, error_message, dispatch]);
 
+    // useEffect(() => {
+    //     const data = {
+    //         page: parseInt(currentPageNumber),
+    //         parPage: parseInt(parPage),
+    //         searchValue,
+    //     };
+    //     dispatch(get_products(data));
+    // }, [currentPageNumber, parPage, searchValue, dispatch]);
+
     useEffect(() => {
-        const data = {
-            page: parseInt(currentPageNumber),
-            parPage: parseInt(parPage),
-            searchValue,
-        };
-        dispatch(get_products(data));
-    }, [currentPageNumber, parPage, searchValue, dispatch]);
+        dispatch(get_products({ page: currentPageNumber, parPage, searchValue }));
+    }, [success_message, currentPageNumber, parPage, searchValue, dispatch]);
+
 
     const onClickEditProduct = (productId) => {
         setProductId(productId);
@@ -277,12 +282,15 @@ const Product = () => {
 
 
     const onClickDeleteProduct = (productIdDelete) => {
-        setProductIdDelete(productIdDelete);
+        dispatch(delete_product(productIdDelete));
     };
+
 
     useEffect(() => {
         if (productIdDelete) {
-            dispatch(delete_product(productIdDelete));
+            dispatch(delete_product(productIdDelete)).then(() => {
+                setProductIdDelete(""); // Xóa trạng thái sau khi hoàn tất
+            });
         }
     }, [productIdDelete, dispatch]);
 
