@@ -181,11 +181,11 @@ const Product = () => {
         }
     };
 
-
     useEffect(() => {
         if (success_message) {
             toast.success(success_message);
-            dispatch(message_clear());
+
+            // Làm sạch trạng thái và đóng modal
             setStateProduct({
                 product_name: "",
                 brand_name: "",
@@ -200,35 +200,19 @@ const Product = () => {
             setOpenModal(false);
             setOpenUpdateModal(false);
             setProductId("");
-        }
-        if (error_message) {
-            toast.error(error_message);
-            dispatch(message_clear());
-        }
-    }, [success_message, error_message, dispatch]);
+            setProductIdDelete("");
 
-    useEffect(() => {
-        if (success_message) {
-            toast.success(success_message);
-            setProductIdDelete(""); // Làm sạch trạng thái ID sản phẩm
-            dispatch(get_products({ page: currentPageNumber, parPage, searchValue })); // Cập nhật danh sách
+            // Lấy lại danh sách sản phẩm
+            dispatch(get_products({ page: currentPageNumber, parPage, searchValue }));
             dispatch(message_clear());
         }
+
         if (error_message) {
             toast.error(error_message);
             dispatch(message_clear());
         }
     }, [success_message, error_message, dispatch, currentPageNumber, parPage, searchValue]);
 
-
-    // useEffect(() => {
-    //     const data = {
-    //         page: parseInt(currentPageNumber),
-    //         parPage: parseInt(parPage),
-    //         searchValue,
-    //     };
-    //     dispatch(get_products(data));
-    // }, [currentPageNumber, parPage, searchValue, dispatch]);
 
     useEffect(() => {
         dispatch(get_products({ page: currentPageNumber, parPage, searchValue }));
