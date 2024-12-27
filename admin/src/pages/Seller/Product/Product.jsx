@@ -403,7 +403,7 @@ const Product = () => {
                                     value={stateProduct.quantity}
                                     type="number"
                                     name="quantity"
-                                    aria-valuemin={0}
+                                    min={0}
                                     placeholder="Nhập số lượng sản phẩm..."
                                     className="input !bg-white input-bordered w-[80%]"
                                 />
@@ -675,7 +675,7 @@ const Product = () => {
                                                             value={stateUpdateProduct.quantity}
                                                             type="number"
                                                             name="quantity"
-                                                            aria-valuemin={0}
+                                                            min={0}
                                                             placeholder="Nhập số lượng sản phẩm..."
                                                             className="input !bg-white input-bordered w-[80%]"
                                                         />
