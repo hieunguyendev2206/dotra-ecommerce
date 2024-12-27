@@ -1059,7 +1059,15 @@ const Header = () => {
                                         <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-10 max-h-[300px] overflow-y-auto">
                                             {searchResults.length > 0 ? (
                                                 searchResults.map((product) => (
-                                                    <div key={product._id} className="p-3 hover:bg-gray-100 cursor-pointer">
+                                                    <div
+                                                        key={product._id}
+                                                        className="p-3 hover:bg-gray-100 cursor-pointer flex items-center gap-4"
+                                                        onClick={() => {
+                                                            navigate(`/home/product-details/${product.slug}`); // Đảm bảo sử dụng slug
+                                                            setShowResults(false);
+                                                        }}
+                                                    >
+
                                                         <span>{product.product_name}</span>
                                                     </div>
                                                 ))
