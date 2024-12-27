@@ -124,7 +124,7 @@ const Chat = () => {
             >
                 {isSidebarOpen ? "Đóng" : "Mở"} Sidebar
             </button>
-            <div className="w-full flex">
+            <div className="w-[500px flex">
                 <div className={`bg-gray-100 p-4 md:block ${
                     isSidebarOpen ? "block absolute z-20 top-0 left-0 h-full w-3/4 md:w-[230px]" : "hidden"
                 }`}>
