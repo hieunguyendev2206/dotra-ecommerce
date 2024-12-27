@@ -116,8 +116,7 @@ const Header = () => {
         }
 
         try {
-            let response;
-            [response] = await Promise.all([api.get("/home/search-products", {params: {searchValue: value}})]);
+            let response = await api.get("/home/search-products", { params: { searchValue: value } });
             setSearchResults(response.data);
             setShowResults(true);
         } catch (error) {
@@ -125,11 +124,13 @@ const Header = () => {
         }
     };
 
+
     // Chuyển hướng đến trang tìm kiếm chi tiết
     const handleOnClickSearch = () => {
         navigate(`/products/search?category=${category}&searchValue=${searchValue}`);
         setShowResults(false);
     };
+
 
     function onCloseModalLogin() {
         setOpenModalLogin(false);
@@ -1053,8 +1054,7 @@ const Header = () => {
                                         <FaSearch/>
                                     </button>
                                     {showResults && (
-                                        <div
-                                            className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-10 max-h-[300px] overflow-y-auto">
+                                        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-10 max-h-[300px] overflow-y-auto">
                                             {searchResults.length > 0 ? (
                                                 searchResults.map((product) => (
                                                     <div
@@ -1065,8 +1065,7 @@ const Header = () => {
                                                             setShowResults(false);
                                                         }}
                                                     >
-                                                        <img src={product.image} alt={product.product_name}
-                                                             className="w-10 h-10 object-cover"/>
+                                                        <img src={product.image} alt={product.product_name} className="w-10 h-10 object-cover"/>
                                                         <span>{product.product_name}</span>
                                                     </div>
                                                 ))
@@ -1075,6 +1074,7 @@ const Header = () => {
                                             )}
                                         </div>
                                     )}
+
                                 </div>
 
                             </div>

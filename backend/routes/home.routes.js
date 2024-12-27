@@ -8,4 +8,5 @@ router.get("/get-product-details/by-slug/:slug", homeControllers.get_product_by_
 router.get("/get-product-details/:productId", homeControllers.get_product_details);
 router.get("/search-products", homeControllers.search_product);
 
+
 module.exports = router;
