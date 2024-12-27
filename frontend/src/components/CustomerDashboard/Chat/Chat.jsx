@@ -121,7 +121,7 @@ const Chat = () => {
         <div className="bg-white p-3 rounded-md">
             <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="block md:hidden bg-blue-500 text-white px-4 py-2 rounded-md mb-4 min-[430px]:block"
+                className="md:hidden bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
             >
                 {isSidebarOpen ? "Đóng danh sách" : "Mở danh sách"}
             </button>
@@ -130,8 +130,8 @@ const Chat = () => {
             <div className="w-full flex">
                 <div
                     className={`${
-                        isSidebarOpen ? "block" : "hidden"
-                    } min-[430px]:block w-[230px] bg-gray-100 p-4 md:block`}
+                        isSidebarOpen || window.innerWidth > 768 ? "block" : "hidden"
+                    } md:block w-[230px] bg-gray-100 p-4`}
                 >
                     <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
                         <span className="font-semibold text-slate-500">Liên hệ người bán</span>
@@ -169,8 +169,10 @@ const Chat = () => {
 
                 <div
                     className={`${
-                        isSidebarOpen ? "w-[calc(100%-230px)]" : "w-full"
-                    } md:w-[calc(100%-230px)]`}
+                        isSidebarOpen || window.innerWidth > 768
+                            ? "w-[calc(100%-230px)]"
+                            : "w-full"
+                    }`}
                 >
 
                     {current_friend ? (
