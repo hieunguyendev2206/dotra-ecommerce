@@ -475,7 +475,7 @@ const Product = () => {
                                     value={stateProduct.discount}
                                     type="number"
                                     name="discount"
-                                    min={1}
+                                    min={0}
                                     max={100}
                                     placeholder="Nhập % giảm giá..."
                                     className="input !bg-white input-bordered w-[80%]"
@@ -754,7 +754,7 @@ const Product = () => {
                                                             type="number"
                                                             name="discount"
                                                             max={100}
-                                                            min={1}
+                                                            min={0}
                                                             placeholder="Nhập % giảm giá..."
                                                             className="input !bg-white input-bordered w-[80%]"
                                                         />
