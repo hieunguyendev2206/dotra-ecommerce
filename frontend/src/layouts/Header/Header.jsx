@@ -1067,7 +1067,7 @@ const Header = () => {
                                                             setShowResults(false);
                                                         }}
                                                     >
-                                                        <img src={product.image} alt={product.product_name}
+                                                        <img src={product.images} alt={product.product_name}
                                                              className="w-10 h-10 object-cover"/>
                                                         <span>{product.product_name}</span>
                                                     </div>
