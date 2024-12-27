@@ -199,7 +199,7 @@ const Product = () => {
         formData.append("brand_name", stateProduct.brand_name);
         formData.append("category_name", category);
         formData.append("price", stateProduct.price);
-        formData.append("quantity", Math.max(1, stateProduct.quantity)); // Đảm bảo số lượng >= 1
+        formData.append("quantity", Math.max(1, stateProduct.quantity));
         formData.append("discount", stateProduct.discount);
         formData.append("description", stateProduct.description);
         formData.append("shop_name", user_info.shop_info.shop_name);
@@ -219,8 +219,6 @@ const Product = () => {
     useEffect(() => {
         if (success_message) {
             toast.success(success_message);
-
-            // Làm sạch trạng thái và đóng modal
             setStateProduct({
                 product_name: "",
                 brand_name: "",
@@ -339,8 +337,6 @@ const Product = () => {
     const handleUpdateProduct = async (event) => {
         event.preventDefault();
 
-        if (!validateUpdateProductData()) return;
-
         const data = {
             product_name: stateUpdateProduct.product_name,
             brand_name: stateUpdateProduct.brand_name,
@@ -359,10 +355,6 @@ const Product = () => {
         }
     };
 
-
-    const onClickDeleteProduct = (productIdDelete) => {
-        dispatch(delete_product(productIdDelete));
-    };
 
     return (
         <div className="px-2 md:px-7 py-5 bg-[#dae1e7]">
