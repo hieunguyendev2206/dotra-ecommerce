@@ -15,11 +15,7 @@ import notificationSound from "../../../audio/notification.mp3";
 
 const socket = io("https://dotra-ecommerce.onrender.com");
 
-
-
 const Chat = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to control sidebar visibility
-
     const {BsEmojiSmile, AiOutlinePlus, IoSend, IoMdClose} = icons;
     const [sending] = useSound(sendingSound);
     const [notification] = useSound(notificationSound);
@@ -121,18 +117,8 @@ const Chat = () => {
 
     return (
         <div className="bg-white p-3 rounded-md">
-
-            <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="md:hidden bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
-            >
-                {isSidebarOpen ? "Đóng Sidebar" : "Mở Sidebar"}
-            </button>
-            <div className="w-full flex flex-col md:flex-row">
-
-
-                <div className={`bg-gray-100 p-4 ${isSidebarOpen ? "block" : "hidden md:block"} w-full md:w-[230px] h-auto md:h-full`}>
-
+            <div className="w-full flex">
+                <div className="w-[230px]">
                     <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
                         <span className="font-semibold text-slate-500">
                           Liên hệ người bán
@@ -167,7 +153,7 @@ const Chat = () => {
                         ))}
                     </div>
                 </div>
-                <div className="w-full md:w-[calc(100%-230px)]">
+                <div className="w-[calc(100%-230px)]">
                     {current_friend ? (
                         <div className="w-full h-full">
                             <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
