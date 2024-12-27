@@ -15,7 +15,10 @@ import notificationSound from "../../../audio/notification.mp3";
 
 const socket = io("https://dotra-ecommerce.onrender.com");
 
+
 const Chat = () => {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to control sidebar visibility
+
     const {BsEmojiSmile, AiOutlinePlus, IoSend, IoMdClose} = icons;
     const [sending] = useSound(sendingSound);
     const [notification] = useSound(notificationSound);
@@ -126,7 +129,9 @@ const Chat = () => {
             </button>
             <div className="w-full flex flex-col md:flex-row">
 
+
                 <div className={`bg-gray-100 p-4 ${isSidebarOpen ? "block" : "hidden md:block"} w-full md:w-[230px] h-auto md:h-full`}>
+
                     <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
                         <span className="font-semibold text-slate-500">
                           Liên hệ người bán
