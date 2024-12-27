@@ -305,18 +305,6 @@ const Product = () => {
     };
 
 
-    useEffect(() => {
-        if (success_message) {
-
-            dispatch(message_clear());
-        }
-        if (error_message) {
-            dispatch(message_clear());
-        }
-    }, [success_message, error_message, dispatch]);
-
-
-
     const onClickDeleteProduct = (productIdDelete) => {
         dispatch(delete_product(productIdDelete));
     };
