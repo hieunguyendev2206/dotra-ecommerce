@@ -1056,7 +1056,7 @@ const Header = () => {
                                         <FaSearch/>
                                     </button>
                                     {showResults && (
-                                        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-10 max-h-[300px] overflow-y-auto">
+                                        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-10 max-h-[300px] rounded-md overflow-y-auto">
                                             {searchResults.length > 0 ? (
                                                 searchResults.map((product) => (
                                                     <div
@@ -1067,7 +1067,8 @@ const Header = () => {
                                                             setShowResults(false);
                                                         }}
                                                     >
-
+                                                        <img src={product.image} alt={product.product_name}
+                                                             className="w-10 h-10 object-cover"/>
                                                         <span>{product.product_name}</span>
                                                     </div>
                                                 ))
