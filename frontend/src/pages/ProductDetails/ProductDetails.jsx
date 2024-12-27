@@ -261,7 +261,8 @@ const ProductDetails = () => {
                         <div>
                             <div className="p-5 border h-[450px] w-full">
                                 <img
-                                    className="h-[400px] w-[400px]"
+                                    className="w-full h-[200px] object-contain rounded-t-md"
+                                    style={{aspectRatio: "1 / 1", objectPosition: "center"}}
                                     src={image ? image : product_details.images?.[0]}
                                     alt="Hình ảnh chi tiết sản phẩm"
                                 />
