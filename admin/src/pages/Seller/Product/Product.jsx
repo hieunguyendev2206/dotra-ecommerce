@@ -341,11 +341,6 @@ const Product = () => {
 
         if (!validateUpdateProductData()) return;
 
-        if (stateUpdateProduct.quantity < 1) {
-            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
-            return;
-        }
-
         const data = {
             product_name: stateUpdateProduct.product_name,
             brand_name: stateUpdateProduct.brand_name,
