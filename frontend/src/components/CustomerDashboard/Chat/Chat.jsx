@@ -116,15 +116,15 @@ const Chat = () => {
     }, [messages]);
 
     return (
-        <div className="bg-white p-3 rounded-md w-full max-w-full md:flex md:flex-row flex-col">
+        <div className="bg-white p-3 rounded-md">
             <div className="w-full flex">
-                <div className="w-full md:w-[230px]">
+                <div className="w-[230px]">
                     <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
                         <span className="font-semibold text-slate-500">
                           Liên hệ người bán
                         </span>
                     </div>
-                    <div className="w-full flex flex-col text-slate-600 py-4 h-[500px] md:max-h-[500px] max-h-[200px] overflow-y-auto pr-3">
+                    <div className="w-full flex flex-col text-slate-600 py-4 h-[500px] pr-3">
                         {my_friends.map((f, index) => (
                             <Link
                                 key={index}
@@ -153,7 +153,7 @@ const Chat = () => {
                         ))}
                     </div>
                 </div>
-                <div className="w-full md:w-[calc(100%-230px)]">
+                <div className="w-[calc(100%-230px)]">
                     {current_friend ? (
                         <div className="w-full h-full">
                             <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
@@ -184,11 +184,7 @@ const Chat = () => {
                                                 <div
                                                     key={index}
                                                     ref={scrollRef}
-                                                    className={`flex ${
-                                                        current_friend.friendId !== m.receiverId
-                                                            ? "justify-start"
-                                                            : "justify-end"
-                                                    } gap-2.5 mb-5`}
+                                                    className="flex justify-start gap-2.5 mb-5"
                                                 >
                                                     <img
                                                         className="w-8 h-8 rounded-full"
