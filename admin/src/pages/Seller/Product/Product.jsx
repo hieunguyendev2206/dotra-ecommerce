@@ -200,7 +200,7 @@ const Product = () => {
         formData.append("category_name", category);
         formData.append("price", stateProduct.price);
         formData.append("quantity", Math.max(1, stateProduct.quantity));
-        formData.append("discount", stateProduct.discount);
+        formData.append("discount", Math.max(0, stateProduct.discount));
         formData.append("description", stateProduct.description);
         formData.append("shop_name", user_info.shop_info.shop_name);
 
@@ -342,7 +342,7 @@ const Product = () => {
             brand_name: stateUpdateProduct.brand_name,
             price: stateUpdateProduct.price,
             quantity: Math.max(1, stateUpdateProduct.quantity), // Đảm bảo số lượng >= 1
-            discount: stateUpdateProduct.discount,
+            discount: (Math.max(0, stateUpdateProduct.discount)),
             description: stateUpdateProduct.description,
             productId: productId,
         };
