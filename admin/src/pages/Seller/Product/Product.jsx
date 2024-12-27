@@ -384,6 +384,7 @@ const Product = () => {
                                     value={stateProduct.price}
                                     type="number"
                                     name="price"
+                                    min={1}
                                     placeholder="Nhập giá sản phẩm..."
                                     className="input !bg-white input-bordered w-[80%]"
                                 />
@@ -411,6 +412,8 @@ const Product = () => {
                                     value={stateProduct.discount}
                                     type="number"
                                     name="discount"
+                                    min={1}
+                                    max={100}
                                     placeholder="Nhập % giảm giá..."
                                     className="input !bg-white input-bordered w-[80%]"
                                 />
@@ -653,6 +656,7 @@ const Product = () => {
                                                             value={stateUpdateProduct.price}
                                                             type="number"
                                                             name="price"
+                                                            min={1}
                                                             placeholder="Nhập giá sản phẩm..."
                                                             className="input !bg-white input-bordered w-[80%]"
                                                         />
@@ -686,6 +690,8 @@ const Product = () => {
                                                             value={stateUpdateProduct.discount}
                                                             type="number"
                                                             name="discount"
+                                                            max={100}
+                                                            min={1}
                                                             placeholder="Nhập % giảm giá..."
                                                             className="input !bg-white input-bordered w-[80%]"
                                                         />
