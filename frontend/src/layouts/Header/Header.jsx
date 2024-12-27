@@ -1055,27 +1055,26 @@ const Header = () => {
                                     >
                                         <FaSearch/>
                                     </button>
-                                    {showResults && (
-                                        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-10 max-h-[300px] rounded-md overflow-y-auto">
-                                            {searchResults.length > 0 ? (
-                                                searchResults.map((product) => (
-                                                    <div
-                                                        key={product._id}
-                                                        className="p-3 hover:bg-gray-100 cursor-pointer flex items-center gap-4"
-                                                        onClick={() => {
-                                                            navigate(`/home/product-details/${product.slug}`); // Đảm bảo sử dụng slug
-                                                            setShowResults(false);
-                                                        }}
-                                                    >
-                                                        <img src={product.images} alt={product.product_name}
-                                                             className="w-10 h-10 object-cover"/>
-                                                        <span>{product.product_name}</span>
-                                                    </div>
-                                                ))
-                                            ) : (
-                                                <div className="p-3 text-gray-500">Không tìm thấy sản phẩm nào</div>
-                                            )}
-                                        </div>
+                                    {searchResults.length > 0 ? (
+                                        searchResults.map((product) => (
+                                            <div
+                                                key={product._id}
+                                                className="p-3 hover:bg-gray-100 cursor-pointer flex items-center gap-4"
+                                                onClick={() => {
+                                                    navigate(`/home/product-details/${product.slug}`); // Sử dụng slug để điều hướng
+                                                    setShowResults(false);
+                                                }}
+                                            >
+                                                <img
+                                                    src={product.images?.[0] || "https://via.placeholder.com/150"} // Sử dụng hình ảnh đầu tiên hoặc hình mặc định
+                                                    alt={product.product_name}
+                                                    className="w-10 h-10 object-cover"
+                                                />
+                                                <span>{product.product_name}</span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="p-3 text-gray-500">Không tìm thấy sản phẩm nào</div>
                                     )}
                                 </div>
                             </div>
