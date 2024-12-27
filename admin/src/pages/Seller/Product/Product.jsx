@@ -87,7 +87,6 @@ const Product = () => {
         });
     };
 
-
     const handleInputTextEditor = (event, editor) => {
         const data = editor.getData();
         setStateProduct({
@@ -104,7 +103,6 @@ const Product = () => {
             [name]: name === "quantity" ? Math.max(1, Number(value)) : value,
         });
     };
-
 
     const handleInputUpdateTextEditor = (event, editor) => {
         const data = editor.getData();
@@ -151,20 +149,49 @@ const Product = () => {
         setImageShow(filterImageUrl);
     };
 
+    const validateProductData = () => {
+        if (!stateProduct.product_name.trim()) {
+            toast.error("Tên sản phẩm không được để trống.");
+            return false;
+        }
+        if (!stateProduct.brand_name.trim()) {
+            toast.error("Thương hiệu không được để trống.");
+            return false;
+        }
+        if (!category) {
+            toast.error("Vui lòng chọn danh mục sản phẩm.");
+            return false;
+        }
+        if (stateProduct.price <= 0) {
+            toast.error("Giá sản phẩm phải lớn hơn 0.");
+            return false;
+        }
+        if (stateProduct.quantity < 1) {
+            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
+            return false;
+        }
+        if (stateProduct.discount < 0 || stateProduct.discount > 100) {
+            toast.error("Giảm giá phải trong khoảng từ 0% đến 100%.");
+            return false;
+        }
+        if (!images.length) {
+            toast.error("Vui lòng thêm ít nhất một ảnh sản phẩm.");
+            return false;
+        }
+        return true;
+    };
+
     const handleAddProduct = async (event) => {
         if (event) event.preventDefault();
 
-        if (stateProduct.quantity < 1) {
-            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
-            return;
-        }
+        if (!validateProductData()) return;
 
         const formData = new FormData();
         formData.append("product_name", stateProduct.product_name);
         formData.append("brand_name", stateProduct.brand_name);
         formData.append("category_name", category);
         formData.append("price", stateProduct.price);
-        formData.append("quantity", Math.max(1, stateProduct.quantity)); // Đảm bảo số lượng >= 1
+        formData.append("quantity", Math.max(1, stateProduct.quantity));
         formData.append("discount", stateProduct.discount);
         formData.append("description", stateProduct.description);
         formData.append("shop_name", user_info.shop_info.shop_name);
@@ -185,7 +212,6 @@ const Product = () => {
         if (success_message) {
             toast.success(success_message);
 
-            // Làm sạch trạng thái và đóng modal
             setStateProduct({
                 product_name: "",
                 brand_name: "",
@@ -202,7 +228,6 @@ const Product = () => {
             setProductId("");
             setProductIdDelete("");
 
-            // Lấy lại danh sách sản phẩm
             dispatch(get_products({ page: currentPageNumber, parPage, searchValue }));
             dispatch(message_clear());
         }
@@ -213,11 +238,9 @@ const Product = () => {
         }
     }, [success_message, error_message, dispatch, currentPageNumber, parPage, searchValue]);
 
-
     useEffect(() => {
         dispatch(get_products({ page: currentPageNumber, parPage, searchValue }));
     }, [success_message, currentPageNumber, parPage, searchValue, dispatch]);
-
 
     const onClickEditProduct = (productId) => {
         setProductId(productId);
@@ -248,33 +271,48 @@ const Product = () => {
         }
     }, [product]);
 
-    const changeUpdateImage = (image, files) => {
-        if (files.length > 0) {
-            dispatch(
-                update_product_image({
-                    old_image: image.url,
-                    new_image: files[0],
-                    productId: productId,
-                })
-            );
+    const validateUpdateProductData = () => {
+        if (!stateUpdateProduct.product_name.trim()) {
+            toast.error("Tên sản phẩm không được để trống.");
+            return false;
         }
+        if (!stateUpdateProduct.brand_name.trim()) {
+            toast.error("Thương hiệu không được để trống.");
+            return false;
+        }
+        if (!category) {
+            toast.error("Vui lòng chọn danh mục sản phẩm.");
+            return false;
+        }
+        if (stateUpdateProduct.price <= 0) {
+            toast.error("Giá sản phẩm phải lớn hơn 0.");
+            return false;
+        }
+        if (stateUpdateProduct.quantity < 1) {
+            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
+            return false;
+        }
+        if (stateUpdateProduct.discount < 0 || stateUpdateProduct.discount > 100) {
+            toast.error("Giảm giá phải trong khoảng từ 0% đến 100%.");
+            return false;
+        }
+        if (!imageShow.length) {
+            toast.error("Vui lòng thêm ít nhất một ảnh sản phẩm.");
+            return false;
+        }
+        return true;
     };
-
-    const navigate = useNavigate();
 
     const handleUpdateProduct = async (event) => {
         event.preventDefault();
 
-        if (stateUpdateProduct.quantity < 1) {
-            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
-            return;
-        }
+        if (!validateUpdateProductData()) return;
 
         const data = {
             product_name: stateUpdateProduct.product_name,
             brand_name: stateUpdateProduct.brand_name,
             price: stateUpdateProduct.price,
-            quantity: Math.max(1, stateUpdateProduct.quantity), // Đảm bảo số lượng >= 1
+            quantity: Math.max(1, stateUpdateProduct.quantity),
             discount: stateUpdateProduct.discount,
             description: stateUpdateProduct.description,
             productId: productId,
@@ -287,7 +325,6 @@ const Product = () => {
             toast.error("Có lỗi xảy ra khi cập nhật sản phẩm.");
         }
     };
-
 
     const onClickDeleteProduct = (productIdDelete) => {
         dispatch(delete_product(productIdDelete));
