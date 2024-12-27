@@ -25,6 +25,7 @@ const Chat = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [receiveMessage, setReceiveMessage] = useState("");
     const [activeSeller, setActiveSeller] = useState([]);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const {sellerId} = useParams();
     const scrollRef = useRef();
@@ -116,15 +117,23 @@ const Chat = () => {
     }, [messages]);
 
     return (
-        <div className="bg-white p-3 rounded-md">
+        <div className="bg-white p-3 rounded-md relative">
+            <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="md:hidden bg-blue-500 text-white px-4 py-2 rounded-md absolute top-4 left-4 z-10"
+            >
+                {isSidebarOpen ? "Đóng" : "Mở"} Sidebar
+            </button>
             <div className="w-full flex">
-                <div className="w-[230px]">
+                <div className={`bg-gray-100 p-4 md:block ${
+                    isSidebarOpen ? "block absolute z-20 top-0 left-0 h-full w-3/4 md:w-[230px]" : "hidden"
+                }`}>
                     <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
                         <span className="font-semibold text-slate-500">
                           Liên hệ người bán
                         </span>
                     </div>
-                    <div className="w-full flex flex-col text-slate-600 py-4 h-[500px] pr-3">
+                    <div className="w-full flex flex-col text-slate-600 py-4 h-[500px] md:max-h-[500px] overflow-y-auto pr-3">
                         {my_friends.map((f, index) => (
                             <Link
                                 key={index}
@@ -153,7 +162,7 @@ const Chat = () => {
                         ))}
                     </div>
                 </div>
-                <div className="w-[calc(100%-230px)]">
+                <div className="w-full md:w-[calc(100%-230px)]">
                     {current_friend ? (
                         <div className="w-full h-full">
                             <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
