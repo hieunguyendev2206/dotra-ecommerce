@@ -176,6 +176,12 @@ const Product = () => {
             toast.error("Giảm giá phải trong khoảng từ 0% đến 100%.");
             return false;
         }
+
+        if (!stateProduct.description.trim()) {
+            toast.error("Mô tả không được để trống.");
+            return false;
+        }
+
         if (!images.length > 1) {
             toast.error("Vui lòng thêm ít nhất một ảnh sản phẩm.");
             return false;
@@ -187,11 +193,6 @@ const Product = () => {
         if (event) event.preventDefault();
 
         if (!validateProductData()) return;
-
-        if (stateProduct.quantity < 1) {
-            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
-            return;
-        }
 
         const formData = new FormData();
         formData.append("product_name", stateProduct.product_name);
@@ -321,6 +322,12 @@ const Product = () => {
             toast.error("Giảm giá phải trong khoảng từ 0% đến 100%.");
             return false;
         }
+
+        if (!stateProduct.description.trim()) {
+            toast.error("Mô tả không được để trống.");
+            return false;
+        }
+
         if (!imageShow.length > 1) {
             toast.error("Vui lòng thêm ít nhất một ảnh sản phẩm.");
             return false;
