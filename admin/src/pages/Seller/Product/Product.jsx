@@ -79,11 +79,14 @@ const Product = () => {
     }, [categories]);
 
     const handleInputProduct = (event) => {
+        const { name, value } = event.target;
+
         setStateProduct({
             ...stateProduct,
-            [event.target.name]: event.target.value,
+            [name]: name === "quantity" ? Math.max(1, Number(value)) : value,
         });
     };
+
 
     const handleInputTextEditor = (event, editor) => {
         const data = editor.getData();
@@ -94,11 +97,14 @@ const Product = () => {
     };
 
     const handleUpdateInputProduct = (event) => {
+        const { name, value } = event.target;
+
         setStateUpdateProduct({
             ...stateUpdateProduct,
-            [event.target.name]: event.target.value,
+            [name]: name === "quantity" ? Math.max(1, Number(value)) : value,
         });
     };
+
 
     const handleInputUpdateTextEditor = (event, editor) => {
         const data = editor.getData();
@@ -147,18 +153,26 @@ const Product = () => {
 
     const handleAddProduct = async (event) => {
         if (event) event.preventDefault();
+
+        if (stateProduct.quantity < 1) {
+            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("product_name", stateProduct.product_name);
         formData.append("brand_name", stateProduct.brand_name);
         formData.append("category_name", category);
         formData.append("price", stateProduct.price);
-        formData.append("quantity", stateProduct.quantity);
+        formData.append("quantity", Math.max(1, stateProduct.quantity)); // Đảm bảo số lượng >= 1
         formData.append("discount", stateProduct.discount);
         formData.append("description", stateProduct.description);
         formData.append("shop_name", user_info.shop_info.shop_name);
+
         for (let i = 0; i < images.length; i++) {
             formData.append("images", images[i]);
         }
+
         try {
             await dispatch(add_product(formData)).unwrap();
             navigate(0);
@@ -166,6 +180,7 @@ const Product = () => {
             toast.error("Có lỗi xảy ra khi thêm sản phẩm.");
         }
     };
+
 
     useEffect(() => {
         if (success_message) {
@@ -265,11 +280,17 @@ const Product = () => {
 
     const handleUpdateProduct = async (event) => {
         event.preventDefault();
+
+        if (stateUpdateProduct.quantity < 1) {
+            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
+            return;
+        }
+
         const data = {
             product_name: stateUpdateProduct.product_name,
             brand_name: stateUpdateProduct.brand_name,
             price: stateUpdateProduct.price,
-            quantity: stateUpdateProduct.quantity,
+            quantity: Math.max(1, stateUpdateProduct.quantity), // Đảm bảo số lượng >= 1
             discount: stateUpdateProduct.discount,
             description: stateUpdateProduct.description,
             productId: productId,
@@ -282,6 +303,7 @@ const Product = () => {
             toast.error("Có lỗi xảy ra khi cập nhật sản phẩm.");
         }
     };
+
 
     useEffect(() => {
         if (success_message) {
@@ -403,7 +425,7 @@ const Product = () => {
                                     value={stateProduct.quantity}
                                     type="number"
                                     name="quantity"
-                                    min={0}
+                                    min={1}
                                     placeholder="Nhập số lượng sản phẩm..."
                                     className="input !bg-white input-bordered w-[80%]"
                                 />
@@ -675,7 +697,7 @@ const Product = () => {
                                                             value={stateUpdateProduct.quantity}
                                                             type="number"
                                                             name="quantity"
-                                                            min={0}
+                                                            min={1}
                                                             placeholder="Nhập số lượng sản phẩm..."
                                                             className="input !bg-white input-bordered w-[80%]"
                                                         />
