@@ -86,7 +86,8 @@ const FeatureProduct = ({products}) => {
             </div>
             <div className="w-full grid grid-cols-5 md-lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
                 {products.map((p) => (
-                    <div
+                    <Link
+                        to={`/home/product-details/${p.slug}`}
                         key={p._id}
                         className="border-2 group transition-all duration-500 hover:shadow-md hover:-mt-3 rounded-lg"
                     >
@@ -152,7 +153,7 @@ const FeatureProduct = ({products}) => {
                                 </h2>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>
