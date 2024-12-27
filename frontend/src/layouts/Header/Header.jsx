@@ -1076,6 +1076,7 @@ const Header = () => {
                                     ) : (
                                         <div className="p-3 text-gray-500">Không tìm thấy sản phẩm nào</div>
                                     )}
+
                                 </div>
                             </div>
                             <div className="w-4/12 block md-lg:hidden pl-2 md-lg:w-full md-lg:pl-0">
