@@ -104,16 +104,20 @@ class homeController {
         const { category, searchValue } = req.query;
 
         const filter = {};
-        if (category) filter.category = category;
-        if (searchValue) filter.name = { $regex: searchValue, $options: 'i' };
+        if (category) filter.category_name = category;
+        if (searchValue) filter.product_name = { $regex: searchValue, $options: 'i' }; // $regex tìm kiếm gần đúng
 
+        console.log("Filter tìm kiếm:", filter); // Kiểm tra filter được tạo
         try {
             const products = await productModel.find(filter);
+            console.log("Kết quả tìm kiếm:", products); // Xem sản phẩm trả về
             res.status(200).json(products);
         } catch (error) {
+            console.error("Lỗi khi tìm kiếm sản phẩm:", error);
             res.status(500).json({ message: 'Lỗi server', error });
         }
-    }
+    };
+
 
     // Lấy chi tiết sản phẩm theo id
     get_product_details = async (req, res) => {

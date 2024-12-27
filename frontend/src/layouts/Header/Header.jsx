@@ -20,6 +20,7 @@ import {get_wishlist} from "../../store/reducers/wishlist.reducers";
 import {FaSearch} from "react-icons/fa";
 import Logo from "../../assets/logo/logo.png"
 import { getCustomerAccessTokenFromLS, removeCustomerAccessTokenFromLS } from "../../utils/localStorage";
+import api from "../../api/api.js";
 
 
 
@@ -106,7 +107,7 @@ const Header = () => {
     const [showResults, setShowResults] = useState(false); // Ẩn/hiện kết quả tìm kiếm
 
     // Hàm gọi API khi thay đổi từ khóa tìm kiếm
-    const handleSearch = (value) => {
+    const handleSearch = async (value) => {
         setSearchValue(value);
 
         if (!value.trim()) {
@@ -115,16 +116,21 @@ const Header = () => {
             return;
         }
 
-        dispatch(search_products({ searchValue: value, category })).unwrap()
-            .then((results) => {
-                setSearchResults(results);
-                setShowResults(true);
-            })
-            .catch((error) => {
-                console.error("Lỗi tìm kiếm sản phẩm:", error);
-                setSearchResults([]);
-            });
+        try {
+            const response = await api.get("/home/search-products", { params: { searchValue: value, category } });
+            console.log("Kết quả API:", response.data); // In ra kết quả API
+            setSearchResults(response.data);
+
+            if (response.data.length === 0) {
+                console.log("Không tìm thấy sản phẩm.");
+            }
+
+            setShowResults(true);
+        } catch (error) {
+            console.error("Lỗi tìm kiếm sản phẩm:", error);
+        }
     };
+
 
 
     const handleOnClickSearch = () => {
@@ -1053,15 +1059,7 @@ const Header = () => {
                                         <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-10 max-h-[300px] overflow-y-auto">
                                             {searchResults.length > 0 ? (
                                                 searchResults.map((product) => (
-                                                    <div
-                                                        key={product.slug}
-                                                        className="p-3 hover:bg-gray-100 cursor-pointer flex items-center gap-4"
-                                                        onClick={() => {
-                                                            navigate(`/products/${product.slug}`);
-                                                            setShowResults(false);
-                                                        }}
-                                                    >
-                                                        <img src={product.image} alt={product.product_name} className="w-10 h-10 object-cover"/>
+                                                    <div key={product._id} className="p-3 hover:bg-gray-100 cursor-pointer">
                                                         <span>{product.product_name}</span>
                                                     </div>
                                                 ))
@@ -1070,9 +1068,7 @@ const Header = () => {
                                             )}
                                         </div>
                                     )}
-
                                 </div>
-
                             </div>
                             <div className="w-4/12 block md-lg:hidden pl-2 md-lg:w-full md-lg:pl-0">
                                 <div className="w-full flex justify-end md-lg:justify-start gap-3 items-center">
