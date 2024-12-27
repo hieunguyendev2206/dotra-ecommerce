@@ -1057,7 +1057,7 @@ const Header = () => {
                                     </button>
                                     {showResults && (
                                         <div
-                                            className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-10 max-h-[300px] overflow-y-auto">
+                                            className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-10 max-h-[300px] overflow-y-auto rounded-md">
                                             {searchResults.length > 0 ? (
                                                 searchResults.map((product) => (
                                                     <div
