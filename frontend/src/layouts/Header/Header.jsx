@@ -1049,6 +1049,13 @@ const Header = () => {
                                         className="w-full relative bg-transparent text-slate-500 border-red-600 outline-0 p-[15.5px] h-full rounded-r-md"
                                         placeholder="Tìm kiếm sản phẩm..."
                                     />
+                                    <button
+                                        onClick={handleOnClickSearch}
+                                        className="bg-red-500 right-0 absolute px-6 h-full text-white flex items-center rounded-r-md"
+                                    >
+                                        <FaSearch/>
+                                    </button>
+
                                     {searchResults.length > 0 ? (
                                         searchResults.map((product) => (
                                             <div
@@ -1070,12 +1077,6 @@ const Header = () => {
                                     ) : (
                                         <div className="p-3 text-gray-500">Không tìm thấy sản phẩm nào</div>
                                     )}
-                                    <button
-                                        onClick={handleOnClickSearch}
-                                        className="bg-red-500 right-0 absolute px-6 h-full text-white flex items-center rounded-r-md"
-                                    >
-                                        <FaSearch/>
-                                    </button>
                                 </div>
                             </div>
                             <div className="w-4/12 block md-lg:hidden pl-2 md-lg:w-full md-lg:pl-0">
