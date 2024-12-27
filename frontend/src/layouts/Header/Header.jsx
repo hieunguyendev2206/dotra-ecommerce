@@ -127,7 +127,6 @@ const Header = () => {
     };
 
 
-    // Chuyển hướng đến trang tìm kiếm chi tiết
     const handleOnClickSearch = () => {
         navigate(`/products/search?category=${category}&searchValue=${searchValue}`);
         setShowResults(false);
@@ -142,11 +141,6 @@ const Header = () => {
         setOpenModalRegister(false);
     }
 
-    // const handleOnClickSearch = () => {
-    //     navigate(
-    //         `/products/search?category=${category}&searchValue=${searchValue}`
-    //     );
-    // };
 
     const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -1060,10 +1054,10 @@ const Header = () => {
                                             {searchResults.length > 0 ? (
                                                 searchResults.map((product) => (
                                                     <div
-                                                        key={product._id}
+                                                        key={product.slug}
                                                         className="p-3 hover:bg-gray-100 cursor-pointer flex items-center gap-4"
                                                         onClick={() => {
-                                                            navigate(`/products/${product._id}`);
+                                                            navigate(`/products/${product.slug}`);
                                                             setShowResults(false);
                                                         }}
                                                     >
