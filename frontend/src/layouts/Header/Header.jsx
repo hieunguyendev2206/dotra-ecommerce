@@ -1061,12 +1061,12 @@ const Header = () => {
                                                 key={product._id}
                                                 className="p-3 hover:bg-gray-100 cursor-pointer flex items-center gap-4"
                                                 onClick={() => {
-                                                    navigate(`/home/product-details/${product.slug}`); // Sử dụng slug để điều hướng
+                                                    navigate(`/home/product-details/${product.slug}`);
                                                     setShowResults(false);
                                                 }}
                                             >
                                                 <img
-                                                    src={product.images?.[0] || "https://via.placeholder.com/150"} // Sử dụng hình ảnh đầu tiên hoặc hình mặc định
+                                                    src={product.images?.[0] || "https://via.placeholder.com/150"}
                                                     alt={product.product_name}
                                                     className="w-10 h-10 object-cover"
                                                 />
@@ -1076,7 +1076,6 @@ const Header = () => {
                                     ) : (
                                         <div className="p-3 text-gray-500">Không tìm thấy sản phẩm nào</div>
                                     )}
-
                                 </div>
                             </div>
                             <div className="w-4/12 block md-lg:hidden pl-2 md-lg:w-full md-lg:pl-0">
