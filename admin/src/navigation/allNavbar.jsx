@@ -61,24 +61,26 @@ const allNavbar = [{
     path: path.seller_dashboard_reply_review,
     role: "seller",
     icon: <GoCodeReview size={20}/>,
-}, {
-    id: 13, title: "Quản lý bài viết", path: path.seller_dashboard_blog, role: "seller", icon: <ImBlogger2 size={20}/>
-}, {
-    id: 14,
+},
+    // {
+    // id: 13, title: "Quản lý bài viết", path: path.seller_dashboard_blog, role: "seller", icon: <ImBlogger2 size={20}/>
+    // },
+    {
+    id: 13,
     title: "Thanh toán",
     path: path.seller_dashboard_payment,
     role: "seller",
     icon: <MdOutlinePayment size={20}/>,
 }, {
-    id: 15,
+    id: 14,
     title: "Liên hệ khách hàng",
     path: path.seller_dashboard_chat_customers,
     role: "seller",
     icon: <BiChat size={20}/>,
 }, {
-    id: 16, title: "Liên hệ admin", path: path.seller_dashboard_chat_admin, role: "seller", icon: <HiChat size={20}/>,
+    id: 15, title: "Liên hệ admin", path: path.seller_dashboard_chat_admin, role: "seller", icon: <HiChat size={20}/>,
 }, {
-    id: 17, title: "Hồ sơ", path: path.seller_dashboard_profile, role: "seller", icon: <ImProfile size={20}/>,
+    id: 16, title: "Hồ sơ", path: path.seller_dashboard_profile, role: "seller", icon: <ImProfile size={20}/>,
 },
 ];
 
