@@ -18,7 +18,6 @@ const socket = io("https://dotra-ecommerce.onrender.com");
 
 
 const Chat = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to control sidebar visibility
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to control sidebar visibility
 
