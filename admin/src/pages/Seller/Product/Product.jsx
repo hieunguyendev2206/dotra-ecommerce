@@ -151,8 +151,42 @@ const Product = () => {
         setImageShow(filterImageUrl);
     };
 
+    const validateProductData = () => {
+        if (!stateProduct.product_name.trim()) {
+            toast.error("Tên sản phẩm không được để trống.");
+            return false;
+        }
+        if (!stateProduct.brand_name.trim()) {
+            toast.error("Thương hiệu không được để trống.");
+            return false;
+        }
+        if (!category) {
+            toast.error("Vui lòng chọn danh mục sản phẩm.");
+            return false;
+        }
+        if (stateProduct.price <= 0) {
+            toast.error("Giá sản phẩm phải lớn hơn 0.");
+            return false;
+        }
+        if (stateProduct.quantity < 1) {
+            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
+            return false;
+        }
+        if (stateProduct.discount < 0 || stateProduct.discount > 100) {
+            toast.error("Giảm giá phải trong khoảng từ 0% đến 100%.");
+            return false;
+        }
+        if (!images.length > 1) {
+            toast.error("Vui lòng thêm ít nhất một ảnh sản phẩm.");
+            return false;
+        }
+        return true;
+    };
+
     const handleAddProduct = async (event) => {
         if (event) event.preventDefault();
+
+        if (!validateProductData()) return;
 
         if (stateProduct.quantity < 1) {
             toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
@@ -262,8 +296,43 @@ const Product = () => {
 
     const navigate = useNavigate();
 
+    const validateUpdateProductData = () => {
+        if (!stateUpdateProduct.product_name.trim()) {
+            toast.error("Tên sản phẩm không được để trống.");
+            return false;
+        }
+        if (!stateUpdateProduct.brand_name.trim()) {
+            toast.error("Thương hiệu không được để trống.");
+            return false;
+        }
+        if (!category) {
+            toast.error("Vui lòng chọn danh mục sản phẩm.");
+            return false;
+        }
+        if (stateUpdateProduct.price <= 0) {
+            toast.error("Giá sản phẩm phải lớn hơn 0.");
+            return false;
+        }
+        if (stateUpdateProduct.quantity < 1) {
+            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
+            return false;
+        }
+        if (stateUpdateProduct.discount < 0 || stateUpdateProduct.discount > 100) {
+            toast.error("Giảm giá phải trong khoảng từ 0% đến 100%.");
+            return false;
+        }
+        if (!imageShow.length > 1) {
+            toast.error("Vui lòng thêm ít nhất một ảnh sản phẩm.");
+            return false;
+        }
+        return true;
+    };
+
+
     const handleUpdateProduct = async (event) => {
         event.preventDefault();
+
+        if (!validateUpdateProductData()) return;
 
         if (stateUpdateProduct.quantity < 1) {
             toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
