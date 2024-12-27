@@ -121,13 +121,14 @@ const Chat = () => {
         <div className="bg-white p-3 rounded-md">
             <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="md:hidden bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+                className="max-[430px]:block md:hidden bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
             >
                 {isSidebarOpen ? "Đóng danh sách" : "Mở danh sách"}
             </button>
 
+
             <div className="w-full flex">
-                <div className={`w-[230px] ${isSidebarOpen ? "block" : "hidden"} md:block`}>
+                <div className={`w-[230px] ${isSidebarOpen ? "block" : "hidden"} max-[430px]:hidden md:block`}>
                     <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
                         <span className="font-semibold text-slate-500">
                             Liên hệ người bán
