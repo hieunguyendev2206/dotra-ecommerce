@@ -25,6 +25,8 @@ const Chat = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [receiveMessage, setReceiveMessage] = useState("");
     const [activeSeller, setActiveSeller] = useState([]);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
 
     const {sellerId} = useParams();
     const scrollRef = useRef();
@@ -117,11 +119,18 @@ const Chat = () => {
 
     return (
         <div className="bg-white p-3 rounded-md">
+            <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="md:hidden bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+            >
+                {isSidebarOpen ? "Đóng danh sách" : "Mở danh sách"}
+            </button>
+
             <div className="w-full flex">
-                <div className="w-[230px]">
+                <div className={`w-[230px] ${isSidebarOpen ? "block" : "hidden"} md:block`}>
                     <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
                         <span className="font-semibold text-slate-500">
-                          Liên hệ người bán
+                            Liên hệ người bán
                         </span>
                     </div>
                     <div className="w-full flex flex-col text-slate-600 py-4 h-[500px] pr-3">
@@ -141,7 +150,8 @@ const Chat = () => {
                                     />
                                     {activeSeller.some((c) => c.sellerId === f.friendId) && (
                                         <div
-                                            className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                            className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"
+                                        ></div>
                                     )}
                                 </div>
                                 <div className="flex justify-center items-start flex-col w-full">
@@ -153,6 +163,7 @@ const Chat = () => {
                         ))}
                     </div>
                 </div>
+
                 <div className="w-[calc(100%-230px)]">
                     {current_friend ? (
                         <div className="w-full h-full">
