@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {Modal} from "flowbite-react";
 import {useDispatch, useSelector} from "react-redux";
-import {get_categories} from "../../store/reducers/home.reducers";
+import {get_categories, search_products} from "../../store/reducers/home.reducers";
 import {
     customer_login,
     customer_logout,
@@ -106,7 +106,7 @@ const Header = () => {
     const [showResults, setShowResults] = useState(false); // Ẩn/hiện kết quả tìm kiếm
 
     // Hàm gọi API khi thay đổi từ khóa tìm kiếm
-    const handleSearch = async (value) => {
+    const handleSearch = (value) => {
         setSearchValue(value);
 
         if (!value.trim()) {
@@ -115,13 +115,15 @@ const Header = () => {
             return;
         }
 
-        try {
-            let response = await api.get("/home/search-products", { params: { searchValue: value } });
-            setSearchResults(response.data);
-            setShowResults(true);
-        } catch (error) {
-            console.error("Lỗi tìm kiếm sản phẩm:", error);
-        }
+        dispatch(search_products({ searchValue: value, category })).unwrap()
+            .then((results) => {
+                setSearchResults(results);
+                setShowResults(true);
+            })
+            .catch((error) => {
+                console.error("Lỗi tìm kiếm sản phẩm:", error);
+                setSearchResults([]);
+            });
     };
 
 

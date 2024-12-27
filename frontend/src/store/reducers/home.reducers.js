@@ -82,6 +82,23 @@ export const get_product_details_by_slug = createAsyncThunk(
     }
 );
 
+export const search_products = createAsyncThunk(
+    "home/search_products",
+    async (searchParams, thunkAPI) => {
+        try {
+            const response = await api.get("/home/search-products", {
+                params: searchParams, // searchParams gồm searchValue và category
+                signal: thunkAPI.signal,
+                withCredentials: true,
+            });
+            return thunkAPI.fulfillWithValue(response.data);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+
+
 
 
 export const homeSlice = createSlice({
@@ -95,6 +112,7 @@ export const homeSlice = createSlice({
         top_rated_products: [],
         discount_products: [],
         totalProducts: 0,
+        searchResults: [],
         currentRequestId: undefined,
     }, reducers: {}, extraReducers(builder) {
         builder
@@ -132,6 +150,14 @@ export const homeSlice = createSlice({
                     state.currentRequestId = undefined;
                 }
             })
+            .addCase(search_products.fulfilled, (state, action) => {
+                state.searchResults = action.payload; // Lưu kết quả tìm kiếm vào state
+            })
+            .addCase(search_products.rejected, (state, action) => {
+                console.error("Lỗi tìm kiếm sản phẩm:", action.payload);
+                state.searchResults = []; // Đặt lại danh sách nếu tìm kiếm thất bại
+            })
+
             .addMatcher((action) => action.type.endsWith("/pending"), (state, action) => {
                 state.currentRequestId = action.meta.requestId;
             });
