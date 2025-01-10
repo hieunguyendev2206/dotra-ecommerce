@@ -64,16 +64,6 @@ function handleChargeSucceeded(charge) {
     // Thêm logic xử lý tại đây
 }
 
-app.get("/api/provinces/:endpoint", async (req, res) => {
-    try {
-        const endpoint = req.params.endpoint;
-        const response = await axios.get(`https://provinces.open-api.vn/api/${endpoint}`);
-        res.json(response.data);
-    } catch (error) {
-        res.status(500).send("Proxy error: " + error.message);
-    }
-});
-
 
 // Middleware
 app.use(cors({
@@ -84,6 +74,18 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.get("/api/provinces/:endpoint", async (req, res) => {
+    try {
+        console.log("Proxying request:", req.params.endpoint); // Log kiểm tra
+        const endpoint = req.params.endpoint;
+        const response = await axios.get(`https://provinces.open-api.vn/api/${endpoint}`);
+        res.json(response.data);
+    } catch (error) {
+        console.error("Proxy error:", error.message);
+        res.status(500).send("Proxy error: " + error.message);
+    }
+});
 
 // Routes
 app.use("/api", require("./routes/auth.routes"));
