@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const http = require("http");
 const socket = require("socket.io");
+const axios = require("axios");
 const { databaseConnect } = require("./database/database");
 const server = http.createServer(app);
 const stripe = require("stripe")("sk_test_51PGcpoAJsOUKToQLJFP71JX7fI1YP7Wv1xu1dQteGu1yfwTwO6dlfIdZVGCS8SQPwxggVl3BVHa55tmgjzrpZ5ni00XgCx7Tff");
@@ -62,6 +63,17 @@ function handleChargeSucceeded(charge) {
     console.log(`Charge succeeded: ${charge.id}`);
     // Thêm logic xử lý tại đây
 }
+
+app.get("/api/provinces/:endpoint", async (req, res) => {
+    try {
+        const endpoint = req.params.endpoint;
+        const response = await axios.get(`https://provinces.open-api.vn/api/${endpoint}`);
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).send("Proxy error: " + error.message);
+    }
+});
+
 
 // Middleware
 app.use(cors({
