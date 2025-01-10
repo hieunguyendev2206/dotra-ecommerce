@@ -14,7 +14,8 @@ const stripe = require("stripe")("sk_test_51PGcpoAJsOUKToQLJFP71JX7fI1YP7Wv1xu1d
 const endpointSecret = "whsec_cVgpeO01cwJgC9qOWJ2pheoZTAisM8pX";
 const io = socket(server, {
     cors: {
-        origin: "*",
+        origin: ["https://dotra-home.vercel.app"], // Thay thế bằng domain của bạn
+        methods: ["GET", "POST"],
         credentials: true,
     },
 });
