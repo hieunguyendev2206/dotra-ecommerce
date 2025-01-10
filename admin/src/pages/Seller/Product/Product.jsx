@@ -80,12 +80,16 @@ const Product = () => {
 
     const handleInputProduct = (event) => {
         const { name, value } = event.target;
-
         setStateProduct({
             ...stateProduct,
-            [name]: name === "quantity" ? Math.max(1, Number(value)) : value,
+            [name]: name === "quantity"
+                ? Math.max(1, Number(value))
+                : name === "price" || name === "discount"
+                    ? Math.max(0, Number(value))
+                    : value,
         });
     };
+
 
 
     const handleInputTextEditor = (event, editor) => {
@@ -98,12 +102,16 @@ const Product = () => {
 
     const handleUpdateInputProduct = (event) => {
         const { name, value } = event.target;
-
         setStateUpdateProduct({
             ...stateUpdateProduct,
-            [name]: name === "quantity" ? Math.max(1, Number(value)) : value,
+            [name]: name === "quantity"
+                ? Math.max(1, Number(value))
+                : name === "price" || name === "discount"
+                    ? Math.max(0, Number(value))
+                    : value,
         });
     };
+
 
 
     const handleInputUpdateTextEditor = (event, editor) => {
@@ -188,6 +196,8 @@ const Product = () => {
         }
         return true;
     };
+
+
 
     const handleAddProduct = async (event) => {
         if (event) event.preventDefault();
@@ -447,7 +457,7 @@ const Product = () => {
                                     value={stateProduct.price}
                                     type="number"
                                     name="price"
-                                    min={1}
+                                    min={0}
                                     placeholder="Nhập giá sản phẩm..."
                                     className="input !bg-white input-bordered w-[80%]"
                                 />
