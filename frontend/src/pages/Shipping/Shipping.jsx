@@ -42,7 +42,7 @@ const Shipping = () => {
 
     // Lấy danh sách các Tỉnh/Thành phố khi component mount
     useEffect(() => {
-        axios.get("/api/provinces?depth=1")
+        axios.get("https://provinces.open-api.vn/api/?depth=1")
             .then((response) => setProvinces(response.data))
             .catch((error) => console.error(error));
     }, []);
@@ -53,7 +53,7 @@ const Shipping = () => {
         setState({ ...state, province: selectedProvince, district: "", ward: "" });
 
         // Lấy danh sách các Quận/Huyện theo Tỉnh/Thành phố
-        axios.get(`/api/provinces/p/${selectedProvince}?depth=2`)
+        axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`)
             .then((response) => setDistricts(response.data.districts))
             .catch((error) => console.error(error));
 
@@ -61,14 +61,13 @@ const Shipping = () => {
         setWards([]);
     };
 
-
     // Hàm xử lý khi thay đổi Quận/Huyện
     const handleDistrictChange = (e) => {
         const selectedDistrict = e.target.value;
         setState({ ...state, district: selectedDistrict, ward: "" });
 
         // Lấy danh sách các Xã/Phường theo Quận/Huyện
-        axios.get(`/api/provinces/d/${selectedDistrict}?depth=2`)
+        axios.get(`https://provinces.open-api.vn/api/d/${selectedDistrict}?depth=2`)
             .then((response) => setWards(response.data.wards))
             .catch((error) => console.error(error));
     };

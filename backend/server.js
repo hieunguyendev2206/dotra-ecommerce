@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const http = require("http");
 const socket = require("socket.io");
-const axios = require("axios");
 const { databaseConnect } = require("./database/database");
 const server = http.createServer(app);
 const stripe = require("stripe")("sk_test_51PGcpoAJsOUKToQLJFP71JX7fI1YP7Wv1xu1dQteGu1yfwTwO6dlfIdZVGCS8SQPwxggVl3BVHa55tmgjzrpZ5ni00XgCx7Tff");
@@ -14,8 +13,7 @@ const stripe = require("stripe")("sk_test_51PGcpoAJsOUKToQLJFP71JX7fI1YP7Wv1xu1d
 const endpointSecret = "whsec_cVgpeO01cwJgC9qOWJ2pheoZTAisM8pX";
 const io = socket(server, {
     cors: {
-        origin: ["https://dotra-home.vercel.app"], // Thay thế bằng domain của bạn
-        methods: ["GET", "POST"],
+        origin: "*",
         credentials: true,
     },
 });
@@ -65,7 +63,6 @@ function handleChargeSucceeded(charge) {
     // Thêm logic xử lý tại đây
 }
 
-
 // Middleware
 app.use(cors({
     origin: ["https://admin-topaz-three.vercel.app",
@@ -75,18 +72,6 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-app.get("/api/provinces/:endpoint", async (req, res) => {
-    try {
-        console.log("Proxying request:", req.params.endpoint); // Log kiểm tra
-        const endpoint = req.params.endpoint;
-        const response = await axios.get(`https://provinces.open-api.vn/api/${endpoint}`);
-        res.json(response.data);
-    } catch (error) {
-        console.error("Proxy error:", error.message);
-        res.status(500).send("Proxy error: " + error.message);
-    }
-});
 
 // Routes
 app.use("/api", require("./routes/auth.routes"));

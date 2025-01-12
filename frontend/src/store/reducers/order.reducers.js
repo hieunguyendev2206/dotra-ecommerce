@@ -1,23 +1,18 @@
-// order.reducers.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 import axios from "axios";
 
 // Hàm để lấy tên đầy đủ cho tỉnh/thành phố, quận/huyện và xã/phường từ mã
 const getLocationNames = async (provinceCode, districtCode, wardCode) => {
-    try {
-        const provinceName = await axios.get(`/api/provinces/p/${provinceCode}`);
-        const districtName = await axios.get(`/api/provinces/d/${districtCode}`);
-        const wardName = await axios.get(`/api/provinces/w/${wardCode}`);
+    const provinceName = await axios.get(`https://provinces.open-api.vn/api/p/${provinceCode}`);
+    const districtName = await axios.get(`https://provinces.open-api.vn/api/d/${districtCode}`);
+    const wardName = await axios.get(`https://provinces.open-api.vn/api/w/${wardCode}`);
 
-        return {
-            province: { code: provinceCode, name: provinceName.data.name },
-            district: { code: districtCode, name: districtName.data.name },
-            ward: { code: wardCode, name: wardName.data.name },
-        };
-    } catch (error) {
-        throw new Error("Error fetching location names: " + error.message);
-    }
+    return {
+        province: { code: provinceCode, name: provinceName.data.name },
+        district: { code: districtCode, name: districtName.data.name },
+        ward: { code: wardCode, name: wardName.data.name },
+    };
 };
 
 // Reducer đặt hàng
@@ -69,7 +64,7 @@ export const place_order = createAsyncThunk("order/place_order", async ({
 
         return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response?.data || { message: "Unknown error" });
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 });
 
@@ -82,7 +77,7 @@ export const get_orders = createAsyncThunk("order/get_orders", async (customerId
         });
         return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response?.data || { message: "Unknown error" });
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 });
 
@@ -95,7 +90,7 @@ export const get_order_details = createAsyncThunk("order/get_order_details", asy
         });
         return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response?.data || { message: "Unknown error" });
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 });
 
@@ -130,7 +125,7 @@ export const orderSlice = createSlice({
             .addMatcher((action) => action.type.endsWith("/rejected"), (state, action) => {
                 if (state.currentRequestId === action.meta.requestId) {
                     state.currentRequestId = undefined;
-                    state.error_message = action.payload?.message || "An error occurred.";
+                    state.error_message = action.payload.message;
                 }
             })
             .addMatcher((action) => action.type.endsWith("/pending"), (state, action) => {
