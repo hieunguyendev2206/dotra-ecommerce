@@ -4,9 +4,9 @@ import axios from "axios";
 
 // Hàm để lấy tên đầy đủ cho tỉnh/thành phố, quận/huyện và xã/phường từ mã
 const getLocationNames = async (provinceCode, districtCode, wardCode) => {
-    const provinceName = await axios.get(`https://provinces.open-api.vn/api/p/${provinceCode}`);
-    const districtName = await axios.get(`https://provinces.open-api.vn/api/d/${districtCode}`);
-    const wardName = await axios.get(`https://provinces.open-api.vn/api/w/${wardCode}`);
+    const provinceName = await axios.get(`/api-provinces/api/p/${provinceCode}`);
+    const districtName = await axios.get(`/api-provinces/api/d/${districtCode}`);
+    const wardName = await axios.get(`/api-provinces/api/w/${wardCode}`);
 
     return {
         province: { code: provinceCode, name: provinceName.data.name },
