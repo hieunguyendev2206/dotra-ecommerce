@@ -42,25 +42,32 @@ const CustomerProfile = () => {
         }
     }, [profile]);
 
-    const handleImageUpload = (type, file) => {
+    const handleImageUpload = async (type, file) => {
         if (file) {
             const formData = new FormData();
             formData.append("image", file);
             formData.append("type", type);
 
-            dispatch(upload_profile_image({ type, formData }))
-                .unwrap()
-                .then(() => {
-                    dispatch(get_customer_profile());
-                })
-                .catch((error) => {
-                    console.error("Lỗi khi tải ảnh:", error);
-                });
+            try {
+                await dispatch(upload_profile_image({ type, formData })).unwrap();
+                dispatch(get_customer_profile());
+            } catch (error) {
+                console.error("Lỗi khi tải ảnh:", error);
+            }
         }
     };
 
-    const handleCoverChange = (e) => handleImageUpload("cover", e.target.files[0]);
-    const handleAvatarChange = (e) => handleImageUpload("avatar", e.target.files[0]);
+    const handleCoverChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            handleImageUpload("cover", e.target.files[0]);
+        }
+    };
+
+    const handleAvatarChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            handleImageUpload("avatar", e.target.files[0]);
+        }
+    };
 
     const handleUpdateProfile = () => {
         const updatedInfo = {
