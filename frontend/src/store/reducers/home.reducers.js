@@ -1,8 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import api from "../../api/api";
 
-
-
 // Lấy danh mục sản phẩm
 export const get_categories = createAsyncThunk("home/get_categories", async (_, thunkAPI) => {
     try {
@@ -28,18 +26,6 @@ export const get_feature_products = createAsyncThunk("home/get_feature_products"
 });
 
 // Truy vấn sản phẩm
-// export const query_products = createAsyncThunk("home/query_products", async (queryParams, thunkAPI) => {
-//     try {
-//         const response = await api.get("/home/query-products", {
-//             params: queryParams, signal: thunkAPI.signal, withCredentials: true,
-//         });
-//         return thunkAPI.fulfillWithValue(response.data);
-//     } catch (error) {
-//         return thunkAPI.rejectWithValue(error.response.data);
-//     }
-// });
-
-// Truy vấn sản phẩm
 export const query_products = createAsyncThunk(
     "home/query_products",
     async (queryParams, thunkAPI) => {
@@ -55,8 +41,6 @@ export const query_products = createAsyncThunk(
         }
     }
 );
-
-
 
 // Lấy chi tiết sản phẩm theo id
 export const get_product_details = createAsyncThunk("home/get_product_details", async (productId, thunkAPI) => {
@@ -98,9 +82,6 @@ export const search_products = createAsyncThunk(
     }
 );
 
-
-
-
 export const homeSlice = createSlice({
     name: "home", initialState: {
         categories: [],
@@ -112,7 +93,6 @@ export const homeSlice = createSlice({
         top_rated_products: [],
         discount_products: [],
         totalProducts: 0,
-        searchResults: [],
         currentRequestId: undefined,
     }, reducers: {}, extraReducers(builder) {
         builder
@@ -150,14 +130,6 @@ export const homeSlice = createSlice({
                     state.currentRequestId = undefined;
                 }
             })
-            .addCase(search_products.fulfilled, (state, action) => {
-                state.searchResults = action.payload; // Lưu kết quả tìm kiếm vào state
-            })
-            .addCase(search_products.rejected, (state, action) => {
-                console.error("Lỗi tìm kiếm sản phẩm:", action.payload);
-                state.searchResults = []; // Đặt lại danh sách nếu tìm kiếm thất bại
-            })
-
             .addMatcher((action) => action.type.endsWith("/pending"), (state, action) => {
                 state.currentRequestId = action.meta.requestId;
             });

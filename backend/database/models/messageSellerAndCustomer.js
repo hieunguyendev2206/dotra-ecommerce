@@ -12,8 +12,29 @@ const messageSellerAndCustomerSchema = new Schema({
     }, file: {
         type: String, default: "",
     }, status: {
-        type: String, default: "unsent",
+        type: String,
+        enum: ['sent', 'delivered', 'seen'],
+        default: 'sent'
     },
+    isTyping: {
+        type: Boolean,
+        default: false
+    }
 }, {timestamps: true});
+
+// Middleware để cập nhật trạng thái tin nhắn
+messageSellerAndCustomerSchema.statics.updateMessageStatus = async function(messageId, status) {
+    try {
+        const result = await this.findByIdAndUpdate(
+            messageId,
+            { status: status },
+            { new: true }
+        );
+        return result;
+    } catch (error) {
+        console.error('Error updating message status:', error);
+        throw error;
+    }
+};
 
 module.exports = model("messageSellerAndCustomer", messageSellerAndCustomerSchema);

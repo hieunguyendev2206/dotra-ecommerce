@@ -148,36 +148,37 @@ export const chatSlice = createSlice({
                 action.payload,
             ];
         },
+        update_message_seller: (state, action) => {
+            state.seller_admin_messages = [
+                ...state.seller_admin_messages,
+                action.payload,
+            ];
+        },
+        update_admin_message: (state, action) => {
+            state.seller_admin_messages = [
+                ...state.seller_admin_messages,
+                action.payload,
+            ];
+        },
         update_active_customer: (state, action) => {
             state.activeCustomers = action.payload.data;
         },
         update_active_seller: (state, action) => {
             state.activeSeller = action.payload.data;
         },
-        update_seller_message: (state, action) => {
-            if (
-                !state.seller_admin_messages.find(
-                    (msg) => msg._id === action.payload._id
-                )
-            ) {
-                state.seller_admin_messages = [
-                    ...state.seller_admin_messages,
-                    action.payload,
-                ];
-            }
-        },
-        update_admin_message: (state, action) => {
-            if (
-                !state.seller_admin_messages.some(
-                    (msg) => msg._id === action.payload._id
-                )
-            ) {
-                state.seller_admin_messages = [
-                    ...state.seller_admin_messages,
-                    action.payload,
-                ];
-            }
-        },
+        update_message_status: (state, action) => {
+            const { messageId, status } = action.payload;
+            state.customer_seller_messages = state.customer_seller_messages.map(message => 
+                message._id === messageId 
+                    ? { ...message, status } 
+                    : message
+            );
+            state.seller_admin_messages = state.seller_admin_messages.map(message => 
+                message._id === messageId 
+                    ? { ...message, status } 
+                    : message
+            );
+        }
     },
     extraReducers(builder) {
         builder
@@ -246,10 +247,11 @@ export const chatSlice = createSlice({
 export const {
     message_clear,
     update_message_customer,
+    update_message_seller,
+    update_admin_message,
     update_active_customer,
     update_active_seller,
-    update_admin_message,
-    update_seller_message,
+    update_message_status
 } = chatSlice.actions;
 const chatReducer = chatSlice.reducer;
 export default chatReducer;

@@ -121,6 +121,9 @@ export const productSlice = createSlice({
             state.success_message = "";
             state.error_message = "";
         },
+        reset_product: (state) => {
+            state.product = {};
+        }
     },
     extraReducers(builder) {
         builder
@@ -136,17 +139,29 @@ export const productSlice = createSlice({
             })
             .addCase(get_product.fulfilled, (state, action) => {
                 state.loading = false;
-                state.product = action.payload.product;
+                if (action.payload.product) {
+                    state.product = {
+                        ...action.payload.product,
+                        colors: action.payload.product.colors || [],
+                        sizes: action.payload.product.sizes || []
+                    };
+                }
             })
             .addCase(update_product.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success_message = action.payload.message;
-                state.product = action.payload.data;
-                const index = state.products.findIndex(
-                    (product) => product._id === action.payload.data._id
-                );
-                if (index !== -1) {
-                    state.products[index] = action.payload.data;
+                if (action.payload.data) {
+                    state.product = {
+                        ...action.payload.data,
+                        colors: action.payload.data.colors || [],
+                        sizes: action.payload.data.sizes || []
+                    };
+                    const index = state.products.findIndex(
+                        (product) => product._id === action.payload.data._id
+                    );
+                    if (index !== -1) {
+                        state.products[index] = action.payload.data;
+                    }
                 }
             })
             .addCase(update_product_image.fulfilled, (state, action) => {
@@ -195,6 +210,6 @@ export const productSlice = createSlice({
     },
 });
 
-export const {message_clear} = productSlice.actions;
+export const {message_clear, reset_product} = productSlice.actions;
 const productReducer = productSlice.reducer;
 export default productReducer;

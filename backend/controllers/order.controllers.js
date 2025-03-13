@@ -4,9 +4,9 @@ const productModel = require("../database/models/product.models");
 const cartModel = require("../database/models/cart.models");
 const response = require("../utils/response");
 const httpStatusCode = require("../config/httpStatusCode");
-const {successMessage} = require("../config/message.config");
+const { successMessage } = require("../config/message.config");
 const {
-    mongo: {ObjectId},
+    mongo: { ObjectId },
 } = require("mongoose");
 const queryOrders = require("../utils/queryOrders");
 const mongoose = require("mongoose");
@@ -20,7 +20,7 @@ class orderController {
                 await orderModel.findByIdAndUpdate(orderId, {
                     delivery_status: "processing",
                 });
-                await sellerOfOrderModel.updateMany({orderId: orderId}, {delivery_status: "processing"});
+                await sellerOfOrderModel.updateMany({ orderId: orderId }, { delivery_status: "processing" });
             }
             return true;
         } catch (error) {
@@ -35,7 +35,7 @@ class orderController {
         if (newQuantity < 0) {
             newQuantity = 0;
         }
-        await productModel.findByIdAndUpdate(productId, {quantity: newQuantity});
+        await productModel.findByIdAndUpdate(productId, { quantity: newQuantity });
     };
 
     // Đặt hàng
@@ -52,6 +52,8 @@ class orderController {
             for (let j = 0; j < productIndex.length; j++) {
                 let tempCustomerOrder = productIndex[j].product_info;
                 tempCustomerOrder.quantity = productIndex[j].quantity;
+                tempCustomerOrder.color = productIndex[j].color;
+                tempCustomerOrder.size = productIndex[j].size;
                 await this.updateProductQuantity(productIndex[j].product_info._id, productIndex[j].quantity);
                 customerOrder.push(tempCustomerOrder);
                 if (productIndex[j]._id) {
@@ -79,6 +81,8 @@ class orderController {
                 for (let i = 0; i < productIndex.length; i++) {
                     let tempProduct = productIndex[i].product_info;
                     tempProduct.quantity = productIndex[i].quantity;
+                    tempProduct.color = productIndex[i].color;
+                    tempProduct.size = productIndex[i].size;
                     storeProducts.push(tempProduct);
                 }
                 sellerOfOrderData.push({
@@ -114,9 +118,9 @@ class orderController {
 
     // Lấy thông tin đơn hàng trả về customer
     get_orders_to_customer = async (req, res) => {
-        const {customerId} = req.params;
+        const { customerId } = req.params;
         try {
-            const orders = await orderModel.find({customerId: customerId});
+            const orders = await orderModel.find({ customerId: customerId });
             response(res, httpStatusCode.Ok, {
                 data: orders,
             });
@@ -129,7 +133,7 @@ class orderController {
 
     // Lấy thông tin chi tiết đơn hàng trả về customer
     get_order_details_to_customer = async (req, res) => {
-        const {orderId} = req.params;
+        const { orderId } = req.params;
         try {
             const order = await orderModel.findById(orderId);
             response(res, httpStatusCode.Ok, {
@@ -144,15 +148,15 @@ class orderController {
 
     // Lấy thông tin đơn hàng trả về admin
     get_order_to_admin = async (req, res) => {
-        const {searchValue, pageNumber, parPage} = req.query;
+        const { searchValue, pageNumber, parPage } = req.query;
         try {
             const orders = await orderModel
-                .find({customer_name: {$regex: searchValue, $options: "i"}})
-                .sort({createdAt: -1})
+                .find({ customer_name: { $regex: searchValue, $options: "i" } })
+                .sort({ createdAt: -1 })
                 .limit(parPage * 1)
                 .skip((pageNumber - 1) * parPage);
             const totalOrders = await orderModel.find({
-                customer_name: {$regex: searchValue, $options: "i"},
+                customer_name: { $regex: searchValue, $options: "i" },
             });
             response(res, httpStatusCode.Ok, {
                 data: orders, total: totalOrders.length,
@@ -166,10 +170,10 @@ class orderController {
 
     // Lấy thông tin chi tiết đơn hàng trả về admin
     get_order_details_to_admin = async (req, res) => {
-        const {orderId} = req.params;
+        const { orderId } = req.params;
         try {
             const order = await orderModel.aggregate([{
-                $match: {_id: new ObjectId(orderId)},
+                $match: { _id: new ObjectId(orderId) },
             }, {
                 $lookup: {
                     from: "selleroforders", localField: "_id", foreignField: "orderId", as: "sellerOfOrder",
@@ -187,7 +191,7 @@ class orderController {
 
     // Admin thay đổi trạng thái đơn hàng
     admin_change_status_order = async (req, res) => {
-        const {statusChange, orderId} = req.body;
+        const { statusChange, orderId } = req.body;
         try {
             await orderModel.findByIdAndUpdate(orderId, {
                 delivery_status: statusChange, changeStatusDate: new Date(),
@@ -206,7 +210,7 @@ class orderController {
     // Truy vấn đơn hàng
     admin_query_orders = async (req, res) => {
         try {
-            const orders = await orderModel.find({}).sort({createdAt: -1});
+            const orders = await orderModel.find({}).sort({ createdAt: -1 });
 
             const query = new queryOrders(orders, req.query)
                 .recentOrdersQuery()
@@ -230,22 +234,22 @@ class orderController {
 
     // Lấy danh sách đơn hàng trả về seller
     get_orders_to_seller = async (req, res) => {
-        const {sellerId} = req.params;
-        const {searchValue} = req.query;
+        const { sellerId } = req.params;
+        const { searchValue } = req.query;
         const pageNumber = parseInt(req.query.pageNumber);
         const parPage = parseInt(req.query.parPage);
 
         try {
             const ordersOfSeller = await sellerOfOrderModel
                 .find({
-                    sellerId: sellerId, customer_name: {$regex: searchValue, $options: "i"},
+                    sellerId: sellerId, customer_name: { $regex: searchValue, $options: "i" },
                 })
-                .sort({createdAt: -1})
+                .sort({ createdAt: -1 })
                 .limit(parPage)
                 .skip((pageNumber - 1) * parPage);
 
             const totalOrders = await sellerOfOrderModel.countDocuments({
-                sellerId: sellerId, customer_name: {$regex: searchValue, $options: "i"},
+                sellerId: sellerId, customer_name: { $regex: searchValue, $options: "i" },
             });
 
             response(res, httpStatusCode.Ok, {
@@ -260,7 +264,7 @@ class orderController {
 
     // Lấy thông tin chi tiết đơn hàng trả về seller
     get_order_details_to_seller = async (req, res) => {
-        const {orderId} = req.params;
+        const { orderId } = req.params;
 
         try {
             const order = await sellerOfOrderModel.findById({
@@ -278,7 +282,7 @@ class orderController {
 
     // Seller thay đổi trạng thái đơn hàng
     seller_change_status_order = async (req, res) => {
-        const {statusChange, orderId} = req.body;
+        const { statusChange, orderId } = req.body;
         try {
             const order = await sellerOfOrderModel.findById(orderId);
 
@@ -303,11 +307,11 @@ class orderController {
 
     // Seller truy vấn đơn hàng
     seller_query_orders = async (req, res) => {
-        const {sellerId} = req.params;
+        const { sellerId } = req.params;
         try {
             const sellerOfOrders = await sellerOfOrderModel
-                .find({sellerId: sellerId})
-                .sort({createdAt: -1});
+                .find({ sellerId: sellerId })
+                .sort({ createdAt: -1 });
 
             // Sáng thêm routes
             const query = new queryOrders(sellerOfOrders, req.query)
@@ -330,5 +334,6 @@ class orderController {
         }
     };
 }
+
 
 module.exports = new orderController();

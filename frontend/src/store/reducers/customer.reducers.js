@@ -102,18 +102,17 @@ export const customer_logout = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             await api.get("/customer-logout", {
+                signal: thunkAPI.signal,
                 withCredentials: true,
             });
-            removeCustomerAccessTokenFromLS(); // Đảm bảo token bị xóa khỏi localStorage
+            removeCustomerAccessTokenFromLS();
             return thunkAPI.fulfillWithValue();
         } catch (error) {
-            return thunkAPI.rejectWithValue("Lỗi khi đăng xuất");
+            const errorMessage = error.response?.data || "Lỗi khi đăng xuất";
+            return thunkAPI.rejectWithValue(errorMessage);
         }
     }
 );
-
-
-
 
 const decode_customer_access_token = (customer_access_token) => {
     if (customer_access_token) {
@@ -196,11 +195,6 @@ export const customerSlice = createSlice({
             .addCase(customer_logout.fulfilled, (state) => {
                 state.userInfo = null;
                 state.success_message = "Đăng xuất thành công";
-                removeCustomerAccessTokenFromLS(); // Đảm bảo token bị xóa khỏi localStorage
-            })
-            .addCase(customer_logout.rejected, (state, action) => {
-                state.error_message = action.payload || "Lỗi khi đăng xuất";
-                state.loading = false;
             })
             .addMatcher((action) => action.type.endsWith("/fulfilled"), (state, action) => {
                 if (state.loading && state.currentRequestId === action.meta.requestId) {

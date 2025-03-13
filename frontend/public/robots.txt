@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /payment/
+Disallow: /payment-success/
+Disallow: /payment-error/
+Disallow: /verify-email/
+Disallow: /oauth-google/
+
+Sitemap: https://dotra-home.vercel.app/sitemap.xml 

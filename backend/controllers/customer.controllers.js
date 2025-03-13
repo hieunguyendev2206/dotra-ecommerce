@@ -11,7 +11,6 @@ const sendMail = require("../utils/sendMail");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const oauthGoogle = require("../utils/oauthGoogle");
-// const sellerModel = require("../database/models/seller.models");
 
 class customerController {
     // Customer đăng ký tài khoản
@@ -273,7 +272,7 @@ class customerController {
                                                                                     <td style="\n                                              line-height: 24px;\n                                              font-size: 16px;\n                                              border-radius: 6px;\n                                              font-weight: 700 !important;\n                                              margin: 0;\n                                            "
                                                                                         align="center"
                                                                                         bgcolor="#0d6efd"><a
-                                                                                            href="https://dotra-home.vercel.app/verify-email-customer/${email_token}"
+                                                                                            href="http://localhost:3001/verify-email-customer/${email_token}"
                                                                                             style="\n                                                color: #ffffff;\n                                                font-size: 16px;\n                                                font-family: Helvetica, Arial, sans-serif;\n                                                text-decoration: none;\n                                                border-radius: 6px;\n                                                line-height: 20px;\n                                                display: block;\n                                                font-weight: 700 !important;\n                                                white-space: nowrap;\n                                                background-color: #0d6efd;\n                                                padding: 12px;\n                                                border: 1px solid #0d6efd;\n                                              ">Xác
                                                                                         thực tài khoản</a></td>
                                                                                 </tr>
@@ -396,9 +395,6 @@ class customerController {
                     });
                     res.cookie("customer_access_token", customer_access_token, {
                         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-                        httpOnly: true,
-                        secure: true, // Chỉ cho phép trên HTTPS
-                        sameSite: "none", // Cho phép sử dụng trên các domain khác nhau
                     });
                     response(res, httpStatusCode.Ok, {
                         message: successMessage.LOGIN_SUCCESS, data: customer_access_token,
@@ -433,9 +429,6 @@ class customerController {
                     });
                     res.cookie("customer_access_token", customer_access_token, {
                         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-                        httpOnly: true,
-                        secure: true, // Chỉ cho phép trên HTTPS
-                        sameSite: "none", // Cho phép sử dụng trên các domain khác nhau
                     });
                     const urlRedirect = `${env.CLIENT_REDIRECT_CALLBACK}?customer_access_token=${customer_access_token}`;
                     return res.redirect(urlRedirect);
@@ -460,9 +453,6 @@ class customerController {
                     });
                     res.cookie("customer_access_token", customer_access_token, {
                         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-                        httpOnly: true,
-                        secure: true, // Chỉ cho phép trên HTTPS
-                        sameSite: "none", // Cho phép sử dụng trên các domain khác nhau
                     });
                     const urlRedirect = `${env.CLIENT_REDIRECT_CALLBACK}?customer_access_token=${customer_access_token}`;
                     return res.redirect(urlRedirect);
@@ -480,14 +470,12 @@ class customerController {
     };
 
     // Customer đăng xuất
-    // Đã đúng, không cần sửa nhưng cần kiểm tra log nếu có vấn đề
     customer_logout = async (req, res) => {
-        res.clearCookie("customer_access_token"); // Xóa cookie phía server
+        res.clearCookie("customer_access_token");
         response(res, httpStatusCode.Ok, {
             message: successMessage.LOGOUT_SUCCESS,
         });
     };
-
 
     //Customer profile lấy dữ liệu
     get_customer_profile = async (req, res) => {
@@ -523,25 +511,23 @@ class customerController {
 
     // Customer cập nhật ảnh đại diện
     upload_profile_image = async (req, res) => {
-        const {type} = req.body;
         const form = formidable({multiples: true});
-        form.prase(req, async (err, field, files) => {
+        form.parse(req, async (err, fields, files) => {
             if (err) {
-                console.error("Error parsing form data:", err);
-                return res.status(400).json({message: "Lỗi khi đọc form data."});
+                return response(res, httpStatusCode.BadRequest, {
+                    message: "Lỗi khi đọc form data"
+                });
             }
 
-            if (!files.image) {
-                return res.status(400).json({message: "Không có file được upload."});
-            }
+            const {type} = fields;
+            const {image} = files;
 
-            console.log("Uploaded file:", files.image);
-
-            const {image} = files; // Đảm bảo trường 'image' tồn tại
             if (!image) {
-                return res.status(400).json({message: "File upload không tồn tại"});
+                return response(res, httpStatusCode.BadRequest, {
+                    message: "Không có file được upload"
+                });
             }
-            // const { image } = files;
+
             cloudinary.config({
                 cloud_name: env.CLOUDINARY_CLOUD_NAME,
                 api_key: env.CLOUDINARY_API_KEY,
@@ -555,23 +541,30 @@ class customerController {
                 });
 
                 if (!upload) {
-                    throw new Error("Cloudinary upload failed");
+                    return response(res, httpStatusCode.BadRequest, {
+                        message: "Upload ảnh thất bại"
+                    });
                 }
-                const updateData = type === "avatar" ? {avatar: upload.url} : {cover: upload.url};
+
                 const customerId = req.id;
-                const updatedCustomer = await customerModel.findByIdAndUpdate(customerId, updateData, {new: true});
+                const updateData = type === "avatar" ? {avatar: upload.url} : {cover: upload.url};
+                const updatedCustomer = await customerModel.findByIdAndUpdate(
+                    customerId, 
+                    updateData,
+                    {new: true}
+                );
+
                 response(res, httpStatusCode.Ok, {
-                    message: "Upload ảnh thành công", data: updatedCustomer
+                    message: "Upload ảnh thành công",
+                    data: updatedCustomer
                 });
             } catch (error) {
-                console.error("Cloudinary Upload Error:", error);
-                return res.status(500).json({message: "Lỗi khi upload ảnh lên Cloudinary"});
-                // response(res, httpStatusCode.InternalServerError, {
-                //     message: error.message
-                // });
+                response(res, httpStatusCode.InternalServerError, {
+                    message: error.message
+                });
             }
         });
-    }
+    };
 }
 
 module.exports = new customerController();

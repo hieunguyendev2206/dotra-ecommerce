@@ -1,13 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8"/>
-    <link href="/public/favicon-dotra.png" rel="icon" type="image/svg+xml"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Dotra | Ecommerce-Website</title>
+    <link rel="icon" type="image/png" href="/favicon-dotra.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    <!-- Primary Meta Tags -->
+    <title>Dotra - Sàn thương mại điện tử đa người bán</title>
+    <meta name="title" content="Dotra - Sàn thương mại điện tử đa người bán">
+    <meta name="description" content="Dotra - Nền tảng mua sắm trực tuyến hàng đầu với đa dạng sản phẩm từ nhiều người bán. Mua sắm an toàn, tiện lợi với giá tốt nhất.">
+    <meta name="keywords" content="dotra, thương mại điện tử, mua sắm online, marketplace, vietnam ecommerce">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Vietnamese">
+    <meta name="revisit-after" content="1 days">
+    <meta name="author" content="Dotra">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dotra-home.vercel.app/">
+    <meta property="og:title" content="Dotra - Sàn thương mại điện tử đa người bán">
+    <meta property="og:description" content="Dotra - Nền tảng mua sắm trực tuyến hàng đầu với đa dạng sản phẩm từ nhiều người bán. Mua sắm an toàn, tiện lợi với giá tốt nhất.">
+    <meta property="og:image" content="https://dotra-home.vercel.app/og-image.jpg">
+    <meta property="og:locale" content="vi_VN">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dotra-home.vercel.app/">
+    <meta property="twitter:title" content="Dotra - Sàn thương mại điện tử đa người bán">
+    <meta property="twitter:description" content="Dotra - Nền tảng mua sắm trực tuyến hàng đầu với đa dạng sản phẩm từ nhiều người bán. Mua sắm an toàn, tiện lợi với giá tốt nhất.">
+    <meta property="twitter:image" content="https://dotra-home.vercel.app/twitter-image.jpg">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dotra-home.vercel.app/" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Preconnect to required origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" as="image" href="/logo.png">
+    <link rel="preload" as="style" href="/src/index.css">
 </head>
 <body>
-<div id="root"></div>
-<script src="/src/main.jsx" type="module"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Structured Data for Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Dotra",
+      "url": "https://your-domain.com",
+      "logo": "https://dotra-home.vercel.app/logo.png",
+      "description": "Dotra - Nền tảng mua sắm trực tuyến hàng đầu với đa dạng sản phẩm từ nhiều người bán.",
+      "sameAs": [
+        "https://facebook.com/dotra",
+        "https://twitter.com/dotra",
+        "https://instagram.com/dotra"
+      ]
+    }
+    </script>
 </body>
 </html>

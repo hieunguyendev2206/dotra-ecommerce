@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 import axios from "axios";
 
+
 // Hàm để lấy tên đầy đủ cho tỉnh/thành phố, quận/huyện và xã/phường từ mã
 const getLocationNames = async (provinceCode, districtCode, wardCode) => {
     const provinceName = await axios.get(`/api-provinces/api/p/${provinceCode}`);
@@ -15,17 +16,10 @@ const getLocationNames = async (provinceCode, districtCode, wardCode) => {
     };
 };
 
+
 // Reducer đặt hàng
 export const place_order = createAsyncThunk("order/place_order", async ({
-                                                                            customerId,
-                                                                            customer_name,
-                                                                            products,
-                                                                            price,
-                                                                            shipping_fee,
-                                                                            items,
-                                                                            navigate,
-                                                                            shippingInfo,
-                                                                        }, thunkAPI) => {
+                                                                            customerId, customer_name, products, price, shipping_fee, items, navigate, shippingInfo,}, thunkAPI) => {
     try {
         // Lấy tên đầy đủ cho địa chỉ từ mã
         const locationNames = await getLocationNames(shippingInfo.province, shippingInfo.district, shippingInfo.ward);

@@ -4,9 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { get_order_details } from "../../../store/reducers/order.reducers";
 import { formatDate, formateCurrency } from "../../../utils/formate";
-import domtoimage from "dom-to-image-more";
-import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import domtoimage from "dom-to-image-more";
 
 const OrderDetails = () => {
     const dispatch = useDispatch();
@@ -21,13 +20,12 @@ const OrderDetails = () => {
     }, [dispatch, orderId]);
 
     const handleExportPDF = async () => {
-        const element = invoiceRef.current;
+        const element = invoiceRef.current; // Lấy nội dung cần xuất PDF
         try {
-            const canvas = await html2canvas(element, { useCORS: true });
-            const dataUrl = canvas.toDataURL("image/png");
+            const dataUrl = await domtoimage.toPng(element, { quality: 1 });
             const pdf = new jsPDF("p", "mm", "a4");
             const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            const pdfHeight = (element.offsetHeight * pdfWidth) / element.offsetWidth;
 
             pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
             pdf.save(`HoaDon_${order_details._id}.pdf`);
@@ -137,6 +135,8 @@ const OrderDetails = () => {
                         <tr>
                             <th className="border px-3 py-2">Hình ảnh</th>
                             <th className="border px-3 py-2">Tên sản phẩm</th>
+                            <th className="border px-3 py-2">Màu sắc</th>
+                            <th className="border px-3 py-2">Kích thước</th>
                             <th className="border px-3 py-2">Số lượng</th>
                             <th className="border px-3 py-2">Đơn giá</th>
                             <th className="border px-3 py-2">Thành tiền</th>
@@ -150,7 +150,6 @@ const OrderDetails = () => {
                                         className="w-14 h-14"
                                         src={p.images[0]}
                                         alt={p.product_name}
-                                        crossOrigin="anonymous"
                                     />
                                 </td>
                                 <td className="border px-3 py-2">
@@ -163,6 +162,17 @@ const OrderDetails = () => {
                                     <p className="text-sm text-gray-500">
                                         Thương hiệu: {p.brand_name}
                                     </p>
+                                </td>
+                                <td className="border px-3 py-2">
+                                    {p?.color?.code && (
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-4 h-4 rounded-full border" style={{backgroundColor: p.color.code}}></span>
+                                            <span>{p.color.name}</span>
+                                        </div>
+                                    )}
+                                </td>
+                                <td className="border px-3 py-2">
+                                    {p?.size}
                                 </td>
                                 <td className="border px-3 py-2">{p.quantity}</td>
                                 <td className="border px-3 py-2">
@@ -182,5 +192,6 @@ const OrderDetails = () => {
         </div>
     );
 };
+
 
 export default OrderDetails;

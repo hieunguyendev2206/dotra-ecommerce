@@ -19,7 +19,21 @@ const productSchema = new Schema({
         type: String, required: true,
     }, images: {
         type: Array, required: true,
-    }, slug: {
+    }, colors: [{
+        name: {
+            type: String,
+            required: true
+        },
+        code: {
+            type: String,
+            required: true
+        }
+    }],
+    sizes: [{
+        type: String,
+        required: true
+    }],
+    slug: {
         type: String, required: true,
     }, rating: {
         type: Number, default: 0,

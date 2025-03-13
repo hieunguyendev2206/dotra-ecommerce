@@ -1,6 +1,5 @@
 const customerControllers = require("../controllers/customer.controllers");
 const router = require("express").Router();
-const authMiddlewares = require("../middlewares/auth.middlewares");
 const authMiddlewares_customer = require("../middlewares/customer.middlewares");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });

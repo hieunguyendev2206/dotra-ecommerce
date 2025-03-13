@@ -148,8 +148,14 @@ const FeatureProduct = ({products}) => {
                             </div>
                             <div className="flex justify-center items-center">
                                 <Rating rating={p.rating}/>
-                                <h2 className="font-medium text-green-600 ml-10">
-                                    Số lượng: {p.quantity}
+                                <h2 className={`font-medium ml-20 ${
+                                    p.quantity === 0 
+                                        ? "text-red-500" 
+                                        : p.quantity < 10 
+                                            ? "text-orange-500" 
+                                            : "text-green-600"
+                                }`}>
+                                    {p.quantity === 0 ? "Đã bán hết" : p.quantity < 10 ? "Sắp hết" : `Số lượng: ${p.quantity}`}
                                 </h2>
                             </div>
                         </div>

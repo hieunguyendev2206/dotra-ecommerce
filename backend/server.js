@@ -7,10 +7,11 @@ const cors = require("cors");
 const http = require("http");
 const socket = require("socket.io");
 const { databaseConnect } = require("./database/database");
+const messageSellerAndCustomer = require("./database/models/messageSellerAndCustomer");
+const messageSellerAndAdmin = require("./database/models/messageSellerAndAdmin");
 const server = http.createServer(app);
 const stripe = require("stripe")("sk_test_51PGcpoAJsOUKToQLJFP71JX7fI1YP7Wv1xu1dQteGu1yfwTwO6dlfIdZVGCS8SQPwxggVl3BVHa55tmgjzrpZ5ni00XgCx7Tff");
-// const endpointSecret = "whsec_8acc169e541ff3c316ca885ecb3b1a30e216f6ba50e80902d9dee1d9ed6a0f40";
-const endpointSecret = "whsec_cVgpeO01cwJgC9qOWJ2pheoZTAisM8pX";
+const endpointSecret = "whsec_8acc169e541ff3c316ca885ecb3b1a30e216f6ba50e80902d9dee1d9ed6a0f40";
 const io = socket(server, {
     cors: {
         origin: "*",
@@ -63,6 +64,7 @@ function handleChargeSucceeded(charge) {
     // Thêm logic xử lý tại đây
 }
 
+
 // Middleware
 app.use(cors({
     origin: ["https://admin-topaz-three.vercel.app",
@@ -71,6 +73,8 @@ app.use(cors({
             ],
     credentials: true,
 }));
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -93,63 +97,32 @@ app.use("/api/chat", require("./routes/chat.routes"));
 app.use("/api/payment", require("./routes/payment.routes"));
 
 // Stripe Webhook
-// app.post("/webhook", express.raw({ type: "application/json" }), (request, response) => {
-//     const sig = request.headers["stripe-signature"];
-//     let event;
-//
-//     try {
-//         event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-//     } catch (err) {
-//         console.error(`Failed to construct event: ${err.message}`);
-//         response.status(400).send(`Webhook Error: ${err.message}`);
-//         return;
-//     }
-//
-//     // Handle Stripe Events
-//     switch (event.type) {
-//         case "checkout.session.completed":
-//             handleCheckoutSessionCompleted(event.data.object);
-//             break;
-//         case "charge.succeeded":
-//             handleChargeSucceeded(event.data.object);
-//             break;
-//         default:
-//             console.log(`Unhandled event type: ${event.type}`);
-//     }
-//
-//     response.send();
-// });
-
-// Stripe Webhook Endpoint
-app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
-    const sig = req.headers["stripe-signature"];
+app.post("/webhook", express.raw({ type: "application/json" }), (request, response) => {
+    const sig = request.headers["stripe-signature"];
     let event;
 
     try {
-        // Xác minh chữ ký với raw payload
-        event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+        event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
     } catch (err) {
-        console.error(`Webhook signature verification failed: ${err.message}`);
-        return res.status(400).send(`Webhook Error: ${err.message}`);
+        console.error(`Failed to construct event: ${err.message}`);
+        response.status(400).send(`Webhook Error: ${err.message}`);
+        return;
     }
 
-    // Xử lý các sự kiện Stripe
+    // Handle Stripe Events
     switch (event.type) {
-        case "transfer.created":
-            const transfer = event.data.object;
-            console.log(`Transfer created: ${transfer.id}`);
-            // Logic xử lý cho transfer.created
+        case "checkout.session.completed":
+            handleCheckoutSessionCompleted(event.data.object);
             break;
-
+        case "charge.succeeded":
+            handleChargeSucceeded(event.data.object);
+            break;
         default:
             console.log(`Unhandled event type: ${event.type}`);
     }
 
-    // Trả về 200 OK cho Stripe
-    res.status(200).send("Webhook received");
+    response.send();
 });
-
-
 
 // WebSocket xử lý các kết nối thời gian thực
 io.on("connection", (socket) => {
@@ -177,6 +150,7 @@ io.on("connection", (socket) => {
         const customer = findCustomer(msg.receiverId);
         if (customer) {
             socket.to(customer.socketId).emit("seller_message", msg);
+            socket.to(customer.socketId).emit("message_delivered", msg._id);
         }
     });
 
@@ -184,6 +158,7 @@ io.on("connection", (socket) => {
         const seller = findSeller(msg.receiverId);
         if (seller) {
             socket.to(seller.socketId).emit("customer_message", msg);
+            socket.to(seller.socketId).emit("message_delivered", msg._id);
         }
     });
 
@@ -191,15 +166,50 @@ io.on("connection", (socket) => {
         const seller = findSeller(msg.receiverId);
         if (seller) {
             socket.to(seller.socketId).emit("receive_admin_message", msg);
+            socket.to(seller.socketId).emit("message_delivered", msg._id);
         }
     });
 
     socket.on("send_message_seller_to_admin", (msg) => {
         if (admin.socketId) {
-            socket.to(admin.socketId).emit("receive_seller_message", msg); // Đảm bảo emit đúng event
+            socket.to(admin.socketId).emit("receive_seller_message", msg);
+            socket.to(admin.socketId).emit("message_delivered", msg._id);
         }
     });
 
+    socket.on("message_delivered", async (messageId) => {
+        try {
+            await messageSellerAndCustomer.updateMessageStatus(messageId, 'delivered');
+            await messageSellerAndAdmin.updateMessageStatus(messageId, 'delivered');
+            io.emit('message_status_update', { messageId, status: 'delivered' });
+        } catch (error) {
+            console.error('Error updating message status:', error);
+        }
+    });
+
+    socket.on("message_seen", async (messageId, senderId) => {
+        try {
+            await messageSellerAndCustomer.updateMessageStatus(messageId, 'seen');
+            await messageSellerAndAdmin.updateMessageStatus(messageId, 'seen');
+            io.emit('message_status_update', { messageId, status: 'seen' });
+        } catch (error) {
+            console.error('Error updating message seen status:', error);
+        }
+    });
+
+    socket.on("typing_start", (data) => {
+        const receiver = findSeller(data.receiverId) || findCustomer(data.receiverId) || admin;
+        if (receiver && receiver.socketId) {
+            socket.to(receiver.socketId).emit("typing_start_receive", data.senderId);
+        }
+    });
+
+    socket.on("typing_stop", (data) => {
+        const receiver = findSeller(data.receiverId) || findCustomer(data.receiverId) || admin;
+        if (receiver && receiver.socketId) {
+            socket.to(receiver.socketId).emit("typing_stop_receive", data.senderId);
+        }
+    });
 
     socket.on("disconnect", () => {
         console.log("User disconnected...");
@@ -207,7 +217,6 @@ io.on("connection", (socket) => {
         io.emit("active_customer", allCustomer);
         io.emit("active_seller", allSeller);
     });
-
 });
 
 // Kết nối Database và khởi động Server

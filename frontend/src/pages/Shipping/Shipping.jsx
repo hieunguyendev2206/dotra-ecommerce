@@ -285,6 +285,22 @@ const Shipping = () => {
                                                         <img className="w-[80px] h-[80px]" src={p.product_info.images[0]} alt="product image" />
                                                         <div className="pr-4 text-slate-600">
                                                             <h2 className="text-sm line-clamp-2">{p.product_info.product_name}</h2>
+                                                            <div className="flex flex-col gap-1">
+                                                                {p?.color?.code && (
+                                                                    <span className="text-sm text-gray-600">
+                                                                        Màu sắc: 
+                                                                        <div className="inline-flex items-center gap-1 ml-1">
+                                                                            <span className="w-4 h-4 rounded-full border" style={{backgroundColor: p.color.code}}></span>
+                                                                            <span className="font-medium">{p.color.name}</span>
+                                                                        </div>
+                                                                    </span>
+                                                                )}
+                                                                {p?.size && (
+                                                                    <span className="text-sm text-gray-600">
+                                                                        Kích thước: <span className="font-medium">{p.size}</span>
+                                                                    </span>
+                                                                )}
+                                                            </div>
                                                             <span className="text-sm text-blue-600 font-medium">Thương hiệu : {p.product_info.brand_name}</span>
                                                         </div>
                                                     </div>
@@ -319,14 +335,30 @@ const Shipping = () => {
                                     {coupons_price > 0 && (
                                         <div className="flex justify-between items-center">
                                             <span>Giảm giá</span>
-                                            <span className="text-lg ml-2 text-red-600">- {formateCurrency(coupons_price)}</span>
+                                            <span
+                                                className="text-lg ml-2 text-red-600">
+                                                - {formateCurrency(coupons_price)}
+                                            </span>
                                         </div>
                                     )}
                                     <div className="flex justify-between items-center">
                                         <span>Tổng cộng</span>
-                                        <span className="text-xl font-bold ml-2 text-red-600">{formateCurrency(final_price + shipping_fee)}</span>
+                                        <span
+                                            className="text-xl font-bold ml-2 text-red-600">
+                                            {formateCurrency(final_price + shipping_fee)}
+                                        </span>
                                     </div>
-                                    <button onClick={placeOrder} disabled={res ? false : true} className={`px-5 py-[8px] rounded-sm hover:shadow-red-700/20 hover:shadow-lg ${res ? "bg-red-500" : "bg-red-700"} text-sm text-white uppercase`}>
+                                    <button
+                                        onClick={placeOrder} 
+                                        disabled={!res}
+                                        className={
+                                            `px-5 py-[8px] 
+                                            rounded-sm 
+                                            hover:shadow-red-700/20 
+                                            hover:shadow-lg ${res ? "bg-red-500" : "bg-red-700"} 
+                                            text-sm text-white uppercase`
+                                        }
+                                    >
                                         Đặt Hàng
                                     </button>
                                 </div>
@@ -339,5 +371,7 @@ const Shipping = () => {
         </div>
     );
 };
+
+
 
 export default Shipping;

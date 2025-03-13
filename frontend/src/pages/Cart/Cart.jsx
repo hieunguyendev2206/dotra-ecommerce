@@ -65,6 +65,11 @@ const Cart = () => {
     }, [dispatch, userInfo.id]);
 
     useEffect(() => {
+        console.log("Cart data:", cart);
+        console.log("Out of stock data:", out_of_stock);
+    }, [cart, out_of_stock]);
+
+    useEffect(() => {
         if (success_message) {
             toast.success(success_message);
             dispatch(message_clear());
@@ -171,6 +176,22 @@ const Cart = () => {
                                                                         <h2 className="text-sm line-clamp-2">
                                                                             {p.product_info.product_name}
                                                                         </h2>
+                                                                        <div className="flex flex-col gap-1">
+                                                                            {p?.color?.code && (
+                                                                                <span className="text-sm text-gray-600">
+                                                                                    Màu sắc: 
+                                                                                    <div className="inline-flex items-center gap-1 ml-1">
+                                                                                        <span className="w-4 h-4 rounded-full border" style={{backgroundColor: p.color.code}}></span>
+                                                                                        <span className="font-medium">{p.color.name}</span>
+                                                                                    </div>
+                                                                                </span>
+                                                                            )}
+                                                                            {p?.size && (
+                                                                                <span className="text-sm text-gray-600">
+                                                                                    Kích thước: <span className="font-medium">{p.size}</span>
+                                                                                </span>
+                                                                            )}
+                                                                        </div>
                                                                         <span
                                                                             className="text-sm font-semibold text-blue-500">
                                                                           {p.product_info.brand_name}.
@@ -296,6 +317,22 @@ const Cart = () => {
                                                                         <h2 className="text-sm line-clamp-2">
                                                                             {p.products[0].product_name}
                                                                         </h2>
+                                                                        <div className="flex flex-col gap-1">
+                                                                            {p?.color?.code && (
+                                                                                <span className="text-sm text-gray-600">
+                                                                                    Màu sắc: 
+                                                                                    <div className="inline-flex items-center gap-1 ml-1">
+                                                                                        <span className="w-4 h-4 rounded-full border" style={{backgroundColor: p.color.code}}></span>
+                                                                                        <span className="font-medium">{p.color.name}</span>
+                                                                                    </div>
+                                                                                </span>
+                                                                            )}
+                                                                            {p?.size && (
+                                                                                <span className="text-sm text-gray-600">
+                                                                                    Kích thước: <span className="font-medium">{p.size}</span>
+                                                                                </span>
+                                                                            )}
+                                                                        </div>
                                                                         <span
                                                                             className="text-sm font-semibold text-blue-500">
                                                                           {p.products[0].brand_name}.
@@ -419,18 +456,20 @@ const Cart = () => {
                                                     </button>
                                                 </form>
                                             </div>
-                                            <div className="flex justify-between items-center">
-                                                <span>Tổng tiền</span>
-                                                <span className="text-lg text-orange-500">
-                                                  {formateCurrency(final_price + shipping_fee)}
-                                                </span>
+                                            <div className="flex flex-col gap-4">
+                                                <div className="flex justify-between items-center">
+                                                    <span>Tổng tiền</span>
+                                                    <span className="text-lg text-orange-500">
+                                                        {formateCurrency(final_price + shipping_fee)}
+                                                    </span>
+                                                </div>
+                                                <button
+                                                    onClick={redirect}
+                                                    className="px-5 py-[8px] rounded-md hover:shadow-orange-500/20 hover:shadow-lg bg-red-500 text-sm text-white uppercase"
+                                                >
+                                                    Thanh toán {buy_product_item} sản phẩm
+                                                </button>
                                             </div>
-                                            <button
-                                                onClick={redirect}
-                                                className="px-5 py-[8px] rounded-md hover:shadow-orange-500/20 hover:shadow-lg bg-red-500 text-sm text-white uppercase"
-                                            >
-                                                Thanh toán {buy_product_item} sản phẩm
-                                            </button>
                                         </div>
                                     )}
                                 </div>
@@ -439,7 +478,7 @@ const Cart = () => {
                     ) : (
                         <div className="flex flex-col justify-center items-center h-[400px]">
                             <img width="500px" height="500px" src={CartNone} alt="No-Item" className="mb-4"/>
-                            <h2 className="text-xl text-center font-medium mb-4 font-mono">
+                            <h2 className="text-xl font-medium mb-4 font-mono">
                                 Chưa có sản phẩm nào trong giỏ hàng!
                             </h2>
                             <Link to={path.shop} className="px-4 py-2 bg-red-500 text-white rounded-md ">

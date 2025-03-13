@@ -61,7 +61,8 @@ const Product = ({products, title}) => {
                     {p.map((pl, j) => (
                         <Link key={j} className="flex justify-start items-start" to={`/home/product-details/${pl.slug}`}>
                             <img
-                                className="w-[110px] h-[110px]"
+                                className="w-[115px] h-[115px]"
+                                style={{aspectRatio: "1 / 1", objectPosition: "center"}}
                                 src={pl.images[0]}
                                 alt="images"
                             />
@@ -87,6 +88,11 @@ const Product = ({products, title}) => {
                                             {formateCurrency(pl.price)}
                                         </span>
                                     )}
+                                </div>
+                                <div className="flex justify-start items-center gap-2">
+                                    <span className={`text-sm ${pl.quantity === 0 ? 'text-red-500' : 'text-green-600'}`}>
+                                        {pl.quantity === 0 ? 'Đã bán hết' : `Số lượng: ${pl.quantity} ${pl.quantity < 10 ? ' (Sắp hết)' : ''}`}
+                                    </span>
                                 </div>
                             </div>
                         </Link>

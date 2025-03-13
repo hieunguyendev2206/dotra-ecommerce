@@ -9,13 +9,20 @@ const {successMessage, errorMessage} = require("../config/message.config");
 class productController {
     // Thêm sản phẩm
     add_product = async (req, res) => {
-        const {id} = req; // id đã decode ở middleware auth
+        const {id} = req;
         const form = formidable({multiples: true});
         form.parse(req, async (err, field, files) => {
             let {
                 product_name, brand_name, category_name, price, quantity, discount, description, shop_name,
+                colors,
+                sizes
             } = field;
             const {images} = files;
+
+            // Parse colors và sizes từ JSON string sang object
+            const parsedColors = JSON.parse(colors);
+            const parsedSizes = JSON.parse(sizes);
+            
             product_name = product_name.trim();
             const slug = product_name.split(" ").join("-");
 
@@ -45,6 +52,8 @@ class productController {
                     discount: parseInt(discount),
                     description: description.trim(),
                     images: allImageUrl,
+                    colors: parsedColors,
+                    sizes: parsedSizes,
                     slug,
                     shop_name,
                 });
@@ -126,8 +135,6 @@ class productController {
         }
     };
 
-
-
     get_shop_products = async (req, res) => {
         const { shopId } = req.params;
         try {
@@ -142,6 +149,8 @@ class productController {
     update_product = async (req, res) => {
         let {
             product_name, brand_name, price, quantity, discount, description, productId,
+            colors,
+            sizes
         } = req.body;
 
         let updateFields = {};
@@ -156,6 +165,8 @@ class productController {
         if (quantity) updateFields.quantity = parseInt(quantity);
         if (discount) updateFields.discount = parseInt(discount);
         if (description) updateFields.description = description.trim();
+        if (colors) updateFields.colors = colors;
+        if (sizes) updateFields.sizes = sizes;
 
         try {
             await productModel.findByIdAndUpdate(productId, updateFields);
@@ -228,8 +239,7 @@ class productController {
                 });
             } else {
                 response(res, httpStatusCode.Ok, {
-                    message: successMessage.DELETE_PRODUCT_SUCCESS,
-                    data: product,
+                    message: successMessage.DELETE_PRODUCT_SUCCESS, data: product,
                 });
             }
         } catch (error) {
@@ -238,7 +248,6 @@ class productController {
             });
         }
     };
-
 }
 
 module.exports = new productController();

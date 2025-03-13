@@ -105,19 +105,15 @@ class homeController {
 
         const filter = {};
         if (category) filter.category_name = category;
-        if (searchValue) filter.product_name = { $regex: searchValue, $options: 'i' }; // $regex tìm kiếm gần đúng
+        if (searchValue) filter.product_name = { $regex: searchValue, $options: 'i' };
 
-        console.log("Filter tìm kiếm:", filter); // Kiểm tra filter được tạo
         try {
             const products = await productModel.find(filter);
-            console.log("Kết quả tìm kiếm:", products); // Xem sản phẩm trả về
             res.status(200).json(products);
         } catch (error) {
-            console.error("Lỗi khi tìm kiếm sản phẩm:", error);
             res.status(500).json({ message: 'Lỗi server', error });
         }
     };
-
 
     // Lấy chi tiết sản phẩm theo id
     get_product_details = async (req, res) => {
@@ -163,6 +159,7 @@ class homeController {
         }
     };
 
+    // Lấy chi tiết sản phẩm theo slug
     get_product_by_slug = async (req, res) => {
         const { slug } = req.params;
         try {
@@ -193,8 +190,6 @@ class homeController {
             });
         }
     };
-
-
 }
 
 module.exports = new homeController();

@@ -1,0 +1,24 @@
+{
+  "name": "Dotra - Sàn thương mại điện tử đa người bán",
+  "short_name": "Dotra",
+  "description": "Nền tảng mua sắm trực tuyến hàng đầu với đa dạng sản phẩm từ nhiều người bán",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon-dotra.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "vi-VN"
+} 

@@ -1,6 +1,6 @@
 import { Badge } from "flowbite-react";
 import { formatDate, formateCurrency } from "../../../utils/formate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { get_order_details_to_admin } from "../../../store/reducers/order.reducers";
@@ -10,9 +10,18 @@ const OrderDetails = () => {
     const { orderId } = useParams();
     const dispatch = useDispatch();
     const { order_details } = useSelector((state) => state.order);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        dispatch(get_order_details_to_admin(orderId));
+        const loadOrderDetails = async () => {
+            setIsLoading(true);
+            try {
+                await dispatch(get_order_details_to_admin(orderId));
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        loadOrderDetails();
     }, [dispatch, orderId]);
 
     const getStatusIcon = (status) => {
@@ -29,6 +38,26 @@ const OrderDetails = () => {
                 return null;
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="text-center">
+                    <h2 className="text-xl font-semibold text-gray-600">Đang tải thông tin đơn hàng...</h2>
+                </div>
+            </div>
+        );
+    }
+
+    if (!order_details) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="text-center">
+                    <h2 className="text-xl font-semibold text-red-600">Không tìm thấy thông tin đơn hàng</h2>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="bg-gray-100 p-6">
@@ -153,5 +182,6 @@ const OrderDetails = () => {
         </div>
     );
 };
+
 
 export default OrderDetails;

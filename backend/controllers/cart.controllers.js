@@ -10,23 +10,50 @@ const httpStatusCode = require("../config/httpStatusCode");
 class cartController {
     // Thêm sản phẩm vào giỏ hàng
     add_to_cart = async (req, res) => {
-        const {customerId, productId, quantity} = req.body;
+        const {customerId, productId, quantity, color, size} = req.body;
+
         try {
-            const cart_product = await cartModel.findOne({
-                $and: [{customerId: {$eq: customerId}}, {productId: {$eq: productId}},],
-            });
-            if (cart_product) {
-                response(res, httpStatusCode.BadRequest, {
-                    message: errorMessage.PRODUCT_ALREADY_IN_CART,
-                });
-            } else {
-                const cartProduct = await cartModel.create({
-                    customerId, productId, quantity,
-                });
-                response(res, httpStatusCode.Created, {
-                    message: successMessage.ADD_TO_CART_SUCCESS, cartProduct,
+            if (!color || !color.name || !color.code) {
+                return response(res, httpStatusCode.BadRequest, {
+                    message: "Vui lòng chọn màu sắc sản phẩm",
                 });
             }
+
+            if (!size) {
+                return response(res, httpStatusCode.BadRequest, {
+                    message: "Vui lòng chọn kích thước sản phẩm",
+                });
+            }
+
+            const existingCartItem = await cartModel.findOne({
+                customerId,
+                productId,
+                'color.name': color.name,
+                'color.code': color.code,
+                size
+            });
+
+            if (existingCartItem) {
+                existingCartItem.quantity += quantity;
+                await existingCartItem.save();
+                return response(res, httpStatusCode.Ok, {
+                    message: successMessage.INCREASE_QUANTITY_SUCCESS,
+                    data: existingCartItem,
+                });
+            }
+
+            const cart = await cartModel.create({
+                customerId,
+                productId,
+                quantity,
+                color,
+                size
+            });
+
+            response(res, httpStatusCode.Created, {
+                message: successMessage.ADD_TO_CART_SUCCESS,
+                data: cart,
+            });
         } catch (error) {
             response(res, httpStatusCode.InternalServerError, {
                 message: error.message,
@@ -94,10 +121,14 @@ class cartController {
                                 _id: quantity_product[j]._id,
                                 quantity: quantity_product[j].quantity,
                                 product_info: temp_product,
+                                color: quantity_product[j].color,
+                                size: quantity_product[j].size
                             },] : [{
                                 _id: quantity_product[j]._id,
                                 quantity: quantity_product[j].quantity,
                                 product_info: temp_product,
+                                color: quantity_product[j].color,
+                                size: quantity_product[j].size
                             },],
                         };
                     }
@@ -193,6 +224,7 @@ class cartController {
             });
         }
     };
+
 }
 
 module.exports = new cartController();

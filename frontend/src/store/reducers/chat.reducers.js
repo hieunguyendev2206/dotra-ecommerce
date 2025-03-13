@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
-// 1. Reducer thêm một người bạn vào danh sách chat
+// Reducer thêm một người bạn vào danh sách chat
 export const add_chat_friend = createAsyncThunk(
     "chat/add_chat_friend",
     async (body, thunkAPI) => {
@@ -17,7 +17,7 @@ export const add_chat_friend = createAsyncThunk(
     }
 );
 
-// 2. Reducer gửi tin nhắn
+// Reducer gửi tin nhắn
 export const send_message = createAsyncThunk(
     "chat/send_message",
     async (body, thunkAPI) => {
@@ -51,6 +51,14 @@ export const chatSlice = createSlice({
         update_message: (state, { payload }) => {
             state.messages = [...state.messages, payload];
         },
+        update_message_status: (state, { payload }) => {
+            const { messageId, status } = payload;
+            state.messages = state.messages.map(message => 
+                message._id === messageId 
+                    ? { ...message, status } 
+                    : message
+            );
+        }
     },
     extraReducers(builder) {
         builder
@@ -97,6 +105,6 @@ export const chatSlice = createSlice({
     },
 });
 
-export const { message_clear, update_message } = chatSlice.actions;
+export const { message_clear, update_message, update_message_status } = chatSlice.actions;
 const chatReducer = chatSlice.reducer;
 export default chatReducer;

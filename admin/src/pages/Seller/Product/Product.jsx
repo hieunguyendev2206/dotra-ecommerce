@@ -57,9 +57,22 @@ const Product = () => {
         price: "",
         discount: "",
         description: "",
+        colors: [],
+        sizes: []
     });
 
     const [stateUpdateProduct, setStateUpdateProduct] = useState({});
+
+    const [newColor, setNewColor] = useState({ name: "", code: "" });
+    const [newSize, setNewSize] = useState("");
+
+    const [newUpdateColor, setNewUpdateColor] = useState({ name: "", code: "" });
+    const [newUpdateSize, setNewUpdateSize] = useState("");
+
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         dispatch(
@@ -90,8 +103,6 @@ const Product = () => {
         });
     };
 
-
-
     const handleInputTextEditor = (event, editor) => {
         const data = editor.getData();
         setStateProduct({
@@ -111,8 +122,6 @@ const Product = () => {
                     : value,
         });
     };
-
-
 
     const handleInputUpdateTextEditor = (event, editor) => {
         const data = editor.getData();
@@ -159,45 +168,178 @@ const Product = () => {
         setImageShow(filterImageUrl);
     };
 
-    const validateProductData = () => {
-        if (!stateProduct.product_name.trim()) {
-            toast.error("Tên sản phẩm không được để trống.");
-            return false;
+    const handleAddColor = () => {
+        if (newColor.name && newColor.code) {
+            setStateProduct(prev => ({
+                ...prev,
+                colors: [...prev.colors, newColor]
+            }));
+            setNewColor({ name: "", code: "" });
         }
-        if (!stateProduct.brand_name.trim()) {
-            toast.error("Thương hiệu không được để trống.");
-            return false;
-        }
-        if (!category) {
-            toast.error("Vui lòng chọn danh mục sản phẩm.");
-            return false;
-        }
-        if (stateProduct.price <= 0) {
-            toast.error("Giá sản phẩm phải lớn hơn 0.");
-            return false;
-        }
-        if (stateProduct.quantity < 1) {
-            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
-            return false;
-        }
-        if (stateProduct.discount < 0 || stateProduct.discount > 100) {
-            toast.error("Giảm giá phải trong khoảng từ 0% đến 100%.");
-            return false;
-        }
-
-        if (!stateProduct.description.trim()) {
-            toast.error("Mô tả không được để trống.");
-            return false;
-        }
-
-        if (!images.length > 1) {
-            toast.error("Vui lòng thêm ít nhất một ảnh sản phẩm.");
-            return false;
-        }
-        return true;
     };
 
+    const handleRemoveColor = (index) => {
+        setStateProduct(prev => ({
+            ...prev,
+            colors: prev.colors.filter((_, i) => i !== index)
+        }));
+    };
 
+    const handleAddSize = () => {
+        if (newSize) {
+            setStateProduct(prev => ({
+                ...prev,
+                sizes: [...prev.sizes, newSize]
+            }));
+            setNewSize("");
+        }
+    };
+
+    const handleRemoveSize = (index) => {
+        setStateProduct(prev => ({
+            ...prev,
+            sizes: prev.sizes.filter((_, i) => i !== index)
+        }));
+    };
+
+    const handleAddUpdateColor = () => {
+        if (newUpdateColor.name && newUpdateColor.code) {
+            setStateUpdateProduct(prev => ({
+                ...prev,
+                colors: [...(prev.colors || []), newUpdateColor]
+            }));
+            setNewUpdateColor({ name: "", code: "" });
+        }
+    };
+
+    const handleRemoveUpdateColor = (index) => {
+        setStateUpdateProduct(prev => ({
+            ...prev,
+            colors: prev.colors.filter((_, i) => i !== index)
+        }));
+    };
+
+    const handleAddUpdateSize = () => {
+        if (newUpdateSize) {
+            setStateUpdateProduct(prev => ({
+                ...prev,
+                sizes: [...(prev.sizes || []), newUpdateSize]
+            }));
+            setNewUpdateSize("");
+        }
+    };
+
+    const handleRemoveUpdateSize = (index) => {
+        setStateUpdateProduct(prev => ({
+            ...prev,
+            sizes: prev.sizes.filter((_, i) => i !== index)
+        }));
+    };
+
+    const validateProductData = () => {
+        // Validate tên sản phẩm
+        if (!stateProduct.product_name.trim()) {
+            toast.error("Tên sản phẩm không được để trống");
+            return false;
+        }
+        if (stateProduct.product_name.length < 10 || stateProduct.product_name.length > 100) {
+            toast.error("Tên sản phẩm phải từ 10-100 ký tự");
+            return false; 
+        }
+
+        // Validate thương hiệu
+        if (!stateProduct.brand_name.trim()) {
+            toast.error("Thương hiệu không được để trống");
+            return false;
+        }
+        if (stateProduct.brand_name.length < 2 || stateProduct.brand_name.length > 50) {
+            toast.error("Tên thương hiệu phải từ 2-50 ký tự");
+            return false;
+        }
+
+        // Validate danh mục
+        if (!category) {
+            toast.error("Vui lòng chọn danh mục sản phẩm");
+            return false;
+        }
+
+        // Validate giá
+        if (!stateProduct.price || stateProduct.price <= 0) {
+            toast.error("Giá sản phẩm phải lớn hơn 0");
+            return false;
+        }
+        if (stateProduct.price > 1000000000) {
+            toast.error("Giá sản phẩm không được vượt quá 1 tỷ VNĐ");
+            return false;
+        }
+
+        // Validate số lượng
+        if (!stateProduct.quantity || stateProduct.quantity < 1) {
+            toast.error("Số lượng sản phẩm phải tối thiểu là 1");
+            return false;
+        }
+        if (stateProduct.quantity > 10000) {
+            toast.error("Số lượng sản phẩm không được vượt quá 10.000");
+            return false;
+        }
+
+        // Validate giảm giá
+        if (stateProduct.discount < 0 || stateProduct.discount > 100) {
+            toast.error("Giảm giá phải trong khoảng từ 0% đến 100%");
+            return false;
+        }
+
+        // Validate mô tả
+        if (!stateProduct.description.trim()) {
+            toast.error("Mô tả không được để trống");
+            return false;
+        }
+        if (stateProduct.description.length < 50) {
+            toast.error("Mô tả sản phẩm phải có ít nhất 50 ký tự");
+            return false;
+        }
+
+        // Validate hình ảnh
+        if (images.length === 0) {
+            toast.error("Vui lòng thêm ít nhất 1 ảnh sản phẩm");
+            return false;
+        }
+        if (images.length > 8) {
+            toast.error("Không được thêm quá 8 ảnh cho một sản phẩm");
+            return false;
+        }
+        
+        // Validate kích thước file ảnh
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        for (let i = 0; i < images.length; i++) {
+            if (images[i].size > maxSize) {
+                toast.error(`Ảnh ${images[i].name} vượt quá kích thước cho phép (5MB)`);
+                return false;
+            }
+        }
+
+        // Validate màu sắc
+        if (stateProduct.colors.length === 0) {
+            toast.error("Vui lòng thêm ít nhất một màu sắc");
+            return false;
+        }
+        if (stateProduct.colors.length > 10) {
+            toast.error("Không được thêm quá 10 màu sắc");
+            return false;
+        }
+
+        // Validate kích thước
+        if (stateProduct.sizes.length === 0) {
+            toast.error("Vui lòng thêm ít nhất một kích thước");
+            return false;
+        }
+        if (stateProduct.sizes.length > 10) {
+            toast.error("Không được thêm quá 10 kích thước");
+            return false;
+        }
+
+        return true;
+    };
 
     const handleAddProduct = async (event) => {
         if (event) event.preventDefault();
@@ -213,6 +355,8 @@ const Product = () => {
         formData.append("discount", Math.max(0, stateProduct.discount));
         formData.append("description", stateProduct.description);
         formData.append("shop_name", user_info.shop_info.shop_name);
+        formData.append("colors", JSON.stringify(stateProduct.colors));
+        formData.append("sizes", JSON.stringify(stateProduct.sizes));
 
         for (let i = 0; i < images.length; i++) {
             formData.append("images", images[i]);
@@ -236,6 +380,8 @@ const Product = () => {
                 price: "",
                 discount: "",
                 description: "",
+                colors: [],
+                sizes: []
             });
             setImages([]);
             setImageShow([]);
@@ -256,24 +402,12 @@ const Product = () => {
         }
     }, [success_message, error_message, dispatch, currentPageNumber, parPage, searchValue]);
 
-
     useEffect(() => {
         dispatch(get_products({ page: currentPageNumber, parPage, searchValue }));
     }, [success_message, currentPageNumber, parPage, searchValue, dispatch]);
 
-
-    const onClickEditProduct = (productId) => {
-        setProductId(productId);
-    };
-
     useEffect(() => {
-        if (productId) {
-            dispatch(get_product(productId));
-        }
-    }, [productId]);
-
-    useEffect(() => {
-        if (product && product._id === productId) {
+        if (product && productId === product._id) {
             setStateUpdateProduct({
                 product_name: product.product_name,
                 brand_name: product.brand_name,
@@ -281,15 +415,24 @@ const Product = () => {
                 price: product.price,
                 discount: product.discount,
                 description: product.description,
+                colors: product.colors || [],
+                sizes: product.sizes || []
             });
             setCategory(product.category_name);
             setImageShow(
-                product.images.map((img) => ({
+                product.images?.map((img) => ({
                     url: img,
-                }))
+                })) || []
             );
         }
-    }, [product]);
+    }, [product, productId]);
+
+    // Thêm useEffect mới để reset form khi đóng modal
+    useEffect(() => {
+        if (!openUpdateModal) {
+            resetUpdateForm();
+        }
+    }, [openUpdateModal]);
 
     const changeUpdateImage = (image, files) => {
         if (files.length > 0) {
@@ -305,66 +448,151 @@ const Product = () => {
 
     const navigate = useNavigate();
 
-    const validateUpdateProductData = () => {
-        if (!stateUpdateProduct.product_name.trim()) {
-            toast.error("Tên sản phẩm không được để trống.");
-            return false;
-        }
-        if (!stateUpdateProduct.brand_name.trim()) {
-            toast.error("Thương hiệu không được để trống.");
-            return false;
-        }
-        if (!category) {
-            toast.error("Vui lòng chọn danh mục sản phẩm.");
-            return false;
-        }
-        if (stateUpdateProduct.price <= 0) {
-            toast.error("Giá sản phẩm phải lớn hơn 0.");
-            return false;
-        }
-        if (stateUpdateProduct.quantity < 1) {
-            toast.error("Số lượng sản phẩm phải tối thiểu là 1.");
-            return false;
-        }
-        if (stateUpdateProduct.discount < 0 || stateUpdateProduct.discount > 100) {
-            toast.error("Giảm giá phải trong khoảng từ 0% đến 100%.");
-            return false;
-        }
-
-        if (!stateProduct.description.trim()) {
-            toast.error("Mô tả không được để trống.");
-            return false;
-        }
-
-        if (!imageShow.length > 1) {
-            toast.error("Vui lòng thêm ít nhất một ảnh sản phẩm.");
-            return false;
-        }
-        return true;
-    };
-
-
     const handleUpdateProduct = async (event) => {
         event.preventDefault();
+
+        if (!validateUpdateProductData()) return;
 
         const data = {
             product_name: stateUpdateProduct.product_name,
             brand_name: stateUpdateProduct.brand_name,
             price: stateUpdateProduct.price,
-            quantity: Math.max(1, stateUpdateProduct.quantity), // Đảm bảo số lượng >= 1
-            discount: (Math.max(0, stateUpdateProduct.discount)),
+            quantity: Math.max(1, stateUpdateProduct.quantity),
+            discount: Math.max(0, stateUpdateProduct.discount),
             description: stateUpdateProduct.description,
+            colors: stateUpdateProduct.colors || [],
+            sizes: stateUpdateProduct.sizes || [],
             productId: productId,
         };
 
         try {
             await dispatch(update_product(data)).unwrap();
+            setOpenUpdateModal(false);
             navigate(0);
         } catch (error) {
-            toast.error("Có lỗi xảy ra khi cập nhật sản phẩm.");
+            toast.error("Có lỗi xảy ra khi cập nhật sản phẩm");
         }
     };
 
+    const validateUpdateProductData = () => {
+        // Validate tên sản phẩm
+        if (!stateUpdateProduct.product_name.trim()) {
+            toast.error("Tên sản phẩm không được để trống");
+            return false;
+        }
+        if (stateUpdateProduct.product_name.length < 10 || stateUpdateProduct.product_name.length > 100) {
+            toast.error("Tên sản phẩm phải từ 10-100 ký tự");
+            return false;
+        }
+
+        // Validate thương hiệu
+        if (!stateUpdateProduct.brand_name.trim()) {
+            toast.error("Thương hiệu không được để trống");
+            return false;
+        }
+        if (stateUpdateProduct.brand_name.length < 2 || stateUpdateProduct.brand_name.length > 50) {
+            toast.error("Tên thương hiệu phải từ 2-50 ký tự");
+            return false;
+        }
+
+        // Validate danh mục
+        if (!category) {
+            toast.error("Vui lòng chọn danh mục sản phẩm");
+            return false;
+        }
+
+        // Validate giá
+        if (!stateUpdateProduct.price || stateUpdateProduct.price <= 0) {
+            toast.error("Giá sản phẩm phải lớn hơn 0");
+            return false;
+        }
+        if (stateUpdateProduct.price > 1000000000) {
+            toast.error("Giá sản phẩm không được vượt quá 1 tỷ VNĐ");
+            return false;
+        }
+
+        // Validate số lượng
+        if (!stateUpdateProduct.quantity || stateUpdateProduct.quantity < 1) {
+            toast.error("Số lượng sản phẩm phải tối thiểu là 1");
+            return false;
+        }
+        if (stateUpdateProduct.quantity > 10000) {
+            toast.error("Số lượng sản phẩm không được vượt quá 10.000");
+            return false;
+        }
+
+        // Validate giảm giá
+        if (stateUpdateProduct.discount < 0 || stateUpdateProduct.discount > 100) {
+            toast.error("Giảm giá phải trong khoảng từ 0% đến 100%");
+            return false;
+        }
+
+        // Validate mô tả
+        if (!stateUpdateProduct.description.trim()) {
+            toast.error("Mô tả không được để trống");
+            return false;
+        }
+        if (stateUpdateProduct.description.length < 50) {
+            toast.error("Mô tả sản phẩm phải có ít nhất 50 ký tự");
+            return false;
+        }
+
+        // Validate hình ảnh
+        if (imageShow.length === 0) {
+            toast.error("Vui lòng thêm ít nhất 1 ảnh sản phẩm");
+            return false;
+        }
+        if (imageShow.length > 20) {
+            toast.error("Không được thêm quá 8 ảnh cho một sản phẩm");
+            return false;
+        }
+
+        // Validate màu sắc
+        if (!stateUpdateProduct.colors || stateUpdateProduct.colors.length === 0) {
+            toast.error("Vui lòng thêm ít nhất một màu sắc");
+            return false;
+        }
+        if (stateUpdateProduct.colors.length > 10) {
+            toast.error("Không được thêm quá 10 màu sắc");
+            return false;
+        }
+
+        // Validate kích thước
+        if (!stateUpdateProduct.sizes || stateUpdateProduct.sizes.length === 0) {
+            toast.error("Vui lòng thêm ít nhất một kích thước");
+            return false;
+        }
+        if (stateUpdateProduct.sizes.length > 10) {
+            toast.error("Không được thêm quá 10 kích thước");
+            return false;
+        }
+
+        return true;
+    };
+
+    const resetUpdateForm = () => {
+        setStateUpdateProduct({
+            product_name: "",
+            brand_name: "",
+            quantity: 1,
+            price: 0,
+            discount: 0,
+            description: "",
+            colors: [],
+            sizes: []
+        });
+        setNewUpdateColor({ name: "", code: "" });
+        setNewUpdateSize("");
+        setImageShow([]);
+        setCategory("");
+        setProductId("");
+        dispatch({ type: "product/reset_product" });
+    };
+
+    const handleCloseUpdateModal = () => {
+        resetUpdateForm();
+        setOpenUpdateModal(false);
+    };
 
     return (
         <div className="px-2 md:px-7 py-5 bg-[#dae1e7]">
@@ -377,9 +605,9 @@ const Product = () => {
                         setSearchValue={setSearchValue}
                     />
                     <Button
-                        className=""
+                        className="flex flex-shink font-medium grid-cols-4 grid-cols-3 grid-col-2 grid-col-1 ml-4 mt-4"
                         color="success"
-                        size="lg"
+                        size="md"
                         onClick={() => {
                             setOpenModal(true);
                             setImageShow([]);
@@ -502,6 +730,93 @@ const Product = () => {
                                     />
                                 </div>
                             </div>
+                            <div className="flex flex-col gap-6">
+                                <div className="flex flex-col gap-3">
+                                    <label className="text-lg font-semibold">Màu sắc sản phẩm</label>
+                                    <div className="flex gap-4 items-end">
+                                        <div className="flex-1">
+                                            <input
+                                                type="text"
+                                                placeholder="Tên màu"
+                                                value={newColor.name}
+                                                onChange={(e) => setNewColor({...newColor, name: e.target.value})}
+                                                className="input-bordered w-full"
+                                            />
+                                        </div>
+                                        <div className="flex-1">
+                                            <input
+                                                type="color"
+                                                value={newColor.code}
+                                                onChange={(e) => setNewColor({...newColor, code: e.target.value})}
+                                                className="w-full h-[42px] cursor-pointer"
+                                            />
+                                        </div>
+                                        <button
+                                            onClick={handleAddColor}
+                                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                        >
+                                            Thêm màu
+                                        </button>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2 mt-2">
+                                        {stateProduct.colors.map((color, index) => (
+                                            <div
+                                                key={index}
+                                                className="flex items-center gap-2 bg-gray-100 p-2 rounded"
+                                            >
+                                                <div
+                                                    className="w-6 h-6 rounded-full"
+                                                    style={{ backgroundColor: color.code }}
+                                                />
+                                                <span>{color.name}</span>
+                                                <button
+                                                    onClick={() => handleRemoveColor(index)}
+                                                    className="text-red-500 hover:text-red-700"
+                                                >
+                                                    ×
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-3">
+                                    <label className="text-lg font-semibold">Kích thước sản phẩm</label>
+                                    <div className="flex gap-4 items-end">
+                                        <div className="flex-1">
+                                            <input
+                                                type="text"
+                                                placeholder="Nhập kích thước"
+                                                value={newSize}
+                                                onChange={(e) => setNewSize(e.target.value)}
+                                                className="input-bordered w-full"
+                                            />
+                                        </div>
+                                        <button
+                                            onClick={handleAddSize}
+                                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                        >
+                                            Thêm kích thước
+                                        </button>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2 mt-2">
+                                        {stateProduct.sizes.map((size, index) => (
+                                            <div
+                                                key={index}
+                                                className="flex items-center gap-2 bg-gray-100 p-2 rounded"
+                                            >
+                                                <span>{size}</span>
+                                                <button
+                                                    onClick={() => handleRemoveSize(index)}
+                                                    className="text-red-500 hover:text-red-700"
+                                                >
+                                                    ×
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
                             <div className="flex justify-start mt-6">
                                 <h2 className="w-[20%] font-semibold">Ảnh sản phẩm:</h2>
                                 <label
@@ -554,6 +869,11 @@ const Product = () => {
                                     ))}
                                 </div>
                             </div>
+                            {errorMessage && (
+                                <div className="mt-2 text-red-500">
+                                    {errorMessage}
+                                </div>
+                            )}
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
@@ -633,9 +953,30 @@ const Product = () => {
                                     <div className="flex flex-warp gap-4">
                                         <button className="flex items-center justify-center bg-[#f1f1f1] dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg p-2">
                                             <FaEdit
-                                                onClick={() => {
-                                                    onClickEditProduct(p._id);
-                                                    setOpenUpdateModal(true);
+                                                onClick={async () => {
+                                                    try {
+                                                        const result = await dispatch(get_product(p._id)).unwrap();
+                                                        if (result.product) {
+                                                            const product = result.product;
+                                                            setStateUpdateProduct({
+                                                                product_name: product.product_name,
+                                                                brand_name: product.brand_name,
+                                                                quantity: product.quantity,
+                                                                price: product.price,
+                                                                discount: product.discount,
+                                                                description: product.description,
+                                                                colors: product.colors || [],
+                                                                sizes: product.sizes || []
+                                                            });
+                                                            setCategory(product.category_name);
+                                                            setImageShow(product.images?.map(img => ({ url: img })) || []);
+                                                            setProductId(p._id);
+                                                            setOpenUpdateModal(true);
+                                                        }
+                                                    } catch (error) {
+                                                        console.error("Error loading product:", error);
+                                                        toast.error("Không thể lấy thông tin sản phẩm");
+                                                    }
                                                 }}
                                                 className="w-5 h-5"
                                             />
@@ -643,22 +984,9 @@ const Product = () => {
                                         <Modal
                                             size="5xl"
                                             show={openUpdateModal}
-                                            onClose={() => {
-                                                if (canCloseModal) {
-                                                    setOpenUpdateModal(false);
-                                                    setCanCloseModal(false);
-                                                }
-                                            }}
+                                            onClose={handleCloseUpdateModal}
                                         >
-                                            <Modal.Header
-                                                onClick={(event) => {
-                                                    event.stopPropagation();
-                                                    setCanCloseModal(true);
-                                                    setOpenUpdateModal(false);
-                                                }}
-                                            >
-                                                Sửa sản phẩm
-                                            </Modal.Header>
+                                            <Modal.Header>Sửa sản phẩm</Modal.Header>
                                             <Modal.Body>
                                                 <div className="space-y-6">
                                                     <div className="flex justify-start items-center">
@@ -670,7 +998,7 @@ const Product = () => {
                                                         </label>
                                                         <input
                                                             onChange={handleUpdateInputProduct}
-                                                            value={stateUpdateProduct.product_name}
+                                                            value={stateUpdateProduct.product_name || ''}
                                                             type="text"
                                                             name="product_name"
                                                             placeholder="Nhập tên sản phẩm..."
@@ -686,7 +1014,7 @@ const Product = () => {
                                                         </label>
                                                         <input
                                                             onChange={handleUpdateInputProduct}
-                                                            value={stateUpdateProduct.brand_name}
+                                                            value={stateUpdateProduct.brand_name || ''}
                                                             type="text"
                                                             name="brand_name"
                                                             placeholder="Nhập tên thương hiệu..."
@@ -726,10 +1054,10 @@ const Product = () => {
                                                         </label>
                                                         <input
                                                             onChange={handleUpdateInputProduct}
-                                                            value={stateUpdateProduct.price}
+                                                            value={stateUpdateProduct.price || ''}
                                                             type="number"
                                                             name="price"
-                                                            min={1}
+                                                            min={0}
                                                             placeholder="Nhập giá sản phẩm..."
                                                             className="input !bg-white input-bordered w-[80%]"
                                                         />
@@ -743,7 +1071,7 @@ const Product = () => {
                                                         </label>
                                                         <input
                                                             onChange={handleUpdateInputProduct}
-                                                            value={stateUpdateProduct.quantity}
+                                                            value={stateUpdateProduct.quantity || ''}
                                                             type="number"
                                                             name="quantity"
                                                             min={1}
@@ -760,11 +1088,11 @@ const Product = () => {
                                                         </label>
                                                         <input
                                                             onChange={handleUpdateInputProduct}
-                                                            value={stateUpdateProduct.discount}
+                                                            value={stateUpdateProduct.discount || ''}
                                                             type="number"
                                                             name="discount"
-                                                            max={100}
                                                             min={0}
+                                                            max={100}
                                                             placeholder="Nhập % giảm giá..."
                                                             className="input !bg-white input-bordered w-[80%]"
                                                         />
@@ -783,6 +1111,94 @@ const Product = () => {
                                                             />
                                                         </div>
                                                     </div>
+                                                    <div className="flex flex-col gap-6">
+                                                        <div className="flex flex-col gap-3">
+                                                            <label className="text-lg font-semibold">Màu sắc sản phẩm</label>
+                                                            <div className="flex gap-4 items-end">
+                                                                <div className="flex-1">
+                                                                    <input
+                                                                        type="text"
+                                                                        placeholder="Tên màu"
+                                                                        value={newUpdateColor.name}
+                                                                        onChange={(e) => setNewUpdateColor({...newUpdateColor, name: e.target.value})}
+                                                                        className="input !bg-white input-bordered w-full"
+                                                                    />
+                                                                </div>
+                                                                <div className="flex-1">
+                                                                    <input
+                                                                        type="color"
+                                                                        value={newUpdateColor.code}
+                                                                        onChange={(e) => setNewUpdateColor({...newUpdateColor, code: e.target.value})}
+                                                                        className="w-full h-[42px] cursor-pointer"
+                                                                    />
+                                                                </div>
+                                                                <button
+                                                                    onClick={handleAddUpdateColor}
+                                                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                                                >
+                                                                    Thêm màu
+                                                                </button>
+                                                            </div>
+                                                            <div className="flex flex-wrap gap-2 mt-2">
+                                                                {stateUpdateProduct.colors?.map((color, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="flex items-center gap-2 bg-gray-100 p-2 rounded"
+                                                                    >
+                                                                        <div
+                                                                            className="w-6 h-6 rounded-full"
+                                                                            style={{ backgroundColor: color.code }}
+                                                                        />
+                                                                        <span>{color.name}</span>
+                                                                        <button
+                                                                            onClick={() => handleRemoveUpdateColor(index)}
+                                                                            className="text-red-500 hover:text-red-700"
+                                                                        >
+                                                                            ×
+                                                                        </button>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="flex flex-col gap-3">
+                                                            <label className="text-lg font-semibold">Kích thước sản phẩm</label>
+                                                            <div className="flex gap-4 items-end">
+                                                                <div className="flex-1">
+                                                                    <input
+                                                                        type="text"
+                                                                        placeholder="Nhập kích thước"
+                                                                        value={newUpdateSize}
+                                                                        onChange={(e) => setNewUpdateSize(e.target.value)}
+                                                                        className="input-bordered w-full"
+                                                                    />
+                                                                </div>
+                                                                <button
+                                                                    onClick={handleAddUpdateSize}
+                                                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                                                >
+                                                                    Thêm kích thước
+                                                                </button>
+                                                            </div>
+                                                            <div className="flex flex-wrap gap-2 mt-2">
+                                                                {stateUpdateProduct.sizes?.map((size, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="flex items-center gap-2 bg-gray-100 p-2 rounded"
+                                                                    >
+                                                                        <span>{size}</span>
+                                                                        <button
+                                                                            onClick={() => handleRemoveUpdateSize(index)}
+                                                                            className="text-red-500 hover:text-red-700"
+                                                                        >
+                                                                            ×
+                                                                        </button>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <div className="flex justify-start mt-6">
                                                         <h2 className="w-[20%] font-semibold">
                                                             Ảnh sản phẩm:
@@ -860,7 +1276,7 @@ const Product = () => {
                                                 </Button>
                                                 <Button
                                                     color="failure"
-                                                    onClick={() => setOpenUpdateModal(false)}
+                                                    onClick={handleCloseUpdateModal}
                                                 >
                                                     Thoát
                                                 </Button>

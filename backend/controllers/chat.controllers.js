@@ -126,6 +126,7 @@ class chatController {
                     receiverId: sellerId,
                     message: message,
                     file: fileUrl,
+                    status: 'sent'
                 });
 
                 const data = await sellerToCustomerModel.findOne({
@@ -253,6 +254,7 @@ class chatController {
                     receiverId: customerId,
                     message: message,
                     file: fileUrl,
+                    status: 'sent'
                 });
 
                 const data = await sellerToCustomerModel.findOne({
