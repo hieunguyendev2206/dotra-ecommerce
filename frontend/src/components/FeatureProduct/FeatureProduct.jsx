@@ -148,7 +148,7 @@ const FeatureProduct = ({products}) => {
                             </div>
                             <div className="flex justify-center items-center">
                                 <Rating rating={p.rating}/>
-                                <h2 className={`font-medium ml-20 ${
+                                <h2 className={`font-medium ml-10 ${
                                     p.quantity === 0 
                                         ? "text-red-500" 
                                         : p.quantity < 10 
