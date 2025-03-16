@@ -502,14 +502,14 @@ const ProductDetails = () => {
                                 <div className="grid grid-cols-2">
                                     <button
                                         onClick={() => setState("description")}
-                                        className={`py-2 px-5 hover:text-white hover:bg-green-500 hover:transition-transform ${state === "description" ? "bg-red-500 text-white" : "bg-slate-200 text-slate-700"} rounded-r-md`}
+                                        className={`py-2 px-5 hover:text-white hover:bg-green-500 hover:transition-transform ${state === "description" ? "bg-red-500 text-white" : "bg-slate-200 text-slate-700"}`}
                                     >
                                         Mô tả sản phẩm
                                     </button>
 
                                     <button
                                         onClick={() => setState("reviews")}
-                                        className={`py-1 hover:text-white px-5 hover:bg-green-500 hover ${state === "reviews" ? "bg-red-500 text-white" : "bg-slate-200 text-slate-700"} rounded-l-md`}
+                                        className={`py-1 hover:text-white px-5 hover:bg-green-500 hover ${state === "reviews" ? "bg-red-500 text-white" : "bg-slate-200 text-slate-700"}`}
                                     >
                                         Đánh giá của khách hàng
                                     </button>
