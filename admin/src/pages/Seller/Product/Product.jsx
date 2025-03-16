@@ -242,8 +242,8 @@ const Product = () => {
             toast.error("Tên sản phẩm không được để trống");
             return false;
         }
-        if (stateProduct.product_name.length < 10 || stateProduct.product_name.length > 100) {
-            toast.error("Tên sản phẩm phải từ 10-100 ký tự");
+        if (stateProduct.product_name.length < 10 || stateProduct.product_name.length > 200) {
+            toast.error("Tên sản phẩm phải từ 10-200 ký tự");
             return false; 
         }
 
@@ -294,8 +294,8 @@ const Product = () => {
             toast.error("Mô tả không được để trống");
             return false;
         }
-        if (stateProduct.description.length < 50) {
-            toast.error("Mô tả sản phẩm phải có ít nhất 50 ký tự");
+        if (stateProduct.description.length < 20) {
+            toast.error("Mô tả sản phẩm phải có ít nhất 20 ký tự");
             return false;
         }
 
