@@ -23,7 +23,7 @@ import {add_review} from "../../store/reducers/rewiew.reducers.js";
 import {FaEye} from "react-icons/fa";
 import {FaCartShopping} from "react-icons/fa6";
 import {ClipLoader} from "react-spinners";
-import {motion} from "framer-motion"; 
+// import {motion} from "framer-motion"; 
 
 const ProductDetails = () => {
     const { slug } = useParams();
