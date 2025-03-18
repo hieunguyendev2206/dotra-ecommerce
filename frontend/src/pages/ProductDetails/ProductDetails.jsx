@@ -23,6 +23,7 @@ import {add_review} from "../../store/reducers/rewiew.reducers.js";
 import {FaEye} from "react-icons/fa";
 import {FaCartShopping} from "react-icons/fa6";
 import {ClipLoader} from "react-spinners";
+import {motion} from "framer-motion"; 
 
 const ProductDetails = () => {
     const { slug } = useParams();
@@ -31,7 +32,7 @@ const ProductDetails = () => {
         MdOutlineKeyboardArrowRight, AiFillHeart, FaFacebook, GrInstagram, BsTwitter, BsGithub,
     } = icons;
     const {productId} = useParams();
-    const [state, setState] = useState("reviews");
+    const [state, setState] = useState("description");
     const {userInfo} = useSelector((state) => state.customer);
     const {orders} = useSelector((state) => state.order);
     const [reviewContent, setReviewContent] = useState("");
@@ -397,9 +398,9 @@ const ProductDetails = () => {
                                                 <div
                                                     onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
                                                     className="w-10 sm:w-12 h-full flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-l-lg text-xl font-medium"
-                                        >
-                                            -
-                                        </div>
+                                                >
+                                                    -
+                                                </div>
                                                 <div className="w-10 sm:w-12 h-full flex items-center justify-center border-l border-r border-gray-200 font-medium">
                                                     {quantity}
                                                 </div>
@@ -494,37 +495,92 @@ const ProductDetails = () => {
                     </div>
                 </div>
             </section>
-            <section>
+            <section className="mb-10">
                 <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto pb-16">
                     <div className="flex flex-wrap">
                         <div className="w-[72%] md-lg:w-full">
                             <div className="pr-4 md-lg:pr-0">
-                                <div className="grid grid-cols-2">
-                                    <button
-                                        onClick={() => setState("description")}
-                                        className={`py-2 px-5 hover:text-white hover:bg-green-500 hover:transition-transform ${state === "description" ? "bg-red-500 text-white" : "bg-slate-200 text-slate-700"}`}
-                                    >
-                                        Mô tả sản phẩm
-                                    </button>
-
-                                    <button
-                                        onClick={() => setState("reviews")}
-                                        className={`py-1 hover:text-white px-5 hover:bg-green-500 hover ${state === "reviews" ? "bg-red-500 text-white" : "bg-slate-200 text-slate-700"}`}
-                                    >
-                                        Đánh giá của khách hàng
-                                    </button>
-                                    
+                                {/* Improved Tab UI */}
+                                <div className="mb-6 border-b border-gray-200">
+                                    <div className="flex">
+                                        <button
+                                            onClick={() => setState("description")}
+                                            className={`py-3 px-6 font-medium transition-all duration-300 ${
+                                                state === "description"
+                                                ? "text-red-500 border-b-2 border-red-500"
+                                                : "text-gray-500 hover:text-red-500"
+                                            }`}
+                                        >
+                                            Mô tả sản phẩm
+                                        </button>
+                                        <button
+                                            onClick={() => setState("reviews")}
+                                            className={`py-3 px-6 font-medium transition-all duration-300 ${
+                                                state === "reviews"
+                                                ? "text-red-500 border-b-2 border-red-500"
+                                                : "text-gray-500 hover:text-red-500"
+                                            }`}
+                                        >
+                                            Đánh giá của khách hàng ({total_review})
+                                        </button>
+                                    </div>
                                 </div>
-                                <div>
-                                    {state === "description" ? (
-                                        <Review product={product_details}/>) : (
-                                        <p className="py-5 text-slate-600">
+                                
+                                {/* Tab Content with Fixed Logic and Animation */}
+                                <div className="min-h-[300px]">
+                                    {state === "description" && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.3 }}
+                                            className="prose prose-sm max-w-none text-gray-600"
+                                        >
                                             <div
                                                 dangerouslySetInnerHTML={{
                                                     __html: DOMPurify.sanitize(product_details.description),
                                                 }}
                                             />
-                                        </p>)}
+                                        </motion.div>
+                                    )}
+                                    
+                                    {state === "reviews" && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            <div className="space-y-4">
+                                                {product_details?.reviews?.length === 0 ? (
+                                                    <p className="text-gray-500 italic">Chưa có đánh giá nào cho sản phẩm này.</p>
+                                                ) : (
+                                                    <Review product={product_details} />
+                                                )}
+                                                
+                                                {/* {userInfo && (
+                                                    <div className="mt-6 p-4 border rounded-lg bg-gray-50">
+                                                        <h3 className="font-medium mb-3">Gửi đánh giá của bạn</h3>
+                                                        <textarea
+                                                            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500/50"
+                                                            rows="3"
+                                                            placeholder="Nhập đánh giá của bạn về sản phẩm này..."
+                                                            value={reviewContent}
+                                                            onChange={(e) => setReviewContent(e.target.value)}
+                                                        ></textarea>
+                                                        <button
+                                                            onClick={handleReviewSubmit}
+                                                            className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-all"
+                                                            disabled={!hasPurchasedProduct()}
+                                                        >
+                                                            Gửi đánh giá
+                                                        </button>
+                                                        {!hasPurchasedProduct() && (
+                                                            <p className="text-xs text-red-500 mt-1">Bạn cần mua sản phẩm này để gửi đánh giá</p>
+                                                        )}
+                                                    </div>
+                                                )} */}
+                                            </div>
+                                        </motion.div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -549,7 +605,7 @@ const ProductDetails = () => {
                                                 </div>) : ("")}
 
                                                 <img
-                                                    className="w-full h-full object-contain rounded-t-md p-2"
+                                                    className="w-full h-full object-contain rounded-t-md"
                                                     style={{aspectRatio: "1 / 1", objectPosition: "center"}}
                                                     src={w.images[0]}
                                                     alt=""
@@ -561,12 +617,12 @@ const ProductDetails = () => {
                                                 </h2>
                                                 <h2 className="line-clamp-2">{w.product_name}</h2>
                                                 <div className="flex justify-start items-center gap-2 m-[2px]">
-                                                    <span className="font-bold line-through">
-                                                        {formateCurrency(w.price)}
-                                                    </span>
+                                                <span className="font-bold line-through">
+                                                    {formateCurrency(w.price)}
+                                                </span>
                                                     <span className="text-base font-bold text-red-500">
-                                                        {formateCurrency(w.price - (w.price * w.discount) / 100)}
-                                                    </span>
+                                                    {formateCurrency(w.price - (w.price * w.discount) / 100)}
+                                                </span>
                                                 </div>
                                                 <div className="flex justify-center items-center">
                                                     <Rating rating={w.rating}/>
