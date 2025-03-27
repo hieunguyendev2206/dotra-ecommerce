@@ -34,7 +34,7 @@ import icons from "../../assets/icons";
 
 // Icons
 import { FaEye } from "react-icons/fa";
-import { FaCartShopping, FaWhatsapp } from "react-icons/fa6"; // Sửa lại import cho FaCartShopping
+import { FaCartShopping, FaWhatsapp } from "react-icons/fa6";
 import { ClipLoader } from "react-spinners";
 
 const ProductDetails = () => {
@@ -487,7 +487,7 @@ const ProductDetails = () => {
                                 )}
                             </div>
                             <div className="flex flex-col gap-5 mt-6">
-                                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                                     <div className="flex items-center gap-3">
                                         <span className="text-black font-bold min-w-[80px] sm:min-w-[100px]">Số lượng:</span>
                                         {product_details.quantity ? (
@@ -504,9 +504,9 @@ const ProductDetails = () => {
                                         <div
                                                     onClick={() => setQuantity(prev => prev + 1)}
                                                     className="w-10 sm:w-12 h-full flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-r-lg text-xl font-medium"
-                                        >
-                                            +
-                                        </div>
+                                                >
+                                                    +
+                                                </div>
                                             </div>
                                         ) : (
                                             <span className="text-red-500 font-medium">Hết hàng</span>
@@ -556,136 +556,61 @@ const ProductDetails = () => {
                                     </button>
                                 )}
 
-                                <div className="flex flex-col gap-5 mt-6">
-                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 pt-3 border-t">
-                                        <Link
-                                            to={`/dashboard/chat/${product_details.sellerId}`}
-                                            className="w-full sm:w-auto h-[45px] px-4 sm:px-6 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all duration-300 flex items-center justify-center gap-2"
-                                        >
-                                            Liên hệ người bán
-                                        </Link>
-                                        <div className="flex items-center gap-3">
-                                            <span className="text-black font-bold whitespace-nowrap">Chia sẻ:</span>
-                                            <div className="flex items-center gap-2">
-                                                <a
-                                                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + window.location.pathname)}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-indigo-500 rounded-full text-white hover:bg-indigo-600 transition-all duration-300"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        window.open(
-                                                            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + window.location.pathname)}`,
-                                                            'facebook-share-dialog',
-                                                            'width=626,height=436'
-                                                        );
-                                                    }}
-                                                >
-                                                    <FaFacebook size={18} />
-                                                </a>
-                                                <a
-                                                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.origin + window.location.pathname)}&text=${encodeURIComponent(product_details.product_name)}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-[#1D9BF0] rounded-full text-white hover:bg-[#1a8cd8] transition-all duration-300"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        window.open(
-                                                            `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.origin + window.location.pathname)}&text=${encodeURIComponent(product_details.product_name)}`,
-                                                            'twitter-share-dialog',
-                                                            'width=626,height=436'
-                                                        );
-                                                    }}
-                                                >
-                                                    <BsTwitter size={18} />
-                                                </a>
-                                                <a
-                                                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(product_details.product_name + ' ' + window.location.origin + window.location.pathname)}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-[#25D366] rounded-full text-white hover:bg-[#22c55e] transition-all duration-300"
-                                                >
-                                                    <FaWhatsapp size={18} />
-                                                </a>
-                                            </div>
+                                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 pt-3 border-t">
+                                    <Link
+                                        to={`/dashboard/chat/${product_details.sellerId}`}
+                                        className="w-full sm:w-auto h-[45px] px-4 sm:px-6 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all duration-300 flex items-center justify-center gap-2"
+                                    >
+                                        Liên hệ người bán
+                                    </Link>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-black font-bold whitespace-nowrap">Chia sẻ:</span>
+                                        <div className="flex items-center gap-2">
+                                            <a
+                                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + window.location.pathname)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-indigo-500 rounded-full text-white hover:bg-indigo-600 transition-all duration-300"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    window.open(
+                                                        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + window.location.pathname)}`,
+                                                        'facebook-share-dialog',
+                                                        'width=626,height=436'
+                                                    );
+                                                }}
+                                            >
+                                                <FaFacebook size={18} />
+                                            </a>
+                                            <a
+                                                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.origin + window.location.pathname)}&text=${encodeURIComponent(product_details.product_name)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-[#1D9BF0] rounded-full text-white hover:bg-[#1a8cd8] transition-all duration-300"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    window.open(
+                                                        `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.origin + window.location.pathname)}&text=${encodeURIComponent(product_details.product_name)}`,
+                                                        'twitter-share-dialog',
+                                                        'width=626,height=436'
+                                                    );
+                                                }}
+                                            >
+                                                <BsTwitter size={18} />
+                                            </a>
+                                            <a
+                                                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(product_details.product_name + ' ' + window.location.origin + window.location.pathname)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-[#25D366] rounded-full text-white hover:bg-[#22c55e] transition-all duration-300"
+                                            >
+                                                <FaWhatsapp size={18} />
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
-            <section>
-                <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
-                    <h2 className="text-2xl py-8 text-slate-600">Sản phẩm tương tự</h2>
-                    <div>
-                        <Swiper
-                            slidesPerView="auto"
-                            breakpoints={{
-                                1280: {
-                                    slidesPerView: 5,
-                                }, 565: {
-                                    slidesPerView: 2,
-                                },
-                            }}
-                            spaceBetween={25}
-                            loop={true}
-                            pagination={{
-                                clickable: true, el: ".custom_bullet",
-                            }}
-                            modules={[Pagination]}
-                            className="mySwiper"
-                        >
-                            {related_products.map((p, i) => {
-                                return (<SwiperSlide key={i}>
-                                    <div className="border-2 cursor-pointer group transition-all duration-500 hover:shadow-md hover:-mt-3 rounded-lg">
-                                        <Link
-                                            to={`/home/product-details/${p.slug}`}
-                                            key={p._id}
-                                        >
-                                            <div className="relative overflow-hidden">
-                                                {p.discount ? (<div
-                                                    className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs right-2 top-2">
-                                                    - {p.discount}%
-                                                </div>) : ("")}
-                                                <img
-                                                    className="w-full h-full object-contain rounded-t-md"
-                                                    style={{aspectRatio: "1 / 1", objectPosition: "center"}}
-                                                    src={p.images[0]}
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="py-3 text-slate-600 px-2 text-sm">
-                                                <h2 className="font-bold text-blue-500">
-                                                    {p.brand_name}.
-                                                </h2>
-                                                <h2 className="line-clamp-2">{p.product_name}</h2>
-                                                <div className="flex justify-start items-center gap-2 m-[2px]">
-                                                <span className="font-bold line-through">
-                                                    {formateCurrency(p.price)}
-                                                </span>
-                                                    <span className="text-base font-bold text-red-500">
-                                                    {formateCurrency(p.price - (p.price * p.discount) / 100)}
-                                                </span>
-                                                </div>
-                                                <div className="flex justify-center items-center">
-                                                    <Rating rating={p.rating}/>
-                                                    <div className="ml-10">
-                                                        <span className={`text-sm ${p.quantity === 0 ? 'text-red-500' : 'text-green-600'}`}>
-                                                            {p.quantity === 0 ? 'Đã bán hết' : `Số lượng: ${p.quantity} ${p.quantity < 10 ? ' (Sắp hết)' : ''}`}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    </div>
-                                </SwiperSlide>);
-                            })}
-                        </Swiper>
-                    </div>
-                    <div className="w-full flex justify-center items-center py-10">
-                        <div className="custom_bullet justify-center gap-3 !w-auto"></div>
                     </div>
                 </div>
             </section>
@@ -832,6 +757,79 @@ const ProductDetails = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+            <section className="mb-10">
+                <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
+                    <h2 className="text-2xl py-8 text-slate-600">Sản phẩm tương tự</h2>
+                    <div>
+                        <Swiper
+                            slidesPerView="auto"
+                            breakpoints={{
+                                1280: {
+                                    slidesPerView: 5,
+                                }, 565: {
+                                    slidesPerView: 2,
+                                },
+                            }}
+                            spaceBetween={25}
+                            loop={true}
+                            pagination={{
+                                clickable: true, el: ".custom_bullet",
+                            }}
+                            modules={[Pagination]}
+                            className="mySwiper"
+                        >
+                            {related_products.map((p, i) => {
+                                return (<SwiperSlide key={i}>
+                                    <div className="border-2 cursor-pointer group transition-all duration-500 hover:shadow-md hover:-mt-3 rounded-lg">
+                                        <Link
+                                            to={`/home/product-details/${p.slug}`}
+                                            key={p._id}
+                                        >
+                                            <div className="relative overflow-hidden">
+                                                {p.discount ? (<div
+                                                    className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs right-2 top-2">
+                                                    - {p.discount}%
+                                                </div>) : ("")}
+                                                <img
+                                                    className="w-full h-full object-contain rounded-t-md"
+                                                    style={{aspectRatio: "1 / 1", objectPosition: "center"}}
+                                                    src={p.images[0]}
+                                                    alt=""
+                                                />
+                                            </div>
+                                            <div className="py-3 text-slate-600 px-2 text-sm">
+                                                <h2 className="font-bold text-blue-500">
+                                                    {p.brand_name}.
+                                                </h2>
+                                                <h2 className="line-clamp-2">{p.product_name}</h2>
+                                                <div className="flex justify-start items-center gap-2 m-[2px]">
+                                                <span className="font-bold line-through">
+                                                    {formateCurrency(p.price)}
+                                                </span>
+                                                    <span className="text-base font-bold text-red-500">
+                                                    {formateCurrency(p.price - (p.price * p.discount) / 100)}
+                                                </span>
+                                                </div>
+                                                <div className="flex justify-center items-center">
+                                                    <Rating rating={p.rating}/>
+                                                    <div className="ml-10">
+                                                        <span className={`text-sm ${p.quantity === 0 ? 'text-red-500' : 'text-green-600'}`}>
+                                                            {p.quantity === 0 ? 'Đã bán hết' : `Số lượng: ${p.quantity} ${p.quantity < 10 ? ' (Sắp hết)' : ''}`}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                </SwiperSlide>);
+                            })}
+                        </Swiper>
+                    </div>
+                    <div className="w-full flex justify-center items-center py-10">
+                        <div className="custom_bullet justify-center gap-3 !w-auto"></div>
                     </div>
                 </div>
             </section>
