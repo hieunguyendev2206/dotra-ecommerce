@@ -33,8 +33,8 @@ import path from "../../constants/path";
 import icons from "../../assets/icons";
 
 // Icons
-import { FaEye, FaCartShopping } from "react-icons/fa";
-import { FaWhatsapp } from "react-icons/fa6";
+import { FaEye } from "react-icons/fa";
+import { FaCartShopping, FaWhatsapp } from "react-icons/fa6"; // Sửa lại import cho FaCartShopping
 import { ClipLoader } from "react-spinners";
 
 const ProductDetails = () => {
@@ -487,7 +487,7 @@ const ProductDetails = () => {
                                 )}
                             </div>
                             <div className="flex flex-col gap-5 mt-6">
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
                                     <div className="flex items-center gap-3">
                                         <span className="text-black font-bold min-w-[80px] sm:min-w-[100px]">Số lượng:</span>
                                         {product_details.quantity ? (
@@ -556,56 +556,58 @@ const ProductDetails = () => {
                                     </button>
                                 )}
 
-                                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 pt-3 border-t">
-                                    <Link
-                                        to={`/dashboard/chat/${product_details.sellerId}`}
-                                        className="w-full sm:w-auto h-[45px] px-4 sm:px-6 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all duration-300 flex items-center justify-center gap-2"
-                                    >
-                                        Liên hệ người bán
-                                    </Link>
-                                    <div className="flex items-center gap-3">
-                                        <span className="text-black font-bold whitespace-nowrap">Chia sẻ:</span>
-                                        <div className="flex items-center gap-2">
-                                            <a
-                                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + window.location.pathname)}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-indigo-500 rounded-full text-white hover:bg-indigo-600 transition-all duration-300"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    window.open(
-                                                        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + window.location.pathname)}`,
-                                                        'facebook-share-dialog',
-                                                        'width=626,height=436'
-                                                    );
-                                                }}
-                                            >
-                                                <FaFacebook size={18} />
-                                            </a>
-                                            <a
-                                                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.origin + window.location.pathname)}&text=${encodeURIComponent(product_details.product_name)}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-[#1D9BF0] rounded-full text-white hover:bg-[#1a8cd8] transition-all duration-300"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    window.open(
-                                                        `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.origin + window.location.pathname)}&text=${encodeURIComponent(product_details.product_name)}`,
-                                                        'twitter-share-dialog',
-                                                        'width=626,height=436'
-                                                    );
-                                                }}
-                                            >
-                                                <BsTwitter size={18} />
-                                            </a>
-                                            <a
-                                                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(product_details.product_name + ' ' + window.location.origin + window.location.pathname)}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-[#25D366] rounded-full text-white hover:bg-[#22c55e] transition-all duration-300"
-                                            >
-                                                <FaWhatsapp size={18} />
-                                            </a>
+                                <div className="flex flex-col gap-5 mt-6">
+                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 pt-3 border-t">
+                                        <Link
+                                            to={`/dashboard/chat/${product_details.sellerId}`}
+                                            className="w-full sm:w-auto h-[45px] px-4 sm:px-6 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition-all duration-300 flex items-center justify-center gap-2"
+                                        >
+                                            Liên hệ người bán
+                                        </Link>
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-black font-bold whitespace-nowrap">Chia sẻ:</span>
+                                            <div className="flex items-center gap-2">
+                                                <a
+                                                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + window.location.pathname)}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-indigo-500 rounded-full text-white hover:bg-indigo-600 transition-all duration-300"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        window.open(
+                                                            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + window.location.pathname)}`,
+                                                            'facebook-share-dialog',
+                                                            'width=626,height=436'
+                                                        );
+                                                    }}
+                                                >
+                                                    <FaFacebook size={18} />
+                                                </a>
+                                                <a
+                                                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.origin + window.location.pathname)}&text=${encodeURIComponent(product_details.product_name)}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-[#1D9BF0] rounded-full text-white hover:bg-[#1a8cd8] transition-all duration-300"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        window.open(
+                                                            `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.origin + window.location.pathname)}&text=${encodeURIComponent(product_details.product_name)}`,
+                                                            'twitter-share-dialog',
+                                                            'width=626,height=436'
+                                                        );
+                                                    }}
+                                                >
+                                                    <BsTwitter size={18} />
+                                                </a>
+                                                <a
+                                                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(product_details.product_name + ' ' + window.location.origin + window.location.pathname)}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="w-[35px] h-[35px] sm:w-[38px] sm:h-[38px] flex justify-center items-center bg-[#25D366] rounded-full text-white hover:bg-[#22c55e] transition-all duration-300"
+                                                >
+                                                    <FaWhatsapp size={18} />
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -614,7 +616,7 @@ const ProductDetails = () => {
                     </div>
                 </div>
             </section>
-            <section className="mb-10">
+            <section>
                 <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
                     <h2 className="text-2xl py-8 text-slate-600">Sản phẩm tương tự</h2>
                     <div>
