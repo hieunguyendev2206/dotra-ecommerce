@@ -289,23 +289,25 @@ const ProductDetails = () => {
 
     return (
         <div className="bg-white">
-            <Helmet>
-                <title>{product_details?.product_name || 'Chi tiết sản phẩm'} - Dotra</title>
-                <meta name="description" content={product_details?.description?.substring(0, 160) || 'Chi tiết sản phẩm trên Dotra'} />
-                
-                {/* Facebook Open Graph / Social Media Meta Tags */}
-                <meta property="og:type" content="product" />
-                <meta property="og:title" content={product_details?.product_name || 'Chi tiết sản phẩm'} />
-                <meta property="og:description" content={product_details?.description?.substring(0, 160) || 'Chi tiết sản phẩm trên Dotra'} />
-                <meta property="og:image" content={product_details?.images?.[0] || ''} />
-                <meta property="og:url" content={window.location.href} />
-                
-                {/* Twitter Card Meta Tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={product_details?.product_name || 'Chi tiết sản phẩm'} />
-                <meta name="twitter:description" content={product_details?.description?.substring(0, 160) || 'Chi tiết sản phẩm trên Dotra'} />
-                <meta name="twitter:image" content={product_details?.images?.[0] || ''} />
-            </Helmet>
+            {product_details && (
+                <Helmet>
+                    <title>{product_details.product_name || 'Chi tiết sản phẩm'} - Dotra</title>
+                    <meta name="description" content={product_details.description?.substring(0, 160) || 'Chi tiết sản phẩm trên Dotra'} />
+                    
+                    {/* Facebook Open Graph / Social Media Meta Tags */}
+                    <meta property="og:type" content="product" />
+                    <meta property="og:title" content={product_details.product_name || 'Chi tiết sản phẩm'} />
+                    <meta property="og:description" content={product_details.description?.substring(0, 160) || 'Chi tiết sản phẩm trên Dotra'} />
+                    <meta property="og:image" content={product_details.images?.[0] || ''} />
+                    <meta property="og:url" content={window.location.href} />
+                    
+                    {/* Twitter Card Meta Tags */}
+                    <meta name="twitter:card" content="summary_large_image" />
+                    <meta name="twitter:title" content={product_details.product_name || 'Chi tiết sản phẩm'} />
+                    <meta name="twitter:description" content={product_details.description?.substring(0, 160) || 'Chi tiết sản phẩm trên Dotra'} />
+                    <meta name="twitter:image" content={product_details.images?.[0] || ''} />
+                </Helmet>
+            )}
             <Header/>
             <div
                 className='bg-[url("/src/assets/banners/5.png")] h-[220px] mt-6 bg-cover bg-no-repeat relative bg-left'>
@@ -722,7 +724,6 @@ const ProductDetails = () => {
                                                     className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs right-2 top-2">
                                                     - {w.discount}%
                                                 </div>) : ("")}
-
                                                 <img
                                                     className="w-full h-full object-contain rounded-t-md"
                                                     style={{aspectRatio: "1 / 1", objectPosition: "center"}}
@@ -783,7 +784,7 @@ const ProductDetails = () => {
                         >
                             {related_products.map((p, i) => {
                                 return (<SwiperSlide key={i}>
-                                    <div className="border-2 cursor-pointer group transition-all duration-500 hover:shadow-md hover:-mt-3 rounded-lg">
+                                    <div className="border-2 cursor-pointer group transition-all bg-white duration-500 hover:shadow-md hover:-mt-3 rounded-lg">
                                         <Link
                                             to={`/home/product-details/${p.slug}`}
                                             key={p._id}
