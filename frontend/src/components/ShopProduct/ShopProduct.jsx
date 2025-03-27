@@ -161,7 +161,7 @@ const ShopProduct = ({styles, products}) => {
                                     ? "Đã bán hết" 
                                     : isMobile 
                                         ? (p.quantity < 10 ? "Sắp hết" : "Còn hàng") 
-                                        : `Số lượng: ${p.quantity} ${p.quantity < 10 ? ' (Sắp hết)' : 'Đã bán hết'}`}
+                                        : `Số lượng: ${p.quantity} ${p.quantity < 10 ? ' (Sắp hết)' : ' '}`}
                             </h2>
                         </div>
                     </div>

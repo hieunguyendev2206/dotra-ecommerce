@@ -10,6 +10,8 @@ import icons from "../../assets/icons";
 import Product from "../../components/Product";
 import ShopProduct from "../../components/ShopProduct/ShopProduct";
 import Pagination from "../../components/Pagination/Pagination";
+import Lottie from "react-lottie";
+import animationData from "../../assets/img/searchNotFound.json";
 
 const CategoryShop = () => {
     const {
@@ -29,7 +31,12 @@ const CategoryShop = () => {
     const [parPage, setParPage] = useState(16);
     const [priceFrom, setPriceFrom] = useState("");
     const [priceTo, setPriceTo] = useState("");
-    const [searchParams, setSearchParams] = useState();
+    const [searchParams, setSearchParams] = useState({
+        category: category || "",
+        page_number: 1,
+        par_page: 16
+    });
+    const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -37,16 +44,47 @@ const CategoryShop = () => {
         (state) => state.home
     );
 
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+            preserveAspectRatio: "xMidYMid slice"
+        }
+    };
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            if (!category) return;
+            
+            setIsLoading(true);
+            try {
+                await dispatch(query_products({
+                    ...searchParams,
+                    category: category,
+                    page_number: pageNumber,
+                    par_page: parPage,
+                })).unwrap();
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, [category, pageNumber, parPage]);
+
     useEffect(() => {
         if (category) {
-            setSearchParams({
-                ...searchParams,
+            setSearchParams(prev => ({
+                ...prev,
                 category: category,
                 page_number: pageNumber,
                 par_page: parPage,
-            });
+            }));
         }
-    }, [category, pageNumber, parPage, searchParams]);
+    }, [category, pageNumber, parPage]);
 
     const handlePriceFromChange = (event) => {
         setPriceFrom(event.target.value);
@@ -103,12 +141,6 @@ const CategoryShop = () => {
             sort_price: newSortPrice,
         });
     };
-
-    useEffect(() => {
-        if (searchParams) {
-            dispatch(query_products(searchParams));
-        }
-    }, [searchParams, dispatch]);
 
     const resetFilter = () => {
         setRating("");
@@ -331,24 +363,10 @@ const CategoryShop = () => {
                                 <Product products={latest_products} title="Sản phẩm mới nhất"/>
                             </div>
                         </div>
-                        <div className="w-9/12 md-lg:w-8/12 md:w-full">
-                            <div className="pl-8 md:pl-0">
-                                <div
-                                    className="py-4 bg-white mb-10 px-3 rounded-md flex justify-between items-start border">
-                                    <h2 className="text-lg font-medium text-slate-600 mt-2">
-                                        {totalProducts} sản phẩm
-                                    </h2>
-                                    <div className="flex justify-center items-center gap-3">
-                                        <select
-                                            onChange={handleSortPrice}
-                                            className="p-2 border outline-0 text-slate-600 font-semibold"
-                                            name=""
-                                            id=""
-                                        >
-                                            <option value="">Sắp xếp</option>
-                                            <option value="low-to-high">Giá thấp - cao</option>
-                                            <option value="high-to-low">Giá cao - thấp</option>
-                                        </select>
+                        <div className="w-9/12 md-lg:w-8/12 md:w-full pl-8 md-lg:pl-0">
+                            <div className="flex flex-col gap-4">
+                                <div className="flex justify-between items-center">
+                                    <div className="flex justify-start items-center gap-4">
                                         <div className="flex justify-center items-start gap-4 md-lg:hidden">
                                             <div
                                                 onClick={() => setStyles("grid")}
@@ -370,7 +388,20 @@ const CategoryShop = () => {
                                     </div>
                                 </div>
                                 <div className="pb-8">
-                                    <ShopProduct styles={styles} products={products}/>
+                                    {isLoading ? (
+                                        <div className="flex justify-center items-center h-64">
+                                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
+                                        </div>
+                                    ) : products.length === 0 ? (
+                                        <div className="w-full min-h-[400px] flex flex-col items-center justify-center py-8">
+                                            <Lottie options={defaultOptions} width={200} height={200} />
+                                            <p className="text-center text-lg text-gray-600 mt-4">
+                                                Không có sản phẩm nào trong danh mục {category}
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <ShopProduct styles={styles} products={products}/>
+                                    )}
                                 </div>
                                 {totalProducts > parPage && (
                                     <div className="w-full flex justify-end mt-4 bottom-4 right-4">
