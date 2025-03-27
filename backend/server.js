@@ -56,12 +56,10 @@ const removeAdmin = (socketId) => {
 // Stripe Webhook xử lý các sự kiện thanh toán
 function handleCheckoutSessionCompleted(session) {
     console.log(`Completed session: ${session.id}`);
-    // Thêm logic xử lý tại đây
 }
 
 function handleChargeSucceeded(charge) {
     console.log(`Charge succeeded: ${charge.id}`);
-    // Thêm logic xử lý tại đây
 }
 
 

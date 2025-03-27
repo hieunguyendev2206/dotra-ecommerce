@@ -294,8 +294,8 @@ const Product = () => {
             toast.error("Mô tả không được để trống");
             return false;
         }
-        if (stateProduct.description.length < 20) {
-            toast.error("Mô tả sản phẩm phải có ít nhất 20 ký tự");
+        if (stateProduct.description.length < 50) {
+            toast.error("Mô tả sản phẩm phải có ít nhất 50 ký tự");
             return false;
         }
 
@@ -304,8 +304,8 @@ const Product = () => {
             toast.error("Vui lòng thêm ít nhất 1 ảnh sản phẩm");
             return false;
         }
-        if (images.length > 8) {
-            toast.error("Không được thêm quá 8 ảnh cho một sản phẩm");
+        if (images.length > 30) {
+            toast.error("Không được thêm quá 30 ảnh cho một sản phẩm");
             return false;
         }
         
@@ -532,8 +532,8 @@ const Product = () => {
             toast.error("Mô tả không được để trống");
             return false;
         }
-        if (stateUpdateProduct.description.length < 20) {
-            toast.error("Mô tả sản phẩm phải có ít nhất 20 ký tự");
+        if (stateUpdateProduct.description.length < 50) {
+            toast.error("Mô tả sản phẩm phải có ít nhất 50 ký tự");
             return false;
         }
 
@@ -542,8 +542,8 @@ const Product = () => {
             toast.error("Vui lòng thêm ít nhất 1 ảnh sản phẩm");
             return false;
         }
-        if (imageShow.length > 20) {
-            toast.error("Không được thêm quá 20 ảnh cho một sản phẩm");
+        if (imageShow.length > 30) {
+            toast.error("Không được thêm quá 30 ảnh cho một sản phẩm");
             return false;
         }
 

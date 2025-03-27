@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
 import {createSearchParams, Link, useNavigate, useSearchParams,} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {query_products} from "../../store/reducers/home.reducers";
@@ -10,6 +10,9 @@ import icons from "../../assets/icons";
 import Product from "../../components/Product";
 import ShopProduct from "../../components/ShopProduct/ShopProduct";
 import Pagination from "../../components/Pagination/Pagination";
+import Lottie from "react-lottie";
+import animationData from "../../assets/img/searchNotFound.json";
+import debounce from "lodash/debounce";
 
 const SearchProducts = () => {
     const {
@@ -18,6 +21,7 @@ const SearchProducts = () => {
         CiStar,
         BsFillGridFill,
         FaThList,
+        FaSearch
     } = icons;
     const [queryParams, setQueryParams] = useSearchParams();
     const category = queryParams.get("category");
@@ -31,7 +35,14 @@ const SearchProducts = () => {
     const [parPage, setParPage] = useState(16);
     const [priceFrom, setPriceFrom] = useState("");
     const [priceTo, setPriceTo] = useState("");
-    const [searchParams, setSearchParams] = useState();
+    const [searchParams, setSearchParams] = useState({
+        searchValue: searchValue || "",
+        category: category || "",
+        page_number: 1,
+        par_page: 16
+    });
+    const [isLoading, setIsLoading] = useState(false);
+    const [inputValue, setInputValue] = useState(searchValue || "");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -39,17 +50,72 @@ const SearchProducts = () => {
         (state) => state.home
     );
 
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+            preserveAspectRatio: "xMidYMid slice"
+        }
+    };
+
+    const debouncedSearch = useCallback(
+        debounce((value) => {
+            if (value.trim()) {
+                setIsLoading(true);
+                dispatch(query_products({
+                    ...searchParams,
+                    searchValue: value,
+                    page_number: 1
+                }))
+                    .finally(() => setIsLoading(false));
+            }
+        }, 500),
+        [dispatch, searchParams]
+    );
+
     useEffect(() => {
-        if (category && searchValue) {
-            setSearchParams({
+        if (searchValue) {
+            setInputValue(searchValue);
+            setIsLoading(true);
+            dispatch(query_products({
                 ...searchParams,
                 searchValue: searchValue,
-                category: category,
-                page_number: pageNumber,
-                par_page: parPage,
+                page_number: 1
+            }))
+                .finally(() => setIsLoading(false));
+        }
+    }, [searchValue, dispatch]);
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (inputValue.trim()) {
+            setIsLoading(true);
+            navigate({
+                pathname: "/products/search",
+                search: createSearchParams({
+                    ...searchParams,
+                    searchValue: inputValue,
+                    page_number: 1
+                }).toString()
             });
         }
-    }, [category, pageNumber, parPage, searchParams, searchValue]);
+    };
+
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        setInputValue(value);
+        if (value.trim()) {
+            setIsLoading(true);
+            debouncedSearch(value);
+        }
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch(e);
+        }
+    };
 
     const handlePriceFromChange = (event) => {
         setPriceFrom(event.target.value);
@@ -142,9 +208,9 @@ const SearchProducts = () => {
                             <div className="flex justify-center items-center gap-2 text-2xl w-full">
                                 <Link to="/">Trang chủ</Link>
                                 <span className="pt-1">
-                                  <MdOutlineKeyboardArrowRight/>
+                                    <MdOutlineKeyboardArrowRight/>
                                 </span>
-                                <span>Cửa hàng</span>
+                                <span>Tìm kiếm sản phẩm</span>
                             </div>
                         </div>
                     </div>
@@ -152,6 +218,22 @@ const SearchProducts = () => {
             </section>
             <section className="py-16">
                 <div className="w-[85%] md:w-[90%%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
+                    <div className="mb-8">
+                        <form onSubmit={handleSearch} className="flex gap-2">
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={handleInputChange}
+                                onKeyPress={handleKeyPress}
+                                placeholder="Tìm kiếm sản phẩm..."
+                                className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                            />
+                            <Button type="submit" color="failure">
+                                <FaSearch className="mr-2" />
+                                Tìm kiếm
+                            </Button>
+                        </form>
+                    </div>
                     <div className={`md:block hidden ${!filter ? "mb-6" : "mb-0"}`}>
                         <button
                             onClick={() => setFilter(!filter)}
@@ -375,7 +457,20 @@ const SearchProducts = () => {
                                     </div>
                                 </div>
                                 <div className="pb-8">
-                                    <ShopProduct styles={styles} products={products}/>
+                                    {isLoading ? (
+                                        <div className="flex justify-center items-center h-64">
+                                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
+                                        </div>
+                                    ) : products.length === 0 ? (
+                                        <div className="w-full min-h-[400px] flex flex-col items-center justify-center py-8">
+                                            <Lottie options={defaultOptions} width={200} height={200} />
+                                            <p className="text-center text-lg text-gray-600 mt-4">
+                                                Không tìm thấy sản phẩm nào phù hợp với từ khóa &quot;{searchValue}&quot;
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <ShopProduct styles={styles} products={products}/>
+                                    )}
                                 </div>
                                 {totalProducts > parPage && (
                                     <div className="w-full flex justify-end mt-4 bottom-4 right-4">

@@ -21,6 +21,9 @@ import {FaSearch} from "react-icons/fa";
 import Logo from "../../assets/logo/logo.png"
 import { getCustomerAccessTokenFromLS, removeCustomerAccessTokenFromLS } from "../../utils/localStorage";
 import api from "../../api/api.js";
+import LoginForm from "../../components/Login/LoginForm.jsx";
+import Lottie from "react-lottie";
+import animationData from "../../assets/img/searchNotFound.json";
 
 
 
@@ -276,6 +279,15 @@ const Header = () => {
         }
     };
 
+    const defaultOptions = {
+        loop: false,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+            preserveAspectRatio: "xMidYMid slice",
+        },
+    };
+
     return (
         <div className="w-full bg-white">
             <div className="header-top bg-[#eeeeee] md-lg:hidden">
@@ -351,7 +363,7 @@ const Header = () => {
                                                   <span>
                                                     <FaLock/>
                                                   </span>
-                                                  <span className="font-medium mt-1">ĐĂNG NHẬP</span>
+                                                <span className="font-medium mt-1">ĐĂNG NHẬP</span>
                                             </div>
                                             <Modal
                                                 show={openModalLogin}
@@ -362,146 +374,7 @@ const Header = () => {
                                             >
                                                 <Modal.Header/>
                                                 <Modal.Body>
-                                                    <div className="space-y-5">
-                                                        <div className="flex justify-center">
-                                                            <img
-                                                                className=" w-[180px] h-[50px]"
-                                                                src={Logo}
-                                                                alt=""
-                                                            />
-                                                        </div>
-                                                        <h3 className="flex justify-center text-xl font-bold text-gray-900 dark:text-white">
-                                                            ĐĂNG NHẬP
-                                                        </h3>
-                                                        <form onSubmit={handleSubmitLogin}>
-                                                            <div className="">
-                                                                <label htmlFor="email" className="font-light">
-                                                                    Email
-                                                                </label>
-                                                                <div
-                                                                    className="flex overflow-hidden items-center mt-2 w-full rounded-lg border border-gray-400 transition-all focus-within:shadow-lg focus-within:border-orange-500">
-                                                                    <div
-                                                                        className="flex justify-center items-center pl-6">
-                                                                        <AiOutlineMail
-                                                                            className="w-6 h-6 pointer-events-none"/>
-                                                                    </div>
-                                                                    <input
-                                                                        type="text"
-                                                                        name="email"
-                                                                        onChange={handleInputLogin}
-                                                                        value={stateLogin.email}
-                                                                        placeholder="Nhập địa chỉ email"
-                                                                        className="px-4 py-3 w-full focus:outline-none font-light border-0 focus:ring-0"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="pt-4">
-                                                                <label
-                                                                    htmlFor="password"
-                                                                    className="font-light"
-                                                                >
-                                                                    Mật khẩu
-                                                                </label>
-                                                                <div
-                                                                    className="flex mt-2 w-full rounded-lg border border-gray-400 transition-all focus-within:shadow-lg focus-within:border-orange-500">
-                                                                    <div
-                                                                        className="flex justify-center items-center pl-6">
-                                                                        <FiLock
-                                                                            className="w-6 h-6 pointer-events-none"/>
-                                                                    </div>
-                                                                    <input
-                                                                        type={visible ? "text" : "password"}
-                                                                        name="password"
-                                                                        onChange={handleInputLogin}
-                                                                        value={stateLogin.password}
-                                                                        placeholder="Nhập mật khẩu"
-                                                                        className="relative px-4 py-3 w-full focus:outline-none font-light border-0 focus:ring-0"
-                                                                        required
-                                                                    />
-                                                                    {visible ? (
-                                                                        <AiOutlineEye
-                                                                            className="mt-[10px] mr-3 cursor-pointer"
-                                                                            size={30}
-                                                                            onClick={() => setVisible(false)}
-                                                                        />
-                                                                    ) : (
-                                                                        <AiOutlineEyeInvisible
-                                                                            className="mt-[10px] mr-3 cursor-pointer"
-                                                                            size={30}
-                                                                            onClick={() => setVisible(true)}
-                                                                        />
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                            <div className="flex justify-between items-center pt-4">
-                                                                <div className="flex items-center">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        name="remember"
-                                                                        id="remember"
-                                                                        className="w-5 h-5 text-orange-500 bg-white rounded border border-gray-400 focus:outline-none focus:ring-orange-500"
-                                                                    />
-                                                                    <label
-                                                                        htmlFor="remember"
-                                                                        className="pl-4 font-light text-gray-900"
-                                                                    >
-                                                                        Remember me
-                                                                    </label>
-                                                                </div>
-                                                                <a
-                                                                    href="#"
-                                                                    className="text-teal-500 hover:text-teal-600"
-                                                                >
-                                                                    Quên mật khẩu
-                                                                </a>
-                                                            </div>
-                                                            <div className="pt-5">
-                                                                <button
-                                                                    type="submit"
-                                                                    className="py-3 px-8 w-full text-white bg-orange-500 rounded-lg shadow-lg hover:bg-orange-600 focus:ring-4 focus:ring-red-100 focus:outline-none"
-                                                                >
-                                                                    {loading ? (
-                                                                        <PropagateLoader
-                                                                            color="white"
-                                                                            size={10}
-                                                                            className="mb-3"
-                                                                        />
-                                                                    ) : (
-                                                                        "Đăng nhập"
-                                                                    )}
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                        <div className="flex">
-                                                          <span className="font-light text-center text-gray-500">
-                                                            Bạn chưa có tài khoản? {""}
-                                                          </span>
-                                                            <div
-                                                                onClick={() => setOpenModalRegister(true)}
-                                                                className="font-normal text-teal-500 hover:text-teal-600 cursor-pointer">
-                                                                Tạo tài khoản
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            className="flex gap-y-4 gap-x-6 justify-center items-center whitespace-nowrap">
-                                                            <Link
-                                                                to={googleLogin}
-                                                                className="flex items-center justify-center flex-1 py-3 px-2 rounded-lg bg-white border border-gray-400 whitespace-nowrap hover:bg-gray-50 focus:outline-none focus:ring-gray-100 focus:ring-4"
-                                                            >
-                                                                <FcGoogle className="w-6 h-6"/>
-                                                                <span className="pl-3 font-medium text-gray-900">
-                                                                  Đăng nhập bằng Google
-                                                                </span>
-                                                            </Link>
-                                                            <button
-                                                                className="flex items-center justify-center flex-1 py-3 px-2 rounded-lg bg-blue-500 whitespace-nowrap hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-gray-100">
-                                                                <FaFacebook color="white" className="w-6 h-6"/>
-                                                                <span className="pl-3 font-medium text-white">
-                                                                  Đăng nhập bằng Facebook
-                                                                </span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                    <LoginForm onClose={onCloseModalLogin} />
                                                 </Modal.Body>
                                             </Modal>
                                         </div>
@@ -672,22 +545,21 @@ const Header = () => {
                                                             </div>
                                                         </form>
 
-                                                        <div
-                                                            className="flex gap-y-4 gap-x-6 justify-center items-center whitespace-nowrap">
+                                                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                                                             <Link
                                                                 to={googleLogin}
-                                                                className="flex items-center justify-center flex-1 py-3 px-2 rounded-lg bg-white border border-gray-400 whitespace-nowrap hover:bg-gray-50 focus:outline-none focus:ring-gray-100 focus:ring-4"
+                                                                className="flex items-center justify-center w-full sm:w-auto py-3 px-4 rounded-lg bg-white border border-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-gray-100 focus:ring-4 transition-all duration-200"
                                                             >
-                                                                <FcGoogle className="w-6 h-6"/>
-                                                                <span className="pl-3 font-medium text-gray-900">
-                                                                  Đăng nhập bằng Google
+                                                                <FcGoogle className="w-5 h-5 sm:w-6 sm:h-6"/>
+                                                                <span className="pl-2 sm:pl-3 text-sm sm:text-base font-medium text-gray-900">
+                                                                    Google
                                                                 </span>
                                                             </Link>
                                                             <button
-                                                                className="flex items-center justify-center flex-1 py-3 px-2 rounded-lg bg-blue-500 whitespace-nowrap hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-gray-100">
-                                                                <FaFacebook color="white" className="w-6 h-6"/>
-                                                                <span className="pl-3 font-medium text-white">
-                                                                  Đăng nhập bằng Facebook
+                                                                className="flex items-center justify-center w-full sm:w-auto py-3 px-4 rounded-lg bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-gray-100 transition-all duration-200">
+                                                                <FaFacebook color="white" className="w-5 h-5 sm:w-6 sm:h-6"/>
+                                                                <span className="pl-2 sm:pl-3 text-sm sm:text-base font-medium text-white">
+                                                                    Facebook
                                                                 </span>
                                                             </button>
                                                         </div>
@@ -754,7 +626,7 @@ const Header = () => {
                                                     ? "text-[#33cc33]"
                                                     : "text-slate-600"
                                             }`}
-                                         to="/blog">
+                                            to="/blog">
                                             Blog
                                         </Link>
                                     </li>
@@ -1005,26 +877,37 @@ const Header = () => {
                             <div
                                 className={`${
                                     categoryShow ? "max-h-0" : "max-h-[1000px]"
-                                } overflow-hidden transition-all md-lg:relative duration-500 absolute z-[99999] bg-white w-full`}
+                                } overflow-hidden transition-all md-lg:relative duration-500 absolute z-[99999] bg-white w-full shadow-lg`}
                             >
+                                {categories.length === 0 ? (
+                                    <div className="w-full flex justify-center items-center py-8 flex-col">
+                                        <Lottie options={defaultOptions} width={200} height={200} />
+                                        <p className="text-center text-lg text-gray-600 mt-2">Không có danh mục sản phẩm</p>
+                                    </div>
+                                ) : (
                                 <ul className="py-2 text-slate-600 font-medium h-full overflow-auto">
                                     {categories.map((c) => {
                                         return (
                                             <Link
                                                 to={`/products?category=${c.category_name}`}
                                                 key={c._id}
-                                                className="flex justify-start items-center gap-2 px-[24px] py-[6px]"
+                                                    className="flex justify-start items-center gap-2 px-[24px] py-[12px] hover:bg-gray-50 transition-colors"
+                                                    onClick={() => setCategoryShow(true)}
                                             >
                                                 <img
                                                     src={c.image}
-                                                    className="w-[40px] h-[40px] overflow-hidden"
+                                                        className="w-[40px] h-[40px] object-cover rounded-md"
                                                     alt={c.name}
                                                 />
-                                                <span className="text-sm block">{c.category_name}</span>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-sm font-medium">{c.category_name}</span>
+                                                        <span className="text-xs text-gray-500">Xem tất cả sản phẩm</span>
+                                                    </div>
                                             </Link>
                                         );
                                     })}
                                 </ul>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -1032,52 +915,48 @@ const Header = () => {
                         <div className="flex flex-wrap w-full justify-between items-center md-lg:gap-6">
                             <div className="w-8/12 md-lg:w-full">
                                 <div className="flex relative">
-                                    <select
-                                        onChange={(e) => setCategory(e.target.value)}
-                                        className="w-[180px] text-slate-600 bg-transparent p-[13px] h-full border-y border-red-600 outline-0 rounded-l-md"
-                                    >
-                                        <option value="">Chọn danh mục</option>
-                                        {categories.map((c) => (
-                                            <option key={c._id} value={c.category_name}>
-                                                {c.category_name}
-                                            </option>
-                                        ))}
-                                    </select>
                                     <input
                                         value={searchValue}
                                         onChange={(e) => handleSearch(e.target.value)}
-                                        className="w-full relative bg-transparent text-slate-500 border-red-600 outline-0 p-[15.5px] h-full rounded-r-md"
+                                        className="w-full relative bg-transparent text-slate-500 border border-red-600 outline-0 p-[15.5px] h-full rounded-md md-lg:text-sm"
                                         placeholder="Tìm kiếm sản phẩm..."
                                     />
                                     <button
                                         onClick={handleOnClickSearch}
-                                        className="bg-red-500 right-0 absolute px-6 h-full text-white flex items-center rounded-r-md"
+                                        className="bg-red-500 right-0 absolute px-6 h-full text-white flex items-center rounded-r-md hover:bg-red-600 transition-colors"
                                     >
                                         <FaSearch/>
                                     </button>
                                     {showResults && (
                                         <div
-                                            className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-[100] max-h-[300px] overflow-y-auto rounded-b-md">
+                                            className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg z-[100] max-h-[300px] overflow-y-auto rounded-b-md md-lg:max-h-[400px]">
                                             {searchResults.length > 0 ? (
                                                 searchResults.map((product) => (
                                                     <div
                                                         key={product._id}
-                                                        className="p-3 hover:bg-gray-100 cursor-pointer flex items-center gap-4"
+                                                        className="p-3 hover:bg-gray-100 cursor-pointer flex items-center gap-4 md-lg:p-4"
                                                         onClick={() => {
-                                                            navigate(`/home/product-details/${product.slug}`); // Sử dụng slug để điều hướng
+                                                            navigate(`/home/product-details/${product.slug}`);
                                                             setShowResults(false);
                                                         }}
                                                     >
                                                         <img
-                                                            src={product.images?.[0] || "https://via.placeholder.com/150"} // Sử dụng hình ảnh đầu tiên hoặc hình mặc định
+                                                            src={product.images?.[0] || "https://via.placeholder.com/150"}
                                                             alt={product.product_name}
-                                                            className="w-10 h-10 object-cover"
+                                                            className="w-10 h-10 object-cover md-lg:w-16 md-lg:h-16"
                                                         />
-                                                        <span>{product.product_name}</span>
+                                                        <div className="flex flex-col">
+                                                            <span className="font-medium md-lg:text-base">{product.product_name}</span>
+                                                            <span className="text-red-500 font-semibold md-lg:text-base">
+                                                                {product.price.toLocaleString('vi-VN')}đ
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 ))
                                             ) : (
-                                                <div className="p-3 text-gray-500">Không tìm thấy sản phẩm nào</div>
+                                                <div className="p-4 text-center text-gray-500">
+                                                    Không tìm thấy sản phẩm
+                                                </div>
                                             )}
                                         </div>
                                     )}

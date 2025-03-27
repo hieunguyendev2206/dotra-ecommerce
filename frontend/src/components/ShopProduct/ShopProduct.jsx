@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {formateCurrency} from "../../utils/formate";
 import {useDispatch, useSelector} from "react-redux";
 import {add_to_cart, message_clear} from "../../store/reducers/cart.reducers";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import Rating from "../Rating";
 import icons from "../../assets/icons";
@@ -17,6 +17,16 @@ const ShopProduct = ({styles, products}) => {
     const {success_message, error_message} = useSelector((state) => state.cart);
     const {add_wishlist_success_message, add_wishlist_error_message} =
         useSelector((state) => state.wishlist);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const handleAddToCart = (productId) => {
         if (userInfo) {
@@ -49,7 +59,7 @@ const ShopProduct = ({styles, products}) => {
                 })
             );
         } else {
-            toast.error("Bạn cần đăng nhập để thêm sản phẩm yêu thích")
+            toast.error("Bạn cần đăng nhập để thêm sản phẩm yêu thích")
         }
     };
 
@@ -104,6 +114,7 @@ const ShopProduct = ({styles, products}) => {
                             style={{aspectRatio: "1 / 1", objectPosition: "center"}}
                             src={p.images[0] || "https://via.placeholder.com/300"}
                             alt={p.product_name}
+                            loading="lazy"
                         />
                         <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
                             <li
@@ -127,26 +138,30 @@ const ShopProduct = ({styles, products}) => {
                         </ul>
                     </div>
                     <div className="py-3 text-slate-600 px-2 text-sm">
-                        <h2 className="font-bold text-blue-500">{p.brand_name}.</h2>
-                        <h2 className="line-clamp-2">{p.product_name}</h2>
+                        <h2 className="font-bold text-blue-500 text-sm md:text-base">{p.brand_name}.</h2>
+                        <h2 className="line-clamp-2 text-sm md:text-base">{p.product_name}</h2>
                         <div className="flex justify-start items-center gap-2 m-[2px]">
-                            <span className="font-bold line-through">
+                            <span className="font-bold line-through text-xs md:text-sm">
                                 {formateCurrency(p.price)}
                             </span>
-                            <span className="text-base font-bold text-red-500">
+                            <span className="text-sm md:text-base font-bold text-red-500">
                                 {formateCurrency(p.price - (p.price * p.discount) / 100)}
                             </span>
                         </div>
-                        <div className="flex justify-center items-center">
+                        <div className="flex justify-between items-center">
                             <Rating rating={p.rating}/>
-                            <h2 className={`font-medium ml-20 ${
+                            <h2 className={`font-medium text-xs md:text-sm ${
                                 p.quantity === 0 
                                     ? "text-red-500" 
                                     : p.quantity < 10 
                                         ? "text-orange-500" 
                                         : "text-green-600"
                             }`}>
-                                {p.quantity === 0 ? "Đã bán hết" : p.quantity < 10 ? "Sắp hết" : `Số lượng: ${p.quantity}`}
+                                {p.quantity === 0 
+                                    ? "Đã bán hết" 
+                                    : isMobile 
+                                        ? (p.quantity < 10 ? "Sắp hết" : "Còn hàng") 
+                                        : `Số lượng: ${p.quantity} ${p.quantity < 10 ? ' (Sắp hết)' : 'Đã bán hết'}`}
                             </h2>
                         </div>
                     </div>
