@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import DOMPurify from "dompurify";
 import { motion } from "framer-motion";
-import { Helmet } from "react-helmet-async";
 
 // Components
 import Rating from "../../components/Rating";
@@ -289,25 +288,6 @@ const ProductDetails = () => {
 
     return (
         <div className="bg-white">
-            {product_details && (
-                <Helmet>
-                    <title>{product_details.product_name || 'Chi tiết sản phẩm'} - Dotra</title>
-                    <meta name="description" content={product_details.description?.substring(0, 160) || 'Chi tiết sản phẩm trên Dotra'} />
-                    
-                    {/* Facebook Open Graph / Social Media Meta Tags */}
-                    <meta property="og:type" content="product" />
-                    <meta property="og:title" content={product_details.product_name || 'Chi tiết sản phẩm'} />
-                    <meta property="og:description" content={product_details.description?.substring(0, 160) || 'Chi tiết sản phẩm trên Dotra'} />
-                    <meta property="og:image" content={product_details.images?.[0] || ''} />
-                    <meta property="og:url" content={window.location.href} />
-                    
-                    {/* Twitter Card Meta Tags */}
-                    <meta name="twitter:card" content="summary_large_image" />
-                    <meta name="twitter:title" content={product_details.product_name || 'Chi tiết sản phẩm'} />
-                    <meta name="twitter:description" content={product_details.description?.substring(0, 160) || 'Chi tiết sản phẩm trên Dotra'} />
-                    <meta name="twitter:image" content={product_details.images?.[0] || ''} />
-                </Helmet>
-            )}
             <Header/>
             <div
                 className='bg-[url("/src/assets/banners/5.png")] h-[220px] mt-6 bg-cover bg-no-repeat relative bg-left'>
