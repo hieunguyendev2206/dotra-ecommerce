@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {Modal} from "flowbite-react";
 import {useDispatch, useSelector} from "react-redux";
-import {get_categories, search_products} from "../../store/reducers/home.reducers";
+import {get_categories} from "../../store/reducers/home.reducers";
 import {
     customer_login,
     customer_logout,
@@ -19,12 +19,11 @@ import path from "../../constants/path";
 import {get_wishlist} from "../../store/reducers/wishlist.reducers";
 import {FaSearch} from "react-icons/fa";
 import Logo from "../../assets/logo/logo.png"
-import { getCustomerAccessTokenFromLS, removeCustomerAccessTokenFromLS } from "../../utils/localStorage";
+import {getCustomerAccessTokenFromLS, removeCustomerAccessTokenFromLS} from "../../utils/localStorage";
 import api from "../../api/api.js";
 import LoginForm from "../../components/Login/LoginForm.jsx";
 import Lottie from "react-lottie";
 import animationData from "../../assets/img/searchNotFound.json";
-
 
 
 const getOauthGoogleUrl = () => {
@@ -120,7 +119,7 @@ const Header = () => {
         }
 
         try {
-            const response = await api.get("/home/search-products", { params: { searchValue: value, category } });
+            const response = await api.get("/home/search-products", {params: {searchValue: value, category}});
             console.log("Kết quả API:", response.data); // In ra kết quả API
             setSearchResults(response.data);
 
@@ -133,7 +132,6 @@ const Header = () => {
             console.error("Lỗi tìm kiếm sản phẩm:", error);
         }
     };
-
 
 
     const handleOnClickSearch = () => {
@@ -246,7 +244,6 @@ const Header = () => {
         dispatch(customer_logout()); // Cập nhật Redux state
         navigate("/"); // Chuyển hướng về trang chính
     };
-
 
 
     const redirectCartPage = () => {
@@ -374,7 +371,7 @@ const Header = () => {
                                             >
                                                 <Modal.Header/>
                                                 <Modal.Body>
-                                                    <LoginForm onClose={onCloseModalLogin} />
+                                                    <LoginForm onClose={onCloseModalLogin}/>
                                                 </Modal.Body>
                                             </Modal>
                                         </div>
@@ -545,20 +542,24 @@ const Header = () => {
                                                             </div>
                                                         </form>
 
-                                                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                                                        <div
+                                                            className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                                                             <Link
                                                                 to={googleLogin}
                                                                 className="flex items-center justify-center w-full sm:w-auto py-3 px-4 rounded-lg bg-white border border-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-gray-100 focus:ring-4 transition-all duration-200"
                                                             >
                                                                 <FcGoogle className="w-5 h-5 sm:w-6 sm:h-6"/>
-                                                                <span className="pl-2 sm:pl-3 text-sm sm:text-base font-medium text-gray-900">
+                                                                <span
+                                                                    className="pl-2 sm:pl-3 text-sm sm:text-base font-medium text-gray-900">
                                                                     Google
                                                                 </span>
                                                             </Link>
                                                             <button
                                                                 className="flex items-center justify-center w-full sm:w-auto py-3 px-4 rounded-lg bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-gray-100 transition-all duration-200">
-                                                                <FaFacebook color="white" className="w-5 h-5 sm:w-6 sm:h-6"/>
-                                                                <span className="pl-2 sm:pl-3 text-sm sm:text-base font-medium text-white">
+                                                                <FaFacebook color="white"
+                                                                            className="w-5 h-5 sm:w-6 sm:h-6"/>
+                                                                <span
+                                                                    className="pl-2 sm:pl-3 text-sm sm:text-base font-medium text-white">
                                                                     Facebook
                                                                 </span>
                                                             </button>
@@ -881,32 +882,34 @@ const Header = () => {
                             >
                                 {categories.length === 0 ? (
                                     <div className="w-full flex justify-center items-center py-8 flex-col">
-                                        <Lottie options={defaultOptions} width={200} height={200} />
-                                        <p className="text-center text-lg text-gray-600 mt-2">Không có danh mục sản phẩm</p>
+                                        <Lottie options={defaultOptions} width={200} height={200}/>
+                                        <p className="text-center text-lg text-gray-600 mt-2">Không có danh mục sản
+                                            phẩm</p>
                                     </div>
                                 ) : (
-                                <ul className="py-2 text-slate-600 font-medium h-full overflow-auto">
-                                    {categories.map((c) => {
-                                        return (
-                                            <Link
-                                                to={`/products?category=${c.category_name}`}
-                                                key={c._id}
+                                    <ul className="py-2 text-slate-600 font-medium h-full overflow-auto">
+                                        {categories.map((c) => {
+                                            return (
+                                                <Link
+                                                    to={`/products?category=${c.category_name}`}
+                                                    key={c._id}
                                                     className="flex justify-start items-center gap-2 px-[24px] py-[12px] hover:bg-gray-50 transition-colors"
                                                     onClick={() => setCategoryShow(true)}
-                                            >
-                                                <img
-                                                    src={c.image}
+                                                >
+                                                    <img
+                                                        src={c.image}
                                                         className="w-[40px] h-[40px] object-cover rounded-md"
-                                                    alt={c.name}
-                                                />
+                                                        alt={c.name}
+                                                    />
                                                     <div className="flex flex-col">
                                                         <span className="text-sm font-medium">{c.category_name}</span>
-                                                        <span className="text-xs text-gray-500">Xem tất cả sản phẩm</span>
+                                                        <span
+                                                            className="text-xs text-gray-500">Xem tất cả sản phẩm</span>
                                                     </div>
-                                            </Link>
-                                        );
-                                    })}
-                                </ul>
+                                                </Link>
+                                            );
+                                        })}
+                                    </ul>
                                 )}
                             </div>
                         </div>
@@ -946,8 +949,10 @@ const Header = () => {
                                                             className="w-10 h-10 object-cover md-lg:w-16 md-lg:h-16"
                                                         />
                                                         <div className="flex flex-col">
-                                                            <span className="font-medium md-lg:text-base">{product.product_name}</span>
-                                                            <span className="text-red-500 font-semibold md-lg:text-base">
+                                                            <span
+                                                                className="font-medium md-lg:text-base">{product.product_name}</span>
+                                                            <span
+                                                                className="text-red-500 font-semibold md-lg:text-base">
                                                                 {product.price.toLocaleString('vi-VN')}đ
                                                             </span>
                                                         </div>

@@ -119,8 +119,9 @@ const Cart = () => {
 
     return (
         <div className="bg-white">
-            <Header />
-            <section className='bg-[url("/src/assets/banners/1.png")] h-[220px] mt-6 bg-cover bg-no-repeat relative bg-left'>
+            <Header/>
+            <section
+                className='bg-[url("/src/assets/banners/1.png")] h-[220px] mt-6 bg-cover bg-no-repeat relative bg-left'>
                 <div className="absolute left-0 top-0 w-full h-full bg-[#2422228a]">
                     <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
                         <div className="flex flex-col justify-center gap-1 items-center h-full w-full text-white">
@@ -128,7 +129,7 @@ const Cart = () => {
                             <div className="flex justify-center items-center gap-2 text-2xl w-full">
                                 <Link to={path.home}>Trang chủ</Link>
                                 <span className="pt-2">
-                                  <MdOutlineKeyboardArrowRight />
+                                  <MdOutlineKeyboardArrowRight/>
                                 </span>
                                 <span>Giỏ Hàng</span>
                             </div>
@@ -180,15 +181,20 @@ const Cart = () => {
                                                                             {p?.color?.code && (
                                                                                 <span className="text-sm text-gray-600">
                                                                                     Màu sắc: 
-                                                                                    <div className="inline-flex items-center gap-1 ml-1">
-                                                                                        <span className="w-4 h-4 rounded-full border" style={{backgroundColor: p.color.code}}></span>
-                                                                                        <span className="font-medium">{p.color.name}</span>
+                                                                                    <div
+                                                                                        className="inline-flex items-center gap-1 ml-1">
+                                                                                        <span
+                                                                                            className="w-4 h-4 rounded-full border"
+                                                                                            style={{backgroundColor: p.color.code}}></span>
+                                                                                        <span
+                                                                                            className="font-medium">{p.color.name}</span>
                                                                                     </div>
                                                                                 </span>
                                                                             )}
                                                                             {p?.size && (
                                                                                 <span className="text-sm text-gray-600">
-                                                                                    Kích thước: <span className="font-medium">{p.size}</span>
+                                                                                    Kích thước: <span
+                                                                                    className="font-medium">{p.size}</span>
                                                                                 </span>
                                                                             )}
                                                                         </div>
@@ -210,7 +216,8 @@ const Cart = () => {
                                                                               )
                                                                           )}
                                                                         </span>
-                                                                        <span className="ml-5 mt-2 text-red-500">x{p.quantity}</span>
+                                                                        <span
+                                                                            className="ml-5 mt-2 text-red-500">x{p.quantity}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div className="flex gap-2">
@@ -260,16 +267,18 @@ const Cart = () => {
                                                                             justifyContent: "center",
                                                                         }}
                                                                     >
-                                                                        <Modal.Header />
+                                                                        <Modal.Header/>
                                                                         <Modal.Body>
                                                                             <div className="text-center">
                                                                                 <HiOutlineExclamationCircle
                                                                                     className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200"
                                                                                 />
                                                                                 <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                                                                                    Bạn muốn xóa sản phẩm này ra khỏi giỏ hàng?
+                                                                                    Bạn muốn xóa sản phẩm này ra khỏi
+                                                                                    giỏ hàng?
                                                                                 </h3>
-                                                                                <div className="flex justify-center gap-4">
+                                                                                <div
+                                                                                    className="flex justify-center gap-4">
                                                                                     <Button
                                                                                         color="failure"
                                                                                         onClick={() => {
@@ -321,15 +330,20 @@ const Cart = () => {
                                                                             {p?.color?.code && (
                                                                                 <span className="text-sm text-gray-600">
                                                                                     Màu sắc: 
-                                                                                    <div className="inline-flex items-center gap-1 ml-1">
-                                                                                        <span className="w-4 h-4 rounded-full border" style={{backgroundColor: p.color.code}}></span>
-                                                                                        <span className="font-medium">{p.color.name}</span>
+                                                                                    <div
+                                                                                        className="inline-flex items-center gap-1 ml-1">
+                                                                                        <span
+                                                                                            className="w-4 h-4 rounded-full border"
+                                                                                            style={{backgroundColor: p.color.code}}></span>
+                                                                                        <span
+                                                                                            className="font-medium">{p.color.name}</span>
                                                                                     </div>
                                                                                 </span>
                                                                             )}
                                                                             {p?.size && (
                                                                                 <span className="text-sm text-gray-600">
-                                                                                    Kích thước: <span className="font-medium">{p.size}</span>
+                                                                                    Kích thước: <span
+                                                                                    className="font-medium">{p.size}</span>
                                                                                 </span>
                                                                             )}
                                                                         </div>
@@ -384,16 +398,18 @@ const Cart = () => {
                                                                             justifyContent: "center",
                                                                         }}
                                                                     >
-                                                                        <Modal.Header />
+                                                                        <Modal.Header/>
                                                                         <Modal.Body>
                                                                             <div className="text-center">
                                                                                 <HiOutlineExclamationCircle
                                                                                     className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200"
                                                                                 />
                                                                                 <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                                                                                    Bạn muốn xóa sản phẩm này ra khỏi giỏ hàng?
+                                                                                    Bạn muốn xóa sản phẩm này ra khỏi
+                                                                                    giỏ hàng?
                                                                                 </h3>
-                                                                                <div className="flex justify-center gap-4">
+                                                                                <div
+                                                                                    className="flex justify-center gap-4">
                                                                                     <Button
                                                                                         color="failure"
                                                                                         onClick={() => {
@@ -488,7 +504,7 @@ const Cart = () => {
                     )}
                 </div>
             </section>
-            <Footer />
+            <Footer/>
         </div>
     );
 };

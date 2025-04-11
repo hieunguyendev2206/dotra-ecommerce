@@ -20,7 +20,6 @@ router.post("/create-momo-payment", paymentControllers.create_momo_payment);
 router.post("/momo-notify", paymentControllers.capture_momo_payment);
 
 
-
 router.put("/activate-stripe-connect-account/:activeCode", authMiddlewares, paymentControllers.activate_stripe_connect_account);
 router.put("/update-payment/:orderId", paymentControllers.update_payment);
 

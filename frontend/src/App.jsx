@@ -21,45 +21,41 @@ import PaymentError from "./pages/PaymentError";
 import CustomerProfile from "./components/CustomerProfile/CustomerProfile.jsx";
 import ShopProfile from "./pages/SellerStore/ShopProfile.jsx";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop.jsx";
-import BlogList from "./components/Blog/BlogList.jsx";
-import BlogDetails from "./pages/BlogDetails/BlogDetails.jsx";
 
 function App() {
     return (
         <BrowserRouter>
             {/* Nút cuộn lên đầu trang */}
-            <ScrollToTop />
+            <ScrollToTop/>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/blog" element={<BlogList />} />
-                <Route path="/blog/:slug" element={<BlogDetails />} />
-                <Route path="/home/product-details/:slug" element={<ProductDetails />} />
-                <Route path="/seller-store/:sellerId" element={<ShopProfile />} />
-                <Route path="/shipping" element={<Shipping />} />
-                <Route path="/products?" element={<CategoryShop />} />
-                <Route path="/products/search?" element={<SearchProducts />} />
+                <Route path="/" element={<Home/>}/>
+                <Route path="/shop" element={<Shop/>}/>
+                <Route path="/cart" element={<Cart/>}/>
+                <Route path="/home/product-details/:slug" element={<ProductDetails/>}/>
+                <Route path="/seller-store/:sellerId" element={<ShopProfile/>}/>
+                <Route path="/shipping" element={<Shipping/>}/>
+                <Route path="/products?" element={<CategoryShop/>}/>
+                <Route path="/products/search?" element={<SearchProducts/>}/>
                 <Route
                     path="/verify-email-customer/:email_token"
-                    element={<VerifyEmail />}
+                    element={<VerifyEmail/>}
                 />
-                <Route path="/oauth/google-login" element={<OauthGoogle />} />
-                <Route path="/payment" element={<Payment />} />
-                <Route path="/payment/payment-success" element={<PaymentSuccess />} />
-                <Route path="/payment/payment-error" element={<PaymentError />} />
-                <Route path="/dashboard" element={<ProtectUser />}>
-                    <Route path="" element={<Dashboard />}>
-                        <Route path="" element={<CustomerDashboard />} />
-                        <Route path="my-orders" element={<MyOrders />} />
-                        <Route path="my-wishlist" element={<MyWishList />} />
-                        <Route path="chat" element={<Chat />} />
-                        <Route path="chat/:sellerId" element={<Chat />} />
+                <Route path="/oauth/google-login" element={<OauthGoogle/>}/>
+                <Route path="/payment" element={<Payment/>}/>
+                <Route path="/payment/payment-success" element={<PaymentSuccess/>}/>
+                <Route path="/payment/payment-error" element={<PaymentError/>}/>
+                <Route path="/dashboard" element={<ProtectUser/>}>
+                    <Route path="" element={<Dashboard/>}>
+                        <Route path="" element={<CustomerDashboard/>}/>
+                        <Route path="my-orders" element={<MyOrders/>}/>
+                        <Route path="my-wishlist" element={<MyWishList/>}/>
+                        <Route path="chat" element={<Chat/>}/>
+                        <Route path="chat/:sellerId" element={<Chat/>}/>
                         <Route
                             path="my-orders/get-order-details/:orderId"
-                            element={<OrderDetails />}
+                            element={<OrderDetails/>}
                         />
-                        <Route path="/dashboard/profile" element={<CustomerProfile />} />
+                        <Route path="/dashboard/profile" element={<CustomerProfile/>}/>
                     </Route>
                 </Route>
             </Routes>

@@ -56,7 +56,7 @@ const CategoryShop = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             if (!category) return;
-            
+
             setIsLoading(true);
             try {
                 await dispatch(query_products({
@@ -390,11 +390,13 @@ const CategoryShop = () => {
                                 <div className="pb-8">
                                     {isLoading ? (
                                         <div className="flex justify-center items-center h-64">
-                                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
+                                            <div
+                                                className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
                                         </div>
                                     ) : products.length === 0 ? (
-                                        <div className="w-full min-h-[400px] flex flex-col items-center justify-center py-8">
-                                            <Lottie options={defaultOptions} width={200} height={200} />
+                                        <div
+                                            className="w-full min-h-[400px] flex flex-col items-center justify-center py-8">
+                                            <Lottie options={defaultOptions} width={200} height={200}/>
                                             <p className="text-center text-lg text-gray-600 mt-4">
                                                 Không có sản phẩm nào trong danh mục {category}
                                             </p>

@@ -149,18 +149,20 @@ const ShopProduct = ({styles, products}) => {
                             </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <Rating rating={p.rating}/>
+                            <div className="flex-1">
+                                <Rating rating={p.rating}/>
+                            </div>
                             <h2 className={`font-medium text-xs md:text-sm ${
-                                p.quantity === 0 
-                                    ? "text-red-500" 
-                                    : p.quantity < 10 
-                                        ? "text-orange-500" 
+                                p.quantity === 0
+                                    ? "text-red-500"
+                                    : p.quantity < 10
+                                        ? "text-orange-500"
                                         : "text-green-600"
                             }`}>
-                                {p.quantity === 0 
-                                    ? "Đã bán hết" 
-                                    : isMobile 
-                                        ? (p.quantity < 10 ? "Sắp hết" : "Còn hàng") 
+                                {p.quantity === 0
+                                    ? "Đã bán hết"
+                                    : isMobile
+                                        ? (p.quantity < 10 ? "Sắp hết" : "Còn hàng")
                                         : `Số lượng: ${p.quantity} ${p.quantity < 10 ? ' (Sắp hết)' : ' '}`}
                             </h2>
                         </div>

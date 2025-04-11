@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {useEffect, useState, useCallback} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {createSearchParams, Link, useNavigate, useSearchParams,} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {query_products} from "../../store/reducers/home.reducers";
@@ -13,6 +13,8 @@ import Pagination from "../../components/Pagination/Pagination";
 import Lottie from "react-lottie";
 import animationData from "../../assets/img/searchNotFound.json";
 import debounce from "lodash/debounce";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SearchProducts = () => {
     const {
@@ -175,7 +177,21 @@ const SearchProducts = () => {
 
     useEffect(() => {
         if (searchParams) {
-            dispatch(query_products(searchParams));
+            setIsLoading(true);
+            dispatch(query_products(searchParams))
+                .unwrap()
+                .then((result) => {
+                    // Xử lý kết quả thành công
+                    console.log("Kết quả tìm kiếm:", result);
+                })
+                .catch((error) => {
+                    // Xử lý lỗi
+                    console.error("Lỗi khi tìm kiếm:", error);
+                    toast.error("Có lỗi xảy ra khi tìm kiếm sản phẩm");
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         }
     }, [searchParams, dispatch]);
 
@@ -229,7 +245,7 @@ const SearchProducts = () => {
                                 className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
                             />
                             <Button type="submit" color="failure">
-                                <FaSearch className="mr-2" />
+                                <FaSearch className="mr-2"/>
                                 Tìm kiếm
                             </Button>
                         </form>
@@ -459,13 +475,16 @@ const SearchProducts = () => {
                                 <div className="pb-8">
                                     {isLoading ? (
                                         <div className="flex justify-center items-center h-64">
-                                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
+                                            <div
+                                                className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
                                         </div>
-                                    ) : products.length === 0 ? (
-                                        <div className="w-full min-h-[400px] flex flex-col items-center justify-center py-8">
-                                            <Lottie options={defaultOptions} width={200} height={200} />
+                                    ) : !products || products.length === 0 ? (
+                                        <div
+                                            className="w-full min-h-[400px] flex flex-col items-center justify-center py-8">
+                                            <Lottie options={defaultOptions} width={200} height={200}/>
                                             <p className="text-center text-lg text-gray-600 mt-4">
-                                                Không tìm thấy sản phẩm nào phù hợp với từ khóa &quot;{searchValue}&quot;
+                                                Không tìm thấy sản phẩm nào phù hợp với từ
+                                                khóa &quot;{searchValue}&quot;
                                             </p>
                                         </div>
                                     ) : (

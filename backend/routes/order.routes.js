@@ -10,6 +10,7 @@ router.get("/admin-query-orders", orderControllers.admin_query_orders);
 router.get("/get-orders-to-seller/:sellerId", orderControllers.get_orders_to_seller);
 router.get("/get-order-details-to-seller/:orderId", orderControllers.get_order_details_to_seller);
 router.get("/seller-query-orders/:sellerId", orderControllers.seller_query_orders);
+router.get("/check-purchase/:productId", orderControllers.check_purchase);
 
 router.post("/place-order", orderControllers.place_order);
 

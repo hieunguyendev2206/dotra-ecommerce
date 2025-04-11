@@ -1,25 +1,53 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import api from "../../api/api";
 import axios from "axios";
 
 
 // Hàm để lấy tên đầy đủ cho tỉnh/thành phố, quận/huyện và xã/phường từ mã
 const getLocationNames = async (provinceCode, districtCode, wardCode) => {
-    const provinceName = await axios.get(`/api-provinces/api/p/${provinceCode}`);
-    const districtName = await axios.get(`/api-provinces/api/d/${districtCode}`);
-    const wardName = await axios.get(`/api-provinces/api/w/${wardCode}`);
+    try {
+        console.log("Đang lấy thông tin địa chỉ từ mã: P", provinceCode, "D", districtCode, "W", wardCode);
+        
+        // Sử dụng API để lấy thông tin chi tiết từ mã 
+        const provinceName = await axios.get(`/api-provinces/api/p/${provinceCode}`);
+        const districtName = await axios.get(`/api-provinces/api/d/${districtCode}`);
+        const wardName = await axios.get(`/api-provinces/api/w/${wardCode}`);
+        
+        console.log("Đã lấy được tên địa chỉ:", {
+            province: provinceName.data.name,
+            district: districtName.data.name,
+            ward: wardName.data.name
+        });
 
-    return {
-        province: { code: provinceCode, name: provinceName.data.name },
-        district: { code: districtCode, name: districtName.data.name },
-        ward: { code: wardCode, name: wardName.data.name },
-    };
+        // Trả về đối tượng với đầy đủ thông tin mã và tên
+        return {
+            province: {code: provinceCode, name: provinceName.data.name},
+            district: {code: districtCode, name: districtName.data.name},
+            ward: {code: wardCode, name: wardName.data.name},
+        };
+    } catch (error) {
+        console.error("Lỗi khi lấy thông tin địa chỉ:", error);
+        // Trả về giá trị mặc định để tránh lỗi
+        return {
+            province: {code: provinceCode, name: "Không xác định"},
+            district: {code: districtCode, name: "Không xác định"},
+            ward: {code: wardCode, name: "Không xác định"},
+        };
+    }
 };
 
 
 // Reducer đặt hàng
 export const place_order = createAsyncThunk("order/place_order", async ({
-                                                                            customerId, customer_name, products, price, shipping_fee, items, navigate, shippingInfo,}, thunkAPI) => {
+                                                                            customerId,
+                                                                            customer_name,
+                                                                            products,
+                                                                            price,
+                                                                            shipping_fee,
+                                                                            items,
+                                                                            navigate,
+                                                                            shippingInfo,
+                                                                        }, thunkAPI) => {
     try {
         // Lấy tên đầy đủ cho địa chỉ từ mã
         const locationNames = await getLocationNames(shippingInfo.province, shippingInfo.district, shippingInfo.ward);
@@ -128,6 +156,6 @@ export const orderSlice = createSlice({
     },
 });
 
-export const { message_clear } = orderSlice.actions;
+export const {message_clear} = orderSlice.actions;
 const orderReducer = orderSlice.reducer;
 export default orderReducer;

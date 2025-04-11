@@ -3,7 +3,7 @@
 import {Link} from "react-router-dom";
 import {formateCurrency} from "../../utils/formate";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {add_to_cart, message_clear} from "../../store/reducers/cart.reducers";
 import {toast} from "react-toastify";
 import icons from "../../assets/icons";
@@ -17,6 +17,16 @@ const FeatureProduct = ({products}) => {
     const {success_message, error_message} = useSelector((state) => state.cart);
     const {add_wishlist_success_message, add_wishlist_error_message} =
         useSelector((state) => state.wishlist);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const handleAddToCart = (productId) => {
         if (userInfo) {
@@ -79,7 +89,7 @@ const FeatureProduct = ({products}) => {
         <div className="w-[85%] flex flex-wrap mx-auto">
             <div className="w-full">
                 <div
-                    className="text-center flex justify-center items-center flex-col text-2xl uppercase text-slate-600 font-mono relative pb-[45px]">
+                    className="text-center flex justify-center items-center flex-col text-2xl md:text-xl sm:text-lg uppercase text-slate-600 font-mono relative pb-[45px]">
                     <h2>Sản Phẩm Nổi Bật</h2>
                     <div className="w-[100px] h-[2px] bg-red-500 mt-4"></div>
                 </div>
@@ -104,7 +114,8 @@ const FeatureProduct = ({products}) => {
                                 className="w-full h-full object-contain rounded-t-md p-2"
                                 style={{aspectRatio: "1 / 1", objectPosition: "center"}}
                                 src={p.images[0]}
-                                alt=""
+                                alt={p.product_name}
+                                loading="lazy"
                             />
                             <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
                                 <li
@@ -128,34 +139,40 @@ const FeatureProduct = ({products}) => {
                             </ul>
                         </div>
                         <div className="py-3 text-slate-600 px-2 text-sm">
-                            <h2 className="font-bold text-blue-500">{p.brand_name}.</h2>
-                            <h2 className="line-clamp-2">{p.product_name}</h2>
+                            <h2 className="font-bold text-blue-500 text-sm md:text-base">{p.brand_name}.</h2>
+                            <h2 className="line-clamp-2 text-sm md:text-base">{p.product_name}</h2>
                             <div className="flex justify-start items-center gap-2 m-[2px]">
                                 {p.discount > 0 ? (
                                     <>
-                                        <span className="font-bold line-through">
+                                        <span className="font-bold line-through text-xs md:text-sm">
                                             {formateCurrency(p.price)}
                                         </span>
-                                        <span className="text-base font-bold text-red-500">
+                                        <span className="text-sm md:text-base font-bold text-red-500">
                                             {formateCurrency(p.price - (p.price * p.discount) / 100)}
                                         </span>
                                     </>
                                 ) : (
-                                    <span className="text-base font-bold">
+                                    <span className="text-sm md:text-base font-bold">
                                         {formateCurrency(p.price)}
                                     </span>
                                 )}
                             </div>
-                            <div className="flex justify-center items-center">
-                                <Rating rating={p.rating}/>
-                                <h2 className={`font-medium ml-10 ${
-                                    p.quantity === 0 
-                                        ? "text-red-500" 
-                                        : p.quantity < 10 
-                                            ? "text-orange-500" 
+                            <div className="flex justify-between items-center">
+                                <div className="flex-1">
+                                    <Rating rating={p.rating}/>
+                                </div>
+                                <h2 className={`font-medium text-xs md:text-sm ${
+                                    p.quantity === 0
+                                        ? "text-red-500"
+                                        : p.quantity < 10
+                                            ? "text-orange-500"
                                             : "text-green-600"
                                 }`}>
-                                    {p.quantity === 0 ? "Đã bán hết" : p.quantity < 10 ? "Sắp hết" : `Số lượng: ${p.quantity}`}
+                                    {p.quantity === 0
+                                        ? "Đã hết"
+                                        : isMobile
+                                            ? (p.quantity < 10 ? "Sắp hết" : "Còn hàng")
+                                            : `Số lượng: ${p.quantity} ${p.quantity < 10 ? ' (Sắp hết)' : ''}`}
                                 </h2>
                             </div>
                         </div>

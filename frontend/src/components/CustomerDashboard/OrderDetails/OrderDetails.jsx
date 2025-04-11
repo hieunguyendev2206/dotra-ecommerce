@@ -1,17 +1,17 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { get_order_details } from "../../../store/reducers/order.reducers";
-import { formatDate, formateCurrency } from "../../../utils/formate";
+import {useEffect, useRef} from "react";
+import {Link, useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {get_order_details} from "../../../store/reducers/order.reducers";
+import {formatDate, formateCurrency} from "../../../utils/formate";
 import jsPDF from "jspdf";
 import domtoimage from "dom-to-image-more";
 
 const OrderDetails = () => {
     const dispatch = useDispatch();
-    const { orderId } = useParams();
-    const { userInfo } = useSelector((state) => state.customer);
-    const { order_details } = useSelector((state) => state.order);
+    const {orderId} = useParams();
+    const {userInfo} = useSelector((state) => state.customer);
+    const {order_details} = useSelector((state) => state.order);
 
     const invoiceRef = useRef(); // Tham chiếu đến hóa đơn để render PDF
 
@@ -22,7 +22,7 @@ const OrderDetails = () => {
     const handleExportPDF = async () => {
         const element = invoiceRef.current; // Lấy nội dung cần xuất PDF
         try {
-            const dataUrl = await domtoimage.toPng(element, { quality: 1 });
+            const dataUrl = await domtoimage.toPng(element, {quality: 1});
             const pdf = new jsPDF("p", "mm", "a4");
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = (element.offsetHeight * pdfWidth) / element.offsetWidth;
@@ -70,10 +70,17 @@ const OrderDetails = () => {
                         </p>
                         <p className="text-slate-600">
                             <strong>Địa chỉ giao hàng:</strong>{" "}
-                            {order_details.delivery_address?.address},{" "}
-                            {order_details.delivery_address?.ward?.name},{" "}
-                            {order_details.delivery_address?.district?.name},{" "}
-                            {order_details.delivery_address?.province?.name}
+                            {order_details.delivery_address?.address}{" "}
+                            {order_details.delivery_address?.ward?.name && 
+                                `${order_details.delivery_address.ward.name}, `}
+                            {order_details.delivery_address?.district?.name && 
+                                `${order_details.delivery_address.district.name}, `}
+                            {order_details.delivery_address?.province?.name && 
+                                order_details.delivery_address.province.name}
+                        </p>
+                        <p className="text-slate-600">
+                            <strong>Số điện thoại:</strong>{" "}
+                            {order_details.delivery_address?.phone}
                         </p>
                     </div>
                 </div>
@@ -82,11 +89,15 @@ const OrderDetails = () => {
                     <p className="text-slate-600">
                         <strong>Trạng thái thanh toán:</strong>{" "}
                         {order_details.payment_status === "paid" ? (
-                            <span className="bg-green-100 text-green-600 px-2 py-1 rounded">
+                            <span className="bg-green-100 text-green-700 text-xs font-medium px-2.5 py-0.5 rounded ml-2">
                                 Đã thanh toán
                             </span>
+                        ) : order_details.payment_status === "pending_payment" ? (
+                            <span className="bg-yellow-100 text-yellow-700 text-xs font-medium px-2.5 py-0.5 rounded ml-2">
+                                Chờ thanh toán khi nhận hàng
+                            </span>
                         ) : (
-                            <span className="bg-red-100 text-red-600 px-2 py-1 rounded">
+                            <span className="bg-red-100 text-red-700 text-xs font-medium px-2.5 py-0.5 rounded ml-2">
                                 Chưa thanh toán
                             </span>
                         )}
@@ -124,6 +135,17 @@ const OrderDetails = () => {
                         </span>
                     </p>
                 </div>
+
+                {order_details.payment_status === "pending_payment" && (
+                    <div className="mt-3 p-3 bg-yellow-50 text-yellow-800 rounded-md text-sm">
+                        <p className="font-medium">Lưu ý về thanh toán khi nhận hàng:</p>
+                        <ul className="list-disc pl-5 mt-1 space-y-1">
+                            <li>Đơn hàng sẽ chỉ được đánh dấu là đã thanh toán sau khi bạn nhận hàng và thanh toán đầy đủ cho người giao hàng.</li>
+                            <li>Vui lòng kiểm tra hàng kỹ trước khi thanh toán.</li>
+                            <li>Sau khi thanh toán, trạng thái đơn hàng sẽ được cập nhật trong vòng 24 giờ.</li>
+                        </ul>
+                    </div>
+                )}
 
                 {/* Thêm overflow-x-auto để hỗ trợ cuộn ngang */}
                 <div className="overflow-x-auto">
@@ -166,7 +188,8 @@ const OrderDetails = () => {
                                 <td className="border px-3 py-2">
                                     {p?.color?.code && (
                                         <div className="flex items-center gap-2">
-                                            <span className="w-4 h-4 rounded-full border" style={{backgroundColor: p.color.code}}></span>
+                                            <span className="w-4 h-4 rounded-full border"
+                                                  style={{backgroundColor: p.color.code}}></span>
                                             <span>{p.color.name}</span>
                                         </div>
                                     )}

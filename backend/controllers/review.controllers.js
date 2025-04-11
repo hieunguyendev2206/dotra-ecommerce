@@ -13,9 +13,14 @@ const {
 class reviewController {
     // Kiểm tra sản phẩm đã được mua chưa
     isProductBought = async (productId, customerId) => {
-      return orderModel.find({
-        "products._id": productId, customerId: customerId, delivery_status: "delivered",
-      });
+        const orders = await orderModel.find({
+            customerId: customerId,
+            payment_status: "paid",
+            delivery_status: "delivered",
+            "products._id": productId
+        });
+
+        return orders.length > 0;
     };
 
     // Thêm đánh giá sản phẩm
@@ -179,22 +184,12 @@ class reviewController {
         }
     };
 
-    // get_shop_reviews = async (req, res) => {
-    //     const { shopId } = req.params; // shopId là sellerId
-    //     try {
-    //         const reviews = await reviewModel.find({ sellerId: shopId }).sort({ createdAt: -1 });
-    //         res.status(200).json(reviews);
-    //     } catch (error) {
-    //         res.status(500).json({ message: "Lỗi server", error });
-    //     }
-    // };
-
     get_shop_reviews_with_reply = async (req, res) => {
-        const { shopId } = req.params; // shopId là sellerId
+        const {shopId} = req.params; // shopId là sellerId
         try {
             const reviews = await reviewModel.aggregate([
                 {
-                    $match: { sellerId: shopId }, // Lọc các đánh giá thuộc cửa hàng
+                    $match: {sellerId: shopId}, // Lọc các đánh giá thuộc cửa hàng
                 },
                 {
                     $lookup: {
@@ -205,13 +200,13 @@ class reviewController {
                     },
                 },
                 {
-                    $sort: { createdAt: -1 }, // Sắp xếp theo thời gian tạo mới nhất
+                    $sort: {createdAt: -1}, // Sắp xếp theo thời gian tạo mới nhất
                 },
             ]);
 
             res.status(200).json(reviews);
         } catch (error) {
-            res.status(500).json({ message: "Lỗi server", error });
+            res.status(500).json({message: "Lỗi server", error});
         }
     };
 

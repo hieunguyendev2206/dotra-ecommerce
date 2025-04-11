@@ -3,22 +3,27 @@ import icons from "../../assets/icons";
 
 const RatingTemp = ({ratingTemp}) => {
     const {AiFillStar, CiStar} = icons;
+    
+    // Tạo classes chung cho responsive
+    const filledStarClass = "text-[#EDBB0E] text-base sm:text-sm";
+    const emptyStarClass = "text-slate-300 text-base sm:text-sm";
+    
     if (ratingTemp === 5) {
         return (
             <>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                     <AiFillStar/>
                 </span>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                     <AiFillStar/>
                 </span>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                     <AiFillStar/>
                 </span>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                     <AiFillStar/>
                 </span>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                     <AiFillStar/>
                 </span>
             </>
@@ -26,19 +31,19 @@ const RatingTemp = ({ratingTemp}) => {
     } else if (ratingTemp === 4) {
         return (
             <>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                   <AiFillStar/>
                 </span>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                   <AiFillStar/>
                 </span>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                   <AiFillStar/>
                 </span>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                   <AiFillStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
             </>
@@ -46,19 +51,19 @@ const RatingTemp = ({ratingTemp}) => {
     } else if (ratingTemp === 3) {
         return (
             <>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                   <AiFillStar/>
                 </span>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                   <AiFillStar/>
                 </span>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                   <AiFillStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
             </>
@@ -66,19 +71,19 @@ const RatingTemp = ({ratingTemp}) => {
     } else if (ratingTemp === 2) {
         return (
             <>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                   <AiFillStar/>
                 </span>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                   <AiFillStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
             </>
@@ -86,19 +91,19 @@ const RatingTemp = ({ratingTemp}) => {
     } else if (ratingTemp === 1) {
         return (
             <>
-                <span className="text-[#EDBB0E]">
+                <span className={filledStarClass}>
                   <AiFillStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
             </>
@@ -106,19 +111,19 @@ const RatingTemp = ({ratingTemp}) => {
     } else {
         return (
             <>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
-                <span className="text-slate-600">
+                <span className={emptyStarClass}>
                   <CiStar/>
                 </span>
             </>

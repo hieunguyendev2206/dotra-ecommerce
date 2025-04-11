@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import "react-multi-carousel/lib/styles.css";
 import icons from "../../assets/icons";
 import {formateCurrency} from "../../utils/formate";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 const Product = ({products, title}) => {
     const {FiChevronLeft, FiChevronRight} = icons;
@@ -73,12 +73,13 @@ const Product = ({products, title}) => {
                     return (
                         <div key={index} className="flex flex-col justify-start gap-3 w-full py-2">
                             {p.map((pl, j) => (
-                                <Link 
-                                    key={j} 
-                                    className="flex justify-start items-start hover:bg-gray-50 p-2 rounded-md transition-colors w-full" 
+                                <Link
+                                    key={j}
+                                    className="flex justify-start items-start hover:bg-gray-50 p-2 rounded-md transition-colors w-full"
                                     to={`/home/product-details/${pl.slug}`}
                                 >
-                                    <div className="min-w-[80px] w-[80px] sm:min-w-[100px] sm:w-[100px] md:min-w-[115px] md:w-[115px]">
+                                    <div
+                                        className="min-w-[80px] w-[80px] sm:min-w-[100px] sm:w-[100px] md:min-w-[115px] md:w-[115px]">
                                         <img
                                             className="w-full h-auto rounded-md object-cover"
                                             style={{aspectRatio: "1 / 1", objectPosition: "center"}}
@@ -88,7 +89,8 @@ const Product = ({products, title}) => {
                                         />
                                     </div>
 
-                                    <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600 text-sm flex-1 overflow-hidden">
+                                    <div
+                                        className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600 text-sm flex-1 overflow-hidden">
                                         <h2 className="font-bold text-blue-500 text-sm md:text-base w-full truncate">
                                             {pl.brand_name}
                                         </h2>
@@ -110,11 +112,12 @@ const Product = ({products, title}) => {
                                             )}
                                         </div>
                                         <div className="flex justify-start items-center gap-1">
-                                            <span className={`text-xs md:text-sm ${pl.quantity === 0 ? 'text-red-500' : pl.quantity < 10 ? 'text-orange-500' : 'text-green-600'}`}>
-                                                {pl.quantity === 0 
-                                                    ? 'Đã bán hết' 
-                                                    : isMobile 
-                                                        ? (pl.quantity < 10 ? 'Sắp hết' : 'Còn hàng') 
+                                            <span
+                                                className={`text-xs md:text-sm ${pl.quantity === 0 ? 'text-red-500' : pl.quantity < 10 ? 'text-orange-500' : 'text-green-600'}`}>
+                                                {pl.quantity === 0
+                                                    ? 'Đã bán hết'
+                                                    : isMobile
+                                                        ? (pl.quantity < 10 ? 'Sắp hết' : 'Còn hàng')
                                                         : `Số lượng: ${pl.quantity} ${pl.quantity < 10 ? ' (Sắp hết)' : ''}`
                                                 }
                                             </span>
