@@ -1,4 +1,5 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { HelmetProvider } from 'react-helmet-async';
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
@@ -24,44 +25,45 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop.jsx";
 
 function App() {
     return (
-        <BrowserRouter>
-            {/* Nút cuộn lên đầu trang */}
-            <ScrollToTop/>
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/shop" element={<Shop/>}/>
-                <Route path="/cart" element={<Cart/>}/>
-                <Route path="/home/product-details/:slug" element={<ProductDetails/>}/>
-                <Route path="/seller-store/:sellerId" element={<ShopProfile/>}/>
-                <Route path="/shipping" element={<Shipping/>}/>
-                <Route path="/products?" element={<CategoryShop/>}/>
-                <Route path="/products/search?" element={<SearchProducts/>}/>
-                <Route
-                    path="/verify-email-customer/:email_token"
-                    element={<VerifyEmail/>}
-                />
-                <Route path="/oauth/google-login" element={<OauthGoogle/>}/>
-                <Route path="/payment" element={<Payment/>}/>
-                <Route path="/payment/payment-success" element={<PaymentSuccess/>}/>
-                <Route path="/payment/payment-error" element={<PaymentError/>}/>
-                <Route path="/dashboard" element={<ProtectUser/>}>
-                    <Route path="" element={<Dashboard/>}>
-                        <Route path="" element={<CustomerDashboard/>}/>
-                        <Route path="my-orders" element={<MyOrders/>}/>
-                        <Route path="my-wishlist" element={<MyWishList/>}/>
-                        <Route path="chat" element={<Chat/>}/>
-                        <Route path="chat/:sellerId" element={<Chat/>}/>
-                        <Route
-                            path="my-orders/get-order-details/:orderId"
-                            element={<OrderDetails/>}
-                        />
-                        <Route path="/dashboard/profile" element={<CustomerProfile/>}/>
+        <HelmetProvider>
+            <BrowserRouter>
+                {/* Nút cuộn lên đầu trang */}
+                <ScrollToTop/>
+                <Routes>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/shop" element={<Shop/>}/>
+                    <Route path="/cart" element={<Cart/>}/>
+                    <Route path="/home/product-details/:slug" element={<ProductDetails/>}/>
+                    <Route path="/seller-store/:sellerId" element={<ShopProfile/>}/>
+                    <Route path="/shipping" element={<Shipping/>}/>
+                    <Route path="/products?" element={<CategoryShop/>}/>
+                    <Route path="/products/search?" element={<SearchProducts/>}/>
+                    <Route
+                        path="/verify-email-customer/:email_token"
+                        element={<VerifyEmail/>}
+                    />
+                    <Route path="/oauth/google-login" element={<OauthGoogle/>}/>
+                    <Route path="/payment" element={<Payment/>}/>
+                    <Route path="/payment/payment-success" element={<PaymentSuccess/>}/>
+                    <Route path="/payment/payment-error" element={<PaymentError/>}/>
+                    <Route path="/dashboard" element={<ProtectUser/>}>
+                        <Route path="" element={<Dashboard/>}>
+                            <Route path="" element={<CustomerDashboard/>}/>
+                            <Route path="my-orders" element={<MyOrders/>}/>
+                            <Route path="my-wishlist" element={<MyWishList/>}/>
+                            <Route path="chat" element={<Chat/>}/>
+                            <Route path="chat/:sellerId" element={<Chat/>}/>
+                            <Route
+                                path="my-orders/get-order-details/:orderId"
+                                element={<OrderDetails/>}
+                            />
+                            <Route path="/dashboard/profile" element={<CustomerProfile/>}/>
+                        </Route>
                     </Route>
-                </Route>
-            </Routes>
-        </BrowserRouter>
+                </Routes>
+            </BrowserRouter>
+        </HelmetProvider>
     );
 }
-
 
 export default App;
