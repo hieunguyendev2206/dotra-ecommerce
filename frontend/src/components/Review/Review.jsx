@@ -15,14 +15,17 @@ import {toast} from "react-toastify";
 import {formatDate} from "../../utils/formate";
 import {get_product_details} from "../../store/reducers/home.reducers";
 
-const Review = ({product}) => {
+const Review = ({product, userInfo: propUserInfo}) => {
     const {BiSolidCheckShield, AiFillStar, CiStar} = icons;
     const [pageNumber, setPageNumber] = useState(1);
     const [parPage, setParPage] = useState(2);
     const [review, setReview] = useState("");
     const [ratingState, setRatingState] = useState("");
     const dispatch = useDispatch();
-    const {userInfo} = useSelector((state) => state.customer);
+    
+    const reduxUserInfo = useSelector((state) => state.customer.userInfo);
+    const userInfo = propUserInfo || reduxUserInfo;
+    
     const {
         success_message,
         error_message,
@@ -40,6 +43,11 @@ const Review = ({product}) => {
 
     const handleSubmitReview = (event) => {
         event.preventDefault();
+        if (!userInfo) {
+            window.dispatchEvent(new CustomEvent('showLoginModal'));
+            return;
+        }
+        
         const data = {
             productId: productId,
             customerId: userInfo.id,
@@ -305,12 +313,12 @@ const Review = ({product}) => {
                     </div>
                 ) : (
                     <div className="pb-6">
-                        <Link
+                        <button
+                            onClick={() => window.dispatchEvent(new CustomEvent('showLoginModal'))}
                             className="py-2 px-4 bg-red-500 text-white rounded-md text-sm"
-                            to="/login"
                         >
                             Đăng nhập để đánh giá
-                        </Link>
+                        </button>
                     </div>
                 )}
             </div>

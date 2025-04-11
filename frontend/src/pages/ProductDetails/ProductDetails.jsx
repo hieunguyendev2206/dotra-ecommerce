@@ -678,21 +678,11 @@ const ProductDetails = () => {
                                             transition={{duration: 0.3}}
                                         >
                                             <div className="space-y-4 sm:space-y-3">
-                                                {!userInfo && (
-                                                    <div className="flex justify-center mb-4">
-                                                        <button
-                                                            onClick={() => window.dispatchEvent(new CustomEvent('showLoginModal'))}
-                                                            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
-                                                        >
-                                                            Đăng nhập để đánh giá
-                                                        </button>
-                                                    </div>
-                                                )}
                                                 {product_details?.reviews?.length === 0 ? (
-                                                    <p className="text-gray-500 italic sm:text-sm">Chưa có đánh giá nào cho sản phẩm này.</p>
-                                                ) : (
-                                                    <Review product={product_details}/>
-                                                )}
+                                                    <p className="text-gray-500 italic sm:text-sm py-4">Chưa có đánh giá nào cho sản phẩm này.</p>
+                                                ) : null}
+                                                
+                                                <Review product={product_details} userInfo={userInfo} />
                                             </div>
                                         </motion.div>
                                     )}
