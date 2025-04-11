@@ -13,9 +13,9 @@ import "react-toastify/dist/ReactToastify.css";
 // Sử dụng URL hình ảnh từ internet thay vì import từ thư mục local
 const PAYMENT_ICONS = {
   stripe: "https://cdn.iconscout.com/icon/free/png-256/free-stripe-2-498440.png",
-  vnpay: "https://cdn.haitrieu.com/wp-content/uploads/2022/10/Icon-VNPAY-QR-1024x1024.png",
+  vnpay: "https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-VNPAY-QR-1.png",
   momo: "https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png",
-  paypal: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png",
+  paypal: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTglr_MmJu4011vIRQWCFoTbeoyUg51iEX6AA&s",
   zalopay: "https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-ZaloPay-Square.png",
   cod: "https://cdn-icons-png.flaticon.com/512/2554/2554969.png"
 };
