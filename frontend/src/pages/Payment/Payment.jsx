@@ -10,13 +10,15 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Import các hình ảnh logo thanh toán
-import stripeImg from "../../assets/img/stripe.png";
-import vnpayImg from "../../assets/img/vnpay.png";
-import momoImg from "../../assets/img/momo.png";
-import paypalImg from "../../assets/logo/logopaypal.png";
-import zaloImg from "../../assets/logo/logozalo.png";
-import codImg from "../../assets/img/cod.png";
+// Sử dụng URL hình ảnh từ internet thay vì import từ thư mục local
+const PAYMENT_ICONS = {
+  stripe: "https://cdn.iconscout.com/icon/free/png-256/free-stripe-2-498440.png",
+  vnpay: "https://cdn.haitrieu.com/wp-content/uploads/2022/10/Icon-VNPAY-QR-1024x1024.png",
+  momo: "https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png",
+  paypal: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png",
+  zalopay: "https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-ZaloPay-Square.png",
+  cod: "https://cdn-icons-png.flaticon.com/512/2554/2554969.png"
+};
 
 const Payment = () => {
     const [paymentMethod, setPaymentMethod] = useState("PayPal");
@@ -136,7 +138,7 @@ const Payment = () => {
                                         className={`w-[20%] md:w-full border-r md:border border-gray-200 cursor-pointer py-8 md:py-4 px-12 md:px-4 ${paymentMethod === "stripe" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src={stripeImg} alt="stripe" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
+                                            <img src={PAYMENT_ICONS.stripe} alt="stripe" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
                                             <span className="text-slate-600 text-sm mt-1">Stripe</span>
                                         </div>
                                     </div>
@@ -145,7 +147,7 @@ const Payment = () => {
                                         className={`w-[20%] md:w-full border-r md:border border-gray-200 cursor-pointer py-8 md:py-4 px-12 md:px-4 ${paymentMethod === "VnPay" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src={vnpayImg} alt="VnPay" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
+                                            <img src={PAYMENT_ICONS.vnpay} alt="VnPay" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
                                             <span className="text-slate-600 text-sm mt-1">VNPay</span>
                                         </div>
                                     </div>
@@ -154,7 +156,7 @@ const Payment = () => {
                                         className={`w-[20%] md:w-full border-r md:border border-gray-200 cursor-pointer py-8 md:py-4 px-12 md:px-4 ${paymentMethod === "MoMo" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src={momoImg} alt="MoMo" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
+                                            <img src={PAYMENT_ICONS.momo} alt="MoMo" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
                                             <span className="text-slate-600 text-sm mt-1">MoMo</span>
                                         </div>
                                     </div>
@@ -163,7 +165,7 @@ const Payment = () => {
                                         className={`w-[20%] md:w-full border-r md:border border-gray-200 cursor-pointer py-8 md:py-4 px-12 md:px-4 ${paymentMethod === "PayPal" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src={paypalImg} alt="PayPal" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
+                                            <img src={PAYMENT_ICONS.paypal} alt="PayPal" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
                                             <span className="text-slate-600 text-sm mt-1">PayPal</span>
                                         </div>
                                     </div>
@@ -172,7 +174,7 @@ const Payment = () => {
                                         className={`w-[20%] md:w-full border-r md:border border-gray-200 cursor-pointer py-8 md:py-4 px-12 md:px-4 ${paymentMethod === "ZaloPay" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src={zaloImg} alt="ZaloPay" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
+                                            <img src={PAYMENT_ICONS.zalopay} alt="ZaloPay" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
                                             <span className="text-slate-600 text-sm mt-1">ZaloPay</span>
                                         </div>
                                     </div>
@@ -181,7 +183,7 @@ const Payment = () => {
                                         className={`w-[20%] md:w-full border-r md:border border-gray-200 cursor-pointer py-8 md:py-4 px-12 md:px-4 ${paymentMethod === "COD" ? "bg-white" : "bg-slate-100"}`}
                                     >
                                         <div className="flex flex-col gap-[3px] justify-center items-center">
-                                            <img src={codImg} alt="COD" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
+                                            <img src={PAYMENT_ICONS.cod} alt="COD" className="w-16 h-auto md:w-12 sm:w-10 object-contain" />
                                             <span className="text-slate-600 text-sm mt-1">COD</span>
                                         </div>
                                     </div>
@@ -189,7 +191,7 @@ const Payment = () => {
                                 {paymentMethod === "stripe" && (
                                     <div className="w-full px-4 py-8 md:py-6 sm:py-4 bg-white shadow-sm">
                                         <div className="flex items-center gap-3 mb-4">
-                                            <img src={stripeImg} alt="Stripe" className="w-12 h-auto" />
+                                            <img src={PAYMENT_ICONS.stripe} alt="Stripe" className="w-12 h-auto" />
                                             <h3 className="text-lg font-medium">Thanh toán qua Stripe</h3>
                                         </div>
                                         <Stripe orderId={orderId}/>
@@ -198,7 +200,7 @@ const Payment = () => {
                                 {paymentMethod === "VnPay" && (
                                     <div className="w-full px-4 py-8 md:py-6 sm:py-4 bg-white shadow-sm">
                                         <div className="flex items-center gap-3 mb-4">
-                                            <img src={vnpayImg} alt="VnPay" className="w-12 h-auto" />
+                                            <img src={PAYMENT_ICONS.vnpay} alt="VnPay" className="w-12 h-auto" />
                                             <h3 className="text-lg font-medium">Thanh toán qua VNPay</h3>
                                         </div>
                                         <button
@@ -212,7 +214,7 @@ const Payment = () => {
                                 {paymentMethod === "MoMo" && (
                                     <div className="w-full px-4 py-8 md:py-6 sm:py-4 bg-white shadow-sm">
                                         <div className="flex items-center gap-3 mb-4">
-                                            <img src={momoImg} alt="MoMo" className="w-12 h-auto" />
+                                            <img src={PAYMENT_ICONS.momo} alt="MoMo" className="w-12 h-auto" />
                                             <h3 className="text-lg font-medium">Thanh toán qua MoMo</h3>
                                         </div>
                                         <button
@@ -233,7 +235,7 @@ const Payment = () => {
                                 {paymentMethod === "PayPal" && (
                                     <div className="w-full px-4 py-8 md:py-6 sm:py-4 bg-white shadow-sm">
                                         <div className="flex items-center gap-3 mb-4">
-                                            <img src={paypalImg} alt="PayPal" className="w-12 h-auto" />
+                                            <img src={PAYMENT_ICONS.paypal} alt="PayPal" className="w-12 h-auto" />
                                             <h3 className="text-lg font-medium">Thanh toán qua PayPal</h3>
                                         </div>
                                         <PayPalScriptProvider options={initialOptions}>
@@ -275,7 +277,7 @@ const Payment = () => {
                                 {paymentMethod === "ZaloPay" && (
                                     <div className="w-full px-4 py-8 md:py-6 sm:py-4 bg-white shadow-sm">
                                         <div className="flex items-center gap-3 mb-4">
-                                            <img src={zaloImg} alt="ZaloPay" className="w-12 h-auto" />
+                                            <img src={PAYMENT_ICONS.zalopay} alt="ZaloPay" className="w-12 h-auto" />
                                             <h3 className="text-lg font-medium">Thanh toán qua ZaloPay</h3>
                                         </div>
                                         <button
@@ -290,7 +292,7 @@ const Payment = () => {
                                 {paymentMethod === "COD" && (
                                     <div className="w-full px-4 py-8 md:py-6 sm:py-4 bg-white shadow-sm">
                                         <div className="flex items-center gap-3 mb-4">
-                                            <img src={codImg} alt="COD" className="w-12 h-auto" />
+                                            <img src={PAYMENT_ICONS.cod} alt="COD" className="w-12 h-auto" />
                                             <h3 className="text-lg font-medium">Thanh toán khi nhận hàng</h3>
                                         </div>
                                         <div className="mb-4 p-3 bg-gray-50 rounded-md text-gray-700 text-sm">
