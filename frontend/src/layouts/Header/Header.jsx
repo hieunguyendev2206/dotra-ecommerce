@@ -100,6 +100,20 @@ const Header = () => {
         dispatch(get_categories());
     }, [dispatch]);
 
+    // Lắng nghe sự kiện showLoginModal để hiển thị modal đăng nhập từ các component khác
+    useEffect(() => {
+        const handleShowLoginModal = () => {
+            setOpenModalLogin(true);
+        };
+        
+        window.addEventListener('showLoginModal', handleShowLoginModal);
+        
+        // Cleanup function
+        return () => {
+            window.removeEventListener('showLoginModal', handleShowLoginModal);
+        };
+    }, []);
+
     const {pathname} = useLocation();
 
     const [openModalLogin, setOpenModalLogin] = useState(false);

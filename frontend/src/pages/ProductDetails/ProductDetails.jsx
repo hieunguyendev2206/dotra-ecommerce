@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, useParams, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import DOMPurify from "dompurify";
@@ -38,6 +38,7 @@ import {ClipLoader} from "react-spinners";
 const ProductDetails = () => {
     const {slug, productId} = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Destructure icons
     const {
@@ -67,6 +68,9 @@ const ProductDetails = () => {
     const {success_message, error_message} = useSelector((state) => state.cart);
     const {add_wishlist_success_message, add_wishlist_error_message} = useSelector((state) => state.wishlist);
     const {total_review} = useSelector((state) => state.review);
+
+    // Thêm state để hiển thị modal đăng nhập
+    const [openLoginModal, setOpenLoginModal] = useState(false);
 
     // Responsive settings for carousel
     const responsive = {
@@ -155,7 +159,13 @@ const ProductDetails = () => {
 
     const handleReviewSubmit = () => {
         if (!userInfo) {
-            toast.error("Bạn cần đăng nhập để gửi đánh giá.");
+            // Thay vì hiển thị toast, mở modal đăng nhập
+            if (typeof window !== 'undefined') {
+                // Gọi hàm showLoginModal từ Header component
+                window.dispatchEvent(new CustomEvent('showLoginModal'));
+            } else {
+                toast.error("Bạn cần đăng nhập để gửi đánh giá.");
+            }
             return;
         }
 
@@ -668,6 +678,16 @@ const ProductDetails = () => {
                                             transition={{duration: 0.3}}
                                         >
                                             <div className="space-y-4 sm:space-y-3">
+                                                {!userInfo && (
+                                                    <div className="flex justify-center mb-4">
+                                                        <button
+                                                            onClick={() => window.dispatchEvent(new CustomEvent('showLoginModal'))}
+                                                            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+                                                        >
+                                                            Đăng nhập để đánh giá
+                                                        </button>
+                                                    </div>
+                                                )}
                                                 {product_details?.reviews?.length === 0 ? (
                                                     <p className="text-gray-500 italic sm:text-sm">Chưa có đánh giá nào cho sản phẩm này.</p>
                                                 ) : (
