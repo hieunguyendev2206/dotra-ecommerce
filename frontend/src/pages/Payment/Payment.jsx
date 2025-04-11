@@ -11,7 +11,7 @@ import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Sử dụng URL backend từ biến môi trường hoặc mặc định
-const API_URL = import.meta.env.VITE_API_URL || "https://dotra-api.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "https://dotra-ecommerce.onrender.com";
 
 // Sử dụng URL hình ảnh từ internet thay vì import từ thư mục local
 const PAYMENT_ICONS = {
