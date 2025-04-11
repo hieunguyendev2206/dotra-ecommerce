@@ -10,6 +10,9 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// Sử dụng URL backend từ biến môi trường hoặc mặc định
+const API_URL = import.meta.env.VITE_API_URL || "https://dotra-api.onrender.com";
+
 // Sử dụng URL hình ảnh từ internet thay vì import từ thư mục local
 const PAYMENT_ICONS = {
   stripe: "https://cdn.iconscout.com/icon/free/png-256/free-stripe-2-498440.png",
@@ -43,7 +46,7 @@ const Payment = () => {
                 return;
             }
 
-            const response = await axios.post("http://localhost:5000/api/payment/create-vnpay-payment", {
+            const response = await axios.post(`${API_URL}/api/payment/create-vnpay-payment`, {
                 amount: price,
                 orderInfo: orderId,
             });
@@ -64,7 +67,7 @@ const Payment = () => {
     const handleMoMoPayment = async () => {
         try {
             setLoading(true); // Bắt đầu loading
-            const response = await axios.post("http://localhost:5000/api/payment/create-momo-payment", {
+            const response = await axios.post(`${API_URL}/api/payment/create-momo-payment`, {
                 amount: price,
                 orderId: orderId,
             });
@@ -89,7 +92,7 @@ const Payment = () => {
     const handleZaloPayPayment = async () => {
         try {
             setLoading(true); // Bắt đầu loading
-            const response = await axios.post("http://localhost:5000/api/payment/create-zalopay-payment", {
+            const response = await axios.post(`${API_URL}/api/payment/create-zalopay-payment`, {
                 amount: price,
                 orderId: orderId,
             });
@@ -111,7 +114,7 @@ const Payment = () => {
     const handleCODPayment = async () => {
         try {
             setLoading(true);
-            const response = await axios.put(`http://localhost:5000/api/payment/update-payment/${orderId}`);
+            const response = await axios.put(`${API_URL}/api/payment/update-payment/${orderId}`);
             if (response.data.message) {
                 toast.success("Đặt hàng thành công! Đơn hàng sẽ chỉ được đánh dấu là đã thanh toán sau khi giao hàng thành công.");
                 window.location.href = "/payment/payment-success";
@@ -243,7 +246,7 @@ const Payment = () => {
                                                 style={{layout: "vertical"}}
                                                 createOrder={(data, actions) => {
                                                     return axios
-                                                        .post("http://localhost:5000/api/payment/create-paypal-order", {
+                                                        .post(`${API_URL}/api/payment/create-paypal-order`, {
                                                             amount: (price / 24000).toFixed(2),
                                                             currency: "USD",
                                                             orderId,
@@ -252,7 +255,7 @@ const Payment = () => {
                                                 }}
                                                 onApprove={(data, actions) => {
                                                     return axios
-                                                        .post("http://localhost:5000/api/payment/capture-paypal-order", {
+                                                        .post(`${API_URL}/api/payment/capture-paypal-order`, {
                                                             orderID: data.orderID,
                                                         })
                                                         .then(() => {
