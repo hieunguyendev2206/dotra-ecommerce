@@ -1,18 +1,91 @@
-import {formatDate, formateCurrency} from "../../../utils/formate";
-import {useEffect} from "react";
+import {formatDate, formateCurrency, formatAddress} from "../../../utils/formate";
+import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {get_order_details_to_seller} from "../../../store/reducers/order.reducers";
 import {FaBoxOpen, FaCheckCircle, FaTimesCircle, FaTruck,} from "react-icons/fa";
+import axios from "axios";
 
 const OrderDetails = () => {
     const {orderId} = useParams();
     const dispatch = useDispatch();
     const {order_details} = useSelector((state) => state.order);
+    const [formattedAddress, setFormattedAddress] = useState('');
 
     useEffect(() => {
         dispatch(get_order_details_to_seller(orderId));
     }, [dispatch, orderId]);
+    
+    useEffect(() => {
+        if (order_details && order_details?.shipping) {
+            // Gọi hàm formatAddressWithAPI để lấy địa chỉ đầy đủ
+            const getAddress = async () => {
+                try {
+                    // Kiểm tra xem có dữ liệu địa chỉ trong localStorage không
+                    let addressData = localStorage.getItem('addressData');
+                    
+                    // Nếu không có dữ liệu hoặc dữ liệu cũ hơn 24 giờ, gọi API để lấy dữ liệu mới
+                    const lastFetchTime = localStorage.getItem('addressDataTimestamp');
+                    const now = new Date().getTime();
+                    const isExpired = !lastFetchTime || (now - parseInt(lastFetchTime) > 24 * 60 * 60 * 1000);
+                    
+                    if (!addressData || isExpired) {
+                        const response = await axios.get('https://provinces.open-api.vn/api/?depth=3');
+                        
+                        // Chuyển đổi dữ liệu từ API để phù hợp với cấu trúc cache của chúng ta
+                        const provinces = {};
+                        const districts = {};
+                        const wards = {};
+                        
+                        response.data.forEach(province => {
+                            provinces[province.code] = province.name;
+                            
+                            if (province.districts) {
+                                province.districts.forEach(district => {
+                                    districts[district.code] = district.name;
+                                    
+                                    if (district.wards) {
+                                        district.wards.forEach(ward => {
+                                            wards[ward.code] = ward.name;
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                        
+                        // Lưu dữ liệu vào localStorage
+                        addressData = { provinces, districts, wards };
+                        localStorage.setItem('addressData', JSON.stringify(addressData));
+                        localStorage.setItem('addressDataTimestamp', now.toString());
+                    } else {
+                        addressData = JSON.parse(addressData);
+                    }
+                    
+                    // Tìm thông tin địa chỉ từ dữ liệu đã có
+                    const shipping = order_details.shipping;
+                    const provinceName = addressData.provinces[shipping.province?.code] || '';
+                    const districtName = addressData.districts[shipping.district?.code] || '';
+                    const wardName = addressData.wards[shipping.ward?.code] || '';
+                    
+                    // Tạo địa chỉ đầy đủ
+                    const addressParts = [];
+                    if (shipping.address) addressParts.push(shipping.address);
+                    if (wardName) addressParts.push(wardName);
+                    if (districtName) addressParts.push(districtName);
+                    if (provinceName) addressParts.push(provinceName);
+                    
+                    const fullAddress = addressParts.join(', ');
+                    setFormattedAddress(fullAddress);
+                } catch (error) {
+                    console.error('Lỗi khi lấy dữ liệu địa chỉ:', error);
+                    // Fallback sử dụng hàm formatAddress
+                    setFormattedAddress(formatAddress(order_details.shipping));
+                }
+            };
+            
+            getAddress();
+        }
+    }, [order_details]);
 
     // Hàm trả về biểu tượng tương ứng với trạng thái
     const getStatusIcon = (status) => {
@@ -52,13 +125,10 @@ const OrderDetails = () => {
                     Người nhận: {order_details?.customer_name}
                 </p>
                 <p className="text-slate-600">
-                    Địa chỉ: {order_details?.delivery_address?.address}
-                    {order_details?.delivery_address?.ward?.name && `, ${order_details?.delivery_address?.ward?.name}`}
-                    {order_details?.delivery_address?.district?.name && `, ${order_details?.delivery_address?.district?.name}`}
-                    {order_details?.delivery_address?.province?.name && `, ${order_details?.delivery_address?.province?.name}`}
+                    Địa chỉ: {formattedAddress || formatAddress(order_details?.shipping)}
                 </p>
                 <p className="text-slate-600">
-                    Số điện thoại: {order_details?.delivery_address?.phone}
+                    Số điện thoại: {order_details?.shipping?.phone || 'Chưa có thông tin'}
                 </p>
                 <p className="text-slate-600">
                     Đơn giá:{" "}

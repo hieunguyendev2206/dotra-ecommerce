@@ -1,15 +1,17 @@
-import {formatDate, formateCurrency} from "../../../utils/formate";
+import {formatDate, formateCurrency, formatAddress} from "../../../utils/formate";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {get_order_details_to_admin} from "../../../store/reducers/order.reducers";
 import {FaBoxOpen, FaCheckCircle, FaTimesCircle, FaTruck,} from "react-icons/fa";
+import axios from "axios";
 
 const OrderDetails = () => {
     const {orderId} = useParams();
     const dispatch = useDispatch();
     const {order_details} = useSelector((state) => state.order);
     const [isLoading, setIsLoading] = useState(true);
+    const [formattedAddress, setFormattedAddress] = useState('');
 
     useEffect(() => {
         const loadOrderDetails = async () => {
@@ -22,6 +24,84 @@ const OrderDetails = () => {
         };
         loadOrderDetails();
     }, [dispatch, orderId]);
+    
+    // Debug: In ra cấu trúc dữ liệu sellerOfOrder khi có dữ liệu
+    useEffect(() => {
+        if (order_details?.sellerOfOrder) {
+            console.log("SellerOfOrder data:", order_details.sellerOfOrder);
+        }
+    }, [order_details]);
+    
+    useEffect(() => {
+        if (order_details && order_details?.delivery_address) {
+            // Gọi hàm formatAddressWithAPI để lấy địa chỉ đầy đủ
+            const getAddress = async () => {
+                try {
+                    // Kiểm tra xem có dữ liệu địa chỉ trong localStorage không
+                    let addressData = localStorage.getItem('addressData');
+                    
+                    // Nếu không có dữ liệu hoặc dữ liệu cũ hơn 24 giờ, gọi API để lấy dữ liệu mới
+                    const lastFetchTime = localStorage.getItem('addressDataTimestamp');
+                    const now = new Date().getTime();
+                    const isExpired = !lastFetchTime || (now - parseInt(lastFetchTime) > 24 * 60 * 60 * 1000);
+                    
+                    if (!addressData || isExpired) {
+                        const response = await axios.get('https://provinces.open-api.vn/api/?depth=3');
+                        
+                        // Chuyển đổi dữ liệu từ API để phù hợp với cấu trúc cache của chúng ta
+                        const provinces = {};
+                        const districts = {};
+                        const wards = {};
+                        
+                        response.data.forEach(province => {
+                            provinces[province.code] = province.name;
+                            
+                            if (province.districts) {
+                                province.districts.forEach(district => {
+                                    districts[district.code] = district.name;
+                                    
+                                    if (district.wards) {
+                                        district.wards.forEach(ward => {
+                                            wards[ward.code] = ward.name;
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                        
+                        // Lưu dữ liệu vào localStorage
+                        addressData = { provinces, districts, wards };
+                        localStorage.setItem('addressData', JSON.stringify(addressData));
+                        localStorage.setItem('addressDataTimestamp', now.toString());
+                    } else {
+                        addressData = JSON.parse(addressData);
+                    }
+                    
+                    // Tìm thông tin địa chỉ từ dữ liệu đã có
+                    const deliveryAddress = order_details.delivery_address;
+                    const provinceName = addressData.provinces[deliveryAddress.province?.code] || '';
+                    const districtName = addressData.districts[deliveryAddress.district?.code] || '';
+                    const wardName = addressData.wards[deliveryAddress.ward?.code] || '';
+                    
+                    // Tạo địa chỉ đầy đủ
+                    const addressParts = [];
+                    if (deliveryAddress.address) addressParts.push(deliveryAddress.address);
+                    if (wardName) addressParts.push(wardName);
+                    if (districtName) addressParts.push(districtName);
+                    if (provinceName) addressParts.push(provinceName);
+                    
+                    const fullAddress = addressParts.join(', ');
+                    setFormattedAddress(fullAddress);
+                } catch (error) {
+                    console.error('Lỗi khi lấy dữ liệu địa chỉ:', error);
+                    // Fallback sử dụng hàm formatAddress
+                    setFormattedAddress(formatAddress(order_details.delivery_address));
+                }
+            };
+            
+            getAddress();
+        }
+    }, [order_details]);
 
     const getStatusIcon = (status) => {
         switch (status) {
@@ -94,10 +174,7 @@ const OrderDetails = () => {
             <span className="bg-red-500 text-white text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
               Nhà riêng
             </span>
-                        {order_details?.delivery_address?.address}
-                        {order_details?.delivery_address?.ward?.name && `, ${order_details?.delivery_address?.ward?.name}`}
-                        {order_details?.delivery_address?.district?.name && `, ${order_details?.delivery_address?.district?.name}`}
-                        {order_details?.delivery_address?.province?.name && `, ${order_details?.delivery_address?.province?.name}`}
+                        {formattedAddress || formatAddress(order_details?.delivery_address)}
                     </p>
                     <p className="text-slate-600">
                         Đơn giá:{" "}
@@ -130,16 +207,32 @@ const OrderDetails = () => {
                 <div className="bg-white shadow-md p-5 rounded-md">
                     <h2 className="text-gray-700 font-semibold mb-4">Thông tin shop</h2>
                     {order_details?.sellerOfOrder?.map((seller) => (
-                        <div key={seller._id} className="mb-4">
-                            <p className="text-black font-semibold">
-                                Đơn hàng của shop: {seller.products[0].shop_name}
-                            </p>
-                            <p className="text-red-500 font-semibold">
-                                Mã seller: #{seller?.sellerId}
-                            </p>
-                            <p className="text-green-500 font-semibold">
-                                Mã đơn hàng của người bán: #{seller?._id}
-                            </p>
+                        <div key={seller._id} className="mb-4 flex items-center gap-3">
+                            {/* Thử nhiều cách lấy ảnh, từ các thuộc tính có thể khác nhau */}
+                            {seller.image || seller.shopInfo?.image || seller.shop?.image || seller.products?.[0]?.shopImage ? (
+                                <img
+                                    src={seller.image || seller.shopInfo?.image || seller.shop?.image || seller.products?.[0]?.shopImage}
+                                    alt={seller.products[0].shop_name}
+                                    className="w-14 h-14 rounded-full border-2 border-green-500 object-cover"
+                                />
+                            ) : (
+                                <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                            )}
+                            <div>
+                                <p className="text-black font-semibold">
+                                    Đơn hàng của shop: {seller.products[0].shop_name}
+                                </p>
+                                <p className="text-red-500 font-semibold">
+                                    Mã seller: #{seller?.sellerId}
+                                </p>
+                                <p className="text-green-500 font-semibold">
+                                    Mã đơn hàng của người bán: #{seller?._id}
+                                </p>
+                            </div>
                         </div>
                     ))}
                 </div>
