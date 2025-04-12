@@ -12,6 +12,7 @@ const queryOrders = require("../utils/queryOrders");
 const mongoose = require("mongoose");
 const dotraWallet = require("../database/models/dotraWallet.models");
 const sellerWallet = require("../database/models/sellerWallet.models");
+const axios = require("axios");
 
 class orderController {
     // Kiểm tra đơn hàng đã được thanh toán chưa
@@ -49,6 +50,9 @@ class orderController {
         let cartId = [];
         let customerOrder = [];
 
+        // Hiển thị thông tin shipping để debug
+        console.log("Thông tin giao hàng nhận được:", JSON.stringify(shippingInfo, null, 2));
+
         for (let i = 0; i < products.length; i++) {
             const productIndex = products[i].products;
             for (let j = 0; j < productIndex.length; j++) {
@@ -64,6 +68,17 @@ class orderController {
             }
         }
         try {
+            // Lưu trữ thông tin địa chỉ đầy đủ bao gồm cả thông tin tên
+            const completeAddress = {
+                name: shippingInfo.name,
+                address: shippingInfo.address,
+                phone: shippingInfo.phone,
+                post: shippingInfo.post,
+                province: shippingInfo.province,
+                district: shippingInfo.district,
+                ward: shippingInfo.ward,
+            };
+
             const order = await orderModel.create({
                 customerId: customerId,
                 customer_name: customer_name,
@@ -71,7 +86,7 @@ class orderController {
                 price: price + shipping_fee,
                 delivery_status: "processing",
                 payment_status: "unpaid",
-                delivery_address: shippingInfo,
+                delivery_address: completeAddress,
                 changeStatusDate: null,
             });
 
@@ -138,6 +153,8 @@ class orderController {
         const {orderId} = req.params;
         try {
             const order = await orderModel.findById(orderId);
+            
+            // Chỉ lấy thông tin mà không thêm dữ liệu cứng
             response(res, httpStatusCode.Ok, {
                 data: order,
             });
@@ -328,11 +345,34 @@ class orderController {
         const {orderId} = req.params;
 
         try {
-            const order = await sellerOfOrderModel.findById({
+            // Lấy thông tin đơn hàng từ sellerOfOrderModel
+            const sellerOrder = await sellerOfOrderModel.findById({
                 _id: new ObjectId(orderId),
             });
+            
+            if (!sellerOrder) {
+                return response(res, httpStatusCode.NotFound, {
+                    message: "Không tìm thấy đơn hàng",
+                });
+            }
+            
+            // Lấy thêm thông tin delivery_address từ orderModel
+            const mainOrder = await orderModel.findById(sellerOrder.orderId);
+            
+            if (!mainOrder) {
+                return response(res, httpStatusCode.NotFound, {
+                    message: "Không tìm thấy đơn hàng chính",
+                });
+            }
+            
+            // Kết hợp thông tin từ cả hai model
+            const orderData = {
+                ...sellerOrder.toObject(),
+                shipping: mainOrder.delivery_address,  // Thêm thông tin giao hàng từ đơn hàng chính
+            };
+            
             response(res, httpStatusCode.Ok, {
-                data: order,
+                data: orderData,
             });
         } catch (error) {
             response(res, httpStatusCode.InternalServerError, {
