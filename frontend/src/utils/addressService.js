@@ -252,7 +252,7 @@ export const getAllProvinces = async () => {
 export const getDistrictsByProvince = async (provinceCode) => {
     try {
         const response = await axios.get(`/api-provinces/api/p/${provinceCode}?depth=2`);
-        if (response.data?.districts) {
+        if (response.data && response.data.districts) {
             const districts = {};
             response.data.districts.forEach(district => {
                 districts[district.code] = district.name;
@@ -261,16 +261,15 @@ export const getDistrictsByProvince = async (provinceCode) => {
             return districts;
         }
     } catch (error) {
-        console.error('Lỗi khi lấy danh sách quận/huyện:', error);
-        // Trả về các quận/huyện đã biết từ cache
-        return Object.keys(addressCache.districts).reduce((result, key) => {
-            // Kiểm tra xem key có bắt đầu bằng mã tỉnh không
-            const distPrefix = provinceCode.toString().padStart(2, '0');
-            if (key.toString().startsWith(distPrefix)) {
-                result[key] = addressCache.districts[key];
+        console.error(`Lỗi khi lấy danh sách quận/huyện cho tỉnh/thành phố ${provinceCode}:`, error);
+        // Lọc các quận/huyện thuộc tỉnh/thành phố từ cache
+        const provinceDistricts = {};
+        Object.keys(addressCache.districts).forEach(code => {
+            if (code.startsWith(provinceCode.substring(0, 1))) {
+                provinceDistricts[code] = addressCache.districts[code];
             }
-            return result;
-        }, {});
+        });
+        return provinceDistricts;
     }
     return null;
 };
@@ -283,7 +282,7 @@ export const getDistrictsByProvince = async (provinceCode) => {
 export const getWardsByDistrict = async (districtCode) => {
     try {
         const response = await axios.get(`/api-provinces/api/d/${districtCode}?depth=2`);
-        if (response.data?.wards) {
+        if (response.data && response.data.wards) {
             const wards = {};
             response.data.wards.forEach(ward => {
                 wards[ward.code] = ward.name;
@@ -292,16 +291,15 @@ export const getWardsByDistrict = async (districtCode) => {
             return wards;
         }
     } catch (error) {
-        console.error('Lỗi khi lấy danh sách phường/xã:', error);
-        // Trả về các phường/xã đã biết từ cache
-        return Object.keys(addressCache.wards).reduce((result, key) => {
-            // Kiểm tra xem key có bắt đầu bằng mã quận/huyện không
-            const wardPrefix = districtCode.toString().padStart(3, '0');
-            if (key.toString().startsWith(wardPrefix)) {
-                result[key] = addressCache.wards[key];
+        console.error(`Lỗi khi lấy danh sách phường/xã cho quận/huyện ${districtCode}:`, error);
+        // Lọc các phường/xã thuộc quận/huyện từ cache
+        const districtWards = {};
+        Object.keys(addressCache.wards).forEach(code => {
+            if (code.startsWith(districtCode.substring(0, 3))) {
+                districtWards[code] = addressCache.wards[code];
             }
-            return result;
-        }, {});
+        });
+        return districtWards;
     }
     return null;
 }; 
