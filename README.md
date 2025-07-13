@@ -121,8 +121,8 @@ dotra/
 
 1. Clone repository:
 ```bash
-git clone https://github.com/hieunguyendev2206/dotra.git
-cd dotra
+git clone https://github.com/hieunguyendev2206/dotra-ecommerce.git
+cd dotra-ecommerce
 ```
 
 2. Cài đặt dependencies:
