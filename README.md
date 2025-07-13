@@ -36,7 +36,7 @@ Dotra là một nền tảng thương mại điện tử đa nhà cung cấp hi�
       <td align="center"><strong>Chi tiết sản phẩm</strong></td>
     </tr>
     <tr>
-      <td><img src=https://res.cloudinary.com/dhtjbo5g2/image/upload/v1752404801/github-portfolio/home-page_iknpl4.png" alt="Trang chủ"/></td>
+      <td><img src="https://res.cloudinary.com/dhtjbo5g2/image/upload/v1752404801/github-portfolio/home-page_iknpl4.png" alt="Trang chủ"/></td>
       <td><img src="https://res.cloudinary.com/dhtjbo5g2/image/upload/v1752404801/github-portfolio/product-detail-page_trjqp8.png" alt="Chi tiết sản phẩm"/></td>
     </tr>
     <tr>
@@ -44,7 +44,7 @@ Dotra là một nền tảng thương mại điện tử đa nhà cung cấp hi�
       <td align="center"><strong>Thanh toán</strong></td>
     </tr>
     <tr>
-      <td><img src="https://res.cloudinary.com/dhtjbo5g2/image/upload/v1752404801/github-portfolio/dashboard_vvv2bl.pngn" alt="Bảng điều khiển"/></td>
+      <td><img src="https://res.cloudinary.com/dhtjbo5g2/image/upload/v1752404801/github-portfolio/dashboard_vvv2bl.png" alt="Bảng điều khiển"/></td>
       <td><img src="https://res.cloudinary.com/dhtjbo5g2/image/upload/v1752404801/github-portfolio/payment-page_ftrcqq.png" alt="Thanh toán"/></td>
     </tr>
   </table>
