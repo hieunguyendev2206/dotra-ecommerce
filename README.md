@@ -121,7 +121,7 @@ dotra/
 
 1. Clone repository:
 ```bash
-git clone https://github.com/yourusername/dotra.git
+git clone https://github.com/hieunguyendev2206/dotra.git
 cd dotra
 ```
 
@@ -252,7 +252,7 @@ Chúng tôi rất hoan nghênh mọi đóng góp để cải thiện dự án Do
 
 ## 👨‍💻 Tác giả
 
-Phát triển bởi [HieuNguyenDev](https://github.com/HieuNguyenDev)
+Phát triển bởi [HieuNguyenDev](https://github.com/hieunguyendev2206)
 
 ## 📄 Giấy phép
 
