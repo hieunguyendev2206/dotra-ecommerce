@@ -197,9 +197,9 @@ Sau khi khởi động, các dịch vụ sẽ có sẵn tại:
 
 ### Tài khoản demo
 
-- **Admin**: admin@dotra.com (Mật khẩu: admin123)
-- **Nhà cung cấp**: vendor@dotra.com (Mật khẩu: vendor123)
-- **Người dùng**: user@dotra.com (Mật khẩu: user123)
+- **Admin**: admin@dotra.com (Mật khẩu: admin123) | Truy cập trang Admin: https://admin-topaz-three.vercel.app
+- **Nhà cung cấp**: vendor@dotra.com (Mật khẩu: vendor123) | Truy cập trang Nhà cung cấp: https://admin-topaz-three.vercel.app
+- **Người dùng**: user@dotra.com (Mật khẩu: user123) | Truy cập trang chủ: https://dotra-home.vercel.app
 
 ### Quy trình sử dụng
 
